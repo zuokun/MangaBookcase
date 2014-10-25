@@ -1,20 +1,53 @@
 package zuokun.mangabookcase.ui;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import zuokun.mangabookcase.R;
+import zuokun.mangabookcase.util.Manga;
+import zuokun.mangabookcase.util.MangaAdapter;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Set main.xml as user interface layout
         setContentView(R.layout.activity_main);
+
+        Manga One_Piece = new Manga ("One Piece");
+        Manga Gintama = new Manga ("Gintama");
+        Manga No_Game_No_Life = new Manga ("No Game No Life");
+        Manga Google = new Manga ("Google");
+
+        Manga[] mangas = new Manga[] {One_Piece, Gintama, No_Game_No_Life, Google};
+
+        MangaAdapter mangaAdapter = new MangaAdapter(this, mangas);
+
+        ListView listView = (ListView) findViewById(R.id.mangaList1);
+        listView.setAdapter(mangaAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView <?> l, View v, int position, long id) {
+
+                Manga m = (Manga) l.getItemAtPosition(position);
+                String s = m.getTitle();
+                Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+
 
 
     @Override
@@ -35,4 +68,5 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
