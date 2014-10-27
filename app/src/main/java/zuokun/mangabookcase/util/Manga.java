@@ -6,11 +6,15 @@ package zuokun.mangabookcase.util;
 public class Manga {
 
     private String _title = Constants.EMPTY_STRING;
-    private int _start_book_number;
-    private int _end_book_number;
+    private int _start_book_number = 0;
+    private int _end_book_number = 0;
+    private boolean _ongoing = false;
 
-    public Manga (String title) {
+    public Manga (String title, int end_book_number, boolean ongoing) {
         _title = title;
+        _start_book_number = 1; //MAGIC NUMBER
+        _end_book_number = end_book_number;
+        _ongoing = ongoing;
     }
 
     public String getTitle() {
@@ -21,8 +25,18 @@ public class Manga {
         return _start_book_number;
     }
 
-    public int get_end_book_number() {
+    public int getEndBookNumber() {
         return _end_book_number;
+    }
+
+    public boolean isOngoing() { return _ongoing; }
+
+    public String getStatus() {
+        if (_ongoing) {
+            return Constants.ONGOING;
+        } else {
+            return Constants.COMPLETED;
+        }
     }
 
 }

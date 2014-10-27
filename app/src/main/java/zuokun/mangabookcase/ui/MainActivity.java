@@ -18,6 +18,7 @@ import java.util.List;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.storage.Storage;
+import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
 import zuokun.mangabookcase.util.MangaAdapter;
 import zuokun.mangabookcase.util.MangaExpandableListAdapter;
@@ -31,7 +32,8 @@ public class MainActivity extends Activity {
     HashMap<String, List<String>> listDataChild;
 
     //Get manga from storage
-    Manga[] manga = Storage.loadManga();
+    List<Manga> listManga;
+    //listManga = Storage.loadManga();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,10 @@ public class MainActivity extends Activity {
         //Test for list view
         if (false) {
 
-            Manga One_Piece = new Manga("One Piece");
-            Manga Gintama = new Manga("Gintama");
-            Manga No_Game_No_Life = new Manga("No Game No Life");
-            Manga Google = new Manga("Google");
+            Manga One_Piece = new Manga("One Piece", 69, true);
+            Manga Gintama = new Manga("Gintama", 44, true);
+            Manga No_Game_No_Life = new Manga("No Game No Life", 12, false);
+            Manga Google = new Manga("Google", 33, true);
 
             Manga[] mangas = new Manga[]{One_Piece, Gintama, No_Game_No_Life, Google};
 
@@ -142,42 +144,36 @@ public class MainActivity extends Activity {
     }
 
         private void prepareListData () {
+            listManga = new ArrayList<Manga>();
             listDataHeader = new ArrayList<String>();
             listDataChild = new HashMap<String, List<String>>();
 
-            // Adding child data
-            listDataHeader.add("Top 250");
-            listDataHeader.add("Now Showing");
-            listDataHeader.add("Coming Soon..");
+            Manga One_Piece = new Manga("One Piece", 69, true);
+            Manga Gintama = new Manga("Gintama", 44, true);
+            Manga No_Game_No_Life = new Manga("No Game No Life", 12, false);
+            Manga Google = new Manga("Google", 33, true);
 
-            // Adding child data
-            List<String> top250 = new ArrayList<String>();
-            top250.add("The Shawshank Redemption");
-            top250.add("The Godfather");
-            top250.add("The Godfather: Part II");
-            top250.add("Pulp Fiction");
-            top250.add("The Good, the Bad and the Ugly");
-            top250.add("The Dark Knight");
-            top250.add("12 Angry Men");
+            //Adding Manga
+            listManga.add(One_Piece);
+            listManga.add(Gintama);
+            listManga.add(No_Game_No_Life);
+            listManga.add(Google);
 
-            List<String> nowShowing = new ArrayList<String>();
-            nowShowing.add("The Conjuring");
-            nowShowing.add("Despicable Me 2");
-            nowShowing.add("Turbo");
-            nowShowing.add("Grown Ups 2");
-            nowShowing.add("Red 2");
-            nowShowing.add("The Wolverine");
+            for (int i = 0; i < listManga.size(); i++) {
+                listDataHeader.add(listManga.get(i).getTitle());
+            }
 
-            List<String> comingSoon = new ArrayList<String>();
-            comingSoon.add("2 Guns");
-            comingSoon.add("The Smurfs 2");
-            comingSoon.add("The Spectacular Now");
-            comingSoon.add("The Canyons");
-            comingSoon.add("Europa Report");
+            for (int i = 0; i < listManga.size(); i++) {
+                List<String> childData = new ArrayList<String>();
 
-            listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-            listDataChild.put(listDataHeader.get(1), nowShowing);
-            listDataChild.put(listDataHeader.get(2), comingSoon);
+                Manga m = listManga.get(i);
+
+                childData.add(Constants.LAST_BOOK + m.getEndBookNumber());
+                childData.add(Constants.STATUS + m.getStatus());
+
+                listDataChild.put(listDataHeader.get(i), childData);
+            }
+
         }
 
 
