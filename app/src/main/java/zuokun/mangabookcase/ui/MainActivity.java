@@ -6,9 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView.*;
-import android.widget.*;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ExpandableListView.OnGroupCollapseListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,10 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import zuokun.mangabookcase.R;
-import zuokun.mangabookcase.storage.Storage;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
-import zuokun.mangabookcase.util.MangaAdapter;
 import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 
 
@@ -52,10 +52,10 @@ public class MainActivity extends Activity {
 
             Manga[] mangas = new Manga[]{One_Piece, Gintama, No_Game_No_Life, Google};
 
-            MangaAdapter mangaAdapter = new MangaAdapter(this, mangas);
+            //MangaAdapter mangaAdapter = new MangaAdapter(this, mangas);
 
             ListView listView = (ListView) findViewById(R.id.mangaList1);
-            listView.setAdapter(mangaAdapter);
+            //listView.setAdapter(mangaAdapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
