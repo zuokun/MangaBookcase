@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -42,104 +40,73 @@ public class MainActivity extends Activity {
         //Set main.xml as user interface layout
         setContentView(R.layout.activity_main);
 
-        //Test for list view
-        if (false) {
-
-            Manga One_Piece = new Manga("One Piece", 69, true);
-            Manga Gintama = new Manga("Gintama", 44, true);
-            Manga No_Game_No_Life = new Manga("No Game No Life", 12, false);
-            Manga Google = new Manga("Google", 33, true);
-
-            Manga[] mangas = new Manga[]{One_Piece, Gintama, No_Game_No_Life, Google};
-
-            //MangaAdapter mangaAdapter = new MangaAdapter(this, mangas);
-
-            ListView listView = (ListView) findViewById(R.id.mangaList1);
-            //listView.setAdapter(mangaAdapter);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-
-                    Manga m = (Manga) l.getItemAtPosition(position);
-                    String s = m.getTitle();
-                    Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-
         //Test for expandable list view
-        if (true) {
 
-            // get the listview
-            mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
 
-            // preparing list data
-            prepareListData();
+        // get the listview
+        mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
 
-            mangaListAdapter = new MangaExpandableListAdapter(this, listDataHeader, listDataChild);
+        // preparing list data
+        prepareListData();
 
-            // setting list adapter
-            mangaListView.setAdapter(mangaListAdapter);
+        mangaListAdapter = new MangaExpandableListAdapter(this, listDataHeader, listDataChild);
 
-            // Listview Group click listener
-            mangaListView.setOnGroupClickListener(new OnGroupClickListener() {
+        // setting list adapter
+        mangaListView.setAdapter(mangaListAdapter);
 
-                @Override
-                public boolean onGroupClick(ExpandableListView parent, View v,
-                                            int groupPosition, long id) {
-                    // Toast.makeText(getApplicationContext(),
-                    // "Group Clicked " + listDataHeader.get(groupPosition),
-                    // Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
+        // Listview Group click listener
+        mangaListView.setOnGroupClickListener(new OnGroupClickListener() {
 
-            // Listview Group expanded listener
-            mangaListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                                        int groupPosition, long id) {
+                // Toast.makeText(getApplicationContext(),
+                // "Group Clicked " + listDataHeader.get(groupPosition),
+                // Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
-                @Override
-                public void onGroupExpand(int groupPosition) {
-                    Toast.makeText(getApplicationContext(),
-                            listDataHeader.get(groupPosition) + " Expanded",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
+         // Listview Group expanded listener
+         mangaListView.setOnGroupExpandListener(new OnGroupExpandListener() {
 
-            // Listview Group collasped listener
-            mangaListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        listDataHeader.get(groupPosition) + " Expanded",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                @Override
-                public void onGroupCollapse(int groupPosition) {
-                    Toast.makeText(getApplicationContext(),
-                            listDataHeader.get(groupPosition) + " Collapsed",
-                            Toast.LENGTH_SHORT).show();
+        // Listview Group collasped listener
+        mangaListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
 
-                }
-            });
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        listDataHeader.get(groupPosition) + " Collapsed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
-            // Listview on child click listener
-            mangaListView.setOnChildClickListener(new OnChildClickListener() {
+        // Listview on child click listener
+        mangaListView.setOnChildClickListener(new OnChildClickListener() {
 
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v,
-                                            int groupPosition, int childPosition, long id) {
-                    // TODO Auto-generated method stub
-                    Toast.makeText(
-                            getApplicationContext(),
-                            listDataHeader.get(groupPosition)
-                                    + " : "
-                                    + listDataChild.get(
-                                    listDataHeader.get(groupPosition)).get(
-                                    childPosition), Toast.LENGTH_SHORT)
-                            .show();
-                    return false;
-                }
-            });
-
-        }
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                // TODO Auto-generated method stub
+                Toast.makeText(
+                        getApplicationContext(),
+                        listDataHeader.get(groupPosition)
+                                + " : "
+                                + listDataChild.get(
+                                listDataHeader.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT)
+                        .show();
+                return false;
+            }
+        });
 
     }
 
@@ -190,9 +157,14 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch (id) {
+
+            case R.id.action_settings:
+                return true;
+
         }
+
         return super.onOptionsItemSelected(item);
     }
 
