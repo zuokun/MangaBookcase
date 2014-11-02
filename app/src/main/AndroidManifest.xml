@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".ui.AddActivity"
+            android:label="Add New Manga">
+
+        </activity>
+
+        <activity
+            android:name=".ui.EditActivity"
+            android:label="Edit Manga">
+
+        </activity>
     </application>
 
 </manifest>

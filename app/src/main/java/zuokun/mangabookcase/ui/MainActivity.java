@@ -1,7 +1,9 @@
 package zuokun.mangabookcase.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,56 +56,13 @@ public class MainActivity extends Activity {
         // setting list adapter
         mangaListView.setAdapter(mangaListAdapter);
 
-        // Listview Group click listener
-        mangaListView.setOnGroupClickListener(new OnGroupClickListener() {
-
+        mangaListView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+            public boolean onLongClick(View view) {
 
-         // Listview Group expanded listener
-         mangaListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+                Intent intent = new Intent (MainActivity.this, EditActivity.class);
+                startActivity(intent);
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Listview Group collasped listener
-        mangaListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Listview on child click listener
-        mangaListView.setOnChildClickListener(new OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
                 return false;
             }
         });
@@ -162,6 +121,13 @@ public class MainActivity extends Activity {
 
             case R.id.action_settings:
                 return true;
+
+            case R.id.mainMenuAddManga:
+                Intent intent = new Intent(this, AddActivity.class);
+                startActivity(intent);
+                return true;
+
+
 
         }
 
