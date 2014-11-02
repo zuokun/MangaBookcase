@@ -42,6 +42,9 @@ public class MainActivity extends Activity {
         //Set main.xml as user interface layout
         setContentView(R.layout.activity_main);
 
+        //Test for expandable list view
+
+
         // get the listview
         mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
 
