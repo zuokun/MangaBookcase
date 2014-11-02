@@ -53,6 +53,8 @@ public class MainActivity extends Activity {
         // setting list adapter
         mangaListView.setAdapter(mangaListAdapter);
 
+
+        /*
         mangaListView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -63,7 +65,7 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-
+*/
     }
 
         private void prepareListData () {
