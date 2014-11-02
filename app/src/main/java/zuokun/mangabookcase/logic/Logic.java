@@ -28,6 +28,35 @@ public class Logic {
     public List<Manga> listManga;
     //listManga = Storage.loadManga();
 
+    public boolean parseCommand(Constants.Commands command, Manga manga) {
+
+        switch (command) {
+            case ADD:
+                add(manga);
+                return true;
+
+            case EDIT:
+                edit(manga);
+                return true;
+
+            default:
+
+                return true;
+        }
+
+    }
+
+    private void add(Manga manga) {
+
+        listManga.add(manga);
+
+    }
+    private void edit(Manga manga) {
+
+    }
+
+
+
     public void prepareListData() {
             listManga = new ArrayList<Manga>();
             listDataHeader = new ArrayList<String>();
@@ -47,6 +76,8 @@ public class Logic {
         }
 
     public void updateExpendableList() {
+        listDataHeader.clear();
+        listDataChild.clear();
         updateParentData();
         updateChildData();
     }

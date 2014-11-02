@@ -5,6 +5,8 @@ package zuokun.mangabookcase.util;
  */
 public class Constants {
 
+    public enum Commands { ADD, EDIT};
+
     // Strings
     public static final String EMPTY_STRING = "";
     public static final String BLANK_SPACE = " ";
@@ -13,8 +15,8 @@ public class Constants {
     public static final String MISSING_BOOK = "  Missing book(s): ";
     public static final String STATUS = "  Status: ";
 
-    public static final String ONGOING = "  Ongoing";
-    public static final String COMPLETED = "  Completed";
+    public static final String ONGOING = "Ongoing";
+    public static final String COMPLETED = "Completed";
 
     // Integers
     public static final int MANGA_ATTRIBUTES = 4;

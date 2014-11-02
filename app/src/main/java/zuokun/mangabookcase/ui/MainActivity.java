@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +23,7 @@ import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 
 public class MainActivity extends Activity {
 
-    Logic logic = new Logic();
+    static Logic logic = new Logic();
 
     MangaExpandableListAdapter mangaListAdapter;
     ExpandableListView mangaListView;
@@ -84,6 +86,16 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static boolean parse(Constants.Commands cmd, Manga m) {
+
+        logic.parseCommand(cmd, m);
+
+        logic.updateExpendableList();
+
+        return true;
+
     }
 
 }

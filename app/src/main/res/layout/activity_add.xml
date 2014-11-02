@@ -18,10 +18,17 @@
         android:id="@+id/addNewMangaFinalBook"
         android:layout_gravity="center_horizontal" />
 
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Completed?"
+        android:id="@+id/addNewMangaStatus" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Ok"
         android:onClick="addNewManga"
         android:id="@+id/button" />
 
