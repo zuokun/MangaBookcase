@@ -6,7 +6,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/addNewMangaTitle"
         android:hint="Manga Title"
         android:layout_gravity="center_horizontal" />
 
@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/addNewMangaFinalBook"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Button"
-        android:onClick=""
+        android:onClick="addNewManga"
         android:id="@+id/button" />
 
 </LinearLayout>
