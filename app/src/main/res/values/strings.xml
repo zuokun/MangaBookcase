@@ -11,11 +11,11 @@
 
     <!-- Activities -->
 
-    <!-- //Add -->
+    <!-- Add -->
 
     <string name="hint_manga_title">Manga Title</string>
 
-    <!-- //Other Strings -->
+    <!-- Other Strings -->
 
     <string name="empty_string">""</string>
     <string name="blank_space">" "</string>
