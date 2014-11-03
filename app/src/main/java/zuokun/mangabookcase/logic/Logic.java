@@ -1,13 +1,16 @@
 package zuokun.mangabookcase.logic;
 
+import android.content.Context;
 import android.widget.ExpandableListView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.storage.Storage;
+import zuokun.mangabookcase.ui.MainActivity;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
 import zuokun.mangabookcase.util.MangaExpandableListAdapter;
@@ -28,19 +31,32 @@ public class Logic {
     public List<Manga> listManga;
     //listManga = Storage.loadManga();
 
-    public boolean parseCommand(Constants.Commands command, Manga manga) {
+    public boolean parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
 
         switch (command) {
             case ADD:
                 add(manga);
+                if (!listManga.isEmpty()) {
+                    updateExpendableList();
+                }
                 return true;
 
             case EDIT:
                 edit(manga);
                 return true;
 
-            default:
+            case SAVE:
+                save(context);
+                return true;
 
+            case LOAD:
+                load(context);
+                if (!listManga.isEmpty()) {
+                    updateExpendableList();
+                }
+                return true;
+
+            default:
                 return true;
         }
 
@@ -53,6 +69,14 @@ public class Logic {
     }
     private void edit(Manga manga) {
 
+    }
+
+    private void load(Context context) throws IOException {
+        Storage.loadFile(context);
+    }
+
+    private void save(Context context) {
+        Storage.saveFile(listManga, context);
     }
 
 

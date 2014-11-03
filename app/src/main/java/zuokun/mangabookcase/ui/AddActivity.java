@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
@@ -25,7 +27,7 @@ public class AddActivity extends Activity {
 
     }
 
-    public void addNewManga(View view) {
+    public void addNewManga(View view) throws IOException {
 
         EditText mangaTitle = (EditText) findViewById(R.id.addNewMangaTitle);
         String s = mangaTitle.getText().toString();
@@ -38,7 +40,7 @@ public class AddActivity extends Activity {
 
         Manga m = new Manga(s, book, isCompleted);
 
-        MainActivity.parse(Constants.Commands.ADD, m);
+        MainActivity.parse(Constants.Commands.ADD, m, getApplicationContext());
 
         finish();
 

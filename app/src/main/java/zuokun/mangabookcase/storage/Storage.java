@@ -1,5 +1,15 @@
 package zuokun.mangabookcase.storage;
 
+import android.content.Context;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.List;
+
 import zuokun.mangabookcase.util.Manga;
 
 /**
@@ -7,11 +17,50 @@ import zuokun.mangabookcase.util.Manga;
  */
 public class Storage {
 
+    static String filename = "manga_list";
+    static File file = new File(filename);
+
+    public static void saveFile(List<Manga> mangaList, Context context) {
+
+        try {
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(mangaList);
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<Manga> loadFile(Context context) throws IOException {
+
+        File file2 = new File(context.getFilesDir(), filename);
+
+        if (!file2.exists()) {
+            file2.createNewFile();
+            return null;
+        } else {
+            FileInputStream fis;
+            try {
+                fis = context.openFileInput(filename);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                List<Manga> mangaList = (List<Manga>) ois.readObject();
+                ois.close();
+                return mangaList;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     public static Manga[] loadManga() {
 
         Manga[] manga = null;
 
         return manga;
+
+
 
     }
 

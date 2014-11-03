@@ -1,18 +1,15 @@
 package zuokun.mangabookcase.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.logic.Logic;
@@ -35,27 +32,19 @@ public class MainActivity extends Activity {
         //Set main.xml as user interface layout
         setContentView(R.layout.activity_main);
 
-        logic.prepareListData();
-        logic.updateExpendableList();
-
+        try {
+            logic.parseCommand(Constants.Commands.LOAD, null, getApplicationContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+/*
         // get the listview
         mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
         mangaListAdapter = new MangaExpandableListAdapter(this, logic.listDataHeader, logic.listDataChild);
         mangaListView.setAdapter(mangaListAdapter);
-
-        mangaListView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-                Intent intent = new Intent (MainActivity.this, EditActivity.class);
-                startActivity(intent);
-
-                return false;
-            }
-        });
+*/
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,17 +70,14 @@ public class MainActivity extends Activity {
                 startActivity(intent);
                 return true;
 
-
-
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public static boolean parse(Constants.Commands cmd, Manga m) {
+    public static boolean parse(Constants.Commands cmd, Manga m, Context context) throws IOException {
 
-        logic.parseCommand(cmd, m);
-
+        logic.parseCommand(cmd, m, context);
         logic.updateExpendableList();
 
         return true;
