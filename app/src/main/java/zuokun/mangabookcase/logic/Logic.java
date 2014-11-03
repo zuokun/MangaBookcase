@@ -2,6 +2,7 @@ package zuokun.mangabookcase.logic;
 
 import android.content.Context;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,35 +32,38 @@ public class Logic {
     public List<Manga> listManga;
     //listManga = Storage.loadManga();
 
-    public boolean parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
+    boolean debug = true;
+
+    public String parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
 
         switch (command) {
             case ADD:
                 add(manga);
-                if (!listManga.isEmpty()) {
-                    updateExpendableList();
-                }
-                return true;
+                break;
 
             case EDIT:
                 edit(manga);
-                return true;
+                break;
 
             case SAVE:
                 save(context);
-                return true;
+                break;
 
             case LOAD:
                 load(context);
-                if (!listManga.isEmpty()) {
-                    updateExpendableList();
-                }
-                return true;
+                break;
 
+            case DELETE:
+                break;
             default:
-                return true;
+                return "";
         }
 
+        if (debug) {
+            return "Done";
+        } else {
+            return "";
+        }
     }
 
     private void add(Manga manga) {
@@ -67,11 +71,11 @@ public class Logic {
         listManga.add(manga);
 
     }
-    private void edit(Manga manga) {
+    private static void edit(Manga manga) {
 
     }
 
-    private void load(Context context) throws IOException {
+    private static void load(Context context) throws IOException {
         Storage.loadFile(context);
     }
 
@@ -100,10 +104,14 @@ public class Logic {
         }
 
     public void updateExpendableList() {
-        listDataHeader.clear();
-        listDataChild.clear();
-        updateParentData();
-        updateChildData();
+
+        if (!listManga.isEmpty()) {
+
+            listDataHeader.clear();
+            listDataChild.clear();
+            updateParentData();
+            updateChildData();
+        }
     }
 
     private void updateParentData() {

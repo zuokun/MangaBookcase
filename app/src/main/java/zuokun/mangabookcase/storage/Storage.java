@@ -1,15 +1,20 @@
 package zuokun.mangabookcase.storage;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+import zuokun.mangabookcase.ui.MainActivity;
 import zuokun.mangabookcase.util.Manga;
 
 /**
@@ -36,7 +41,7 @@ public class Storage {
 
         File file2 = new File(context.getFilesDir(), filename);
 
-        if (!file2.exists()) {
+        if (isEmptyFile()) {
             file2.createNewFile();
             return null;
         } else {
@@ -60,8 +65,31 @@ public class Storage {
 
         return manga;
 
+    }
 
+    private static boolean isEmptyFile() {
+        BufferedReader br;
 
+        try {
+
+            br = new BufferedReader(new FileReader(filename));
+
+            if (br.readLine() == null) {
+                br.close();
+
+                return true;
+            }
+
+            br.close();
+
+            return false;
+        } catch (FileNotFoundException e) {
+            //Toast.makeText(MainActivity.this, "File Not Found", Toast.LENGTH_SHORT).show();
+        }catch (IOException e) {
+
+        }
+
+        return false;
     }
 
 }

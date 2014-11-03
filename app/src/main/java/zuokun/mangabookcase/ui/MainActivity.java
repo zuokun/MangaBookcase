@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -37,12 +38,12 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-/*
+
         // get the listview
         mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
         mangaListAdapter = new MangaExpandableListAdapter(this, logic.listDataHeader, logic.listDataChild);
         mangaListView.setAdapter(mangaListAdapter);
-*/
+
 
     }
 
@@ -71,17 +72,20 @@ public class MainActivity extends Activity {
                 return true;
 
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     public static boolean parse(Constants.Commands cmd, Manga m, Context context) throws IOException {
 
-        logic.parseCommand(cmd, m, context);
+        String feedback = logic.parseCommand(cmd, m, context);
         logic.updateExpendableList();
-
+        //showToast(feedback);
         return true;
 
+    }
+
+    public static void showToast(String message){
+        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 }
