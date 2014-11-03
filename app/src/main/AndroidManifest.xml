@@ -19,13 +19,15 @@
         
         <activity
             android:name=".ui.AddActivity"
-            android:label="Add New Manga">
+            android:label="Add New Manga"
+            android:parentActivityName=".ui.MainActivity">
 
         </activity>
 
         <activity
             android:name=".ui.EditActivity"
-            android:label="Edit Manga">
+            android:label="Edit Manga"
+            android:parentActivityName=".ui.MainActivity">
 
         </activity>
     </application>

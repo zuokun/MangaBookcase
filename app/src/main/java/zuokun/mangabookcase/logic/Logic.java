@@ -1,6 +1,9 @@
 package zuokun.mangabookcase.logic;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -21,28 +24,30 @@ import zuokun.mangabookcase.util.MangaExpandableListAdapter;
  */
 public class Logic {
 
-    public Logic () {};
+    Context _context;
+    Storage _storage;
 
-    Storage storage;
-
-    public List<String> listDataHeader;
-    public HashMap<String, List<String>> listDataChild;
+    public static List<String> listDataHeader;
+    public static HashMap<String, List<String>> listDataChild;
 
     //Get manga from storage
-    public List<Manga> listManga;
-    //listManga = Storage.loadManga();
+    public static List<Manga> listManga;
 
-    boolean debug = true;
+    public boolean firstStart = true;
 
-    public String parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
+    // SharedPreferences pref = PreferenceManager.setDefaultValues(_context, R.xml.preference, false);
+
+    static boolean debug = true;
+
+    public static String parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
 
         switch (command) {
             case ADD:
-                add(manga);
+                add(manga, context);
                 break;
 
             case EDIT:
-                edit(manga);
+                edit(manga, context);
                 break;
 
             case SAVE:
@@ -66,21 +71,21 @@ public class Logic {
         }
     }
 
-    private void add(Manga manga) {
+    private static void add(Manga manga, Context context) {
 
         listManga.add(manga);
-
+        Storage.writeToFile(listManga, context);
     }
-    private static void edit(Manga manga) {
+    private static void edit(Manga manga, Context context) {
 
     }
 
     private static void load(Context context) throws IOException {
-        Storage.loadFile(context);
+        Storage.loadFile(listManga, context);
     }
 
-    private void save(Context context) {
-        Storage.saveFile(listManga, context);
+    private static void save(Context context) {
+        Storage.writeToFile(listManga, context);
     }
 
 
@@ -101,9 +106,11 @@ public class Logic {
             listManga.add(No_Game_No_Life);
             listManga.add(Google);
 
+        updateExpendableList();
+
         }
 
-    public void updateExpendableList() {
+    public static void updateExpendableList() {
 
         if (!listManga.isEmpty()) {
 
@@ -114,13 +121,13 @@ public class Logic {
         }
     }
 
-    private void updateParentData() {
+    private static void updateParentData() {
         for (int i = 0; i < listManga.size(); i++) {
             listDataHeader.add(listManga.get(i).getTitle());
         }
     }
 
-    private void updateChildData() {
+    private static void updateChildData() {
         for (int i = 0; i < listManga.size(); i++) {
             List<String> childData = new ArrayList<String>();
 
@@ -133,4 +140,11 @@ public class Logic {
         }
     }
 
+    public void setContext(Context context) {
+        this._context = context;
+    }
+
+    public void prepareFirstTimeUse() {
+
+    }
 }

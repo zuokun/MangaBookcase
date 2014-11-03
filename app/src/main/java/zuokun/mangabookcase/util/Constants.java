@@ -10,6 +10,11 @@ public class Constants {
     // Strings
     public static final String EMPTY_STRING = "";
     public static final String BLANK_SPACE = " ";
+
+    // Settings
+
+    public static final String FILE_CONFIG = "config";
+    public static final String FIRST_START = "config_first_start";
     //-Manga Child
     public static final String LAST_BOOK = "  Last Book: ";
     public static final String MISSING_BOOK = "  Missing book(s): ";
