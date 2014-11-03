@@ -37,9 +37,9 @@ public class AddActivity extends Activity {
         int book = Integer.parseInt(lastBook.getText().toString());
 
         CheckBox completedCheckBox = (CheckBox) findViewById(R.id.addNewMangaStatus);
-        boolean isCompleted = completedCheckBox.isChecked();
+        boolean isOngoing = completedCheckBox.isChecked();
 
-        Manga m = new Manga(s, book, isCompleted);
+        Manga m = new Manga(s, book, isOngoing);
 
         MainActivity.parse(Constants.Commands.ADD, m, getApplicationContext());
 
