@@ -71,6 +71,12 @@ public class Logic {
         }
     }
 
+    public void deleteFile(Context context) {
+
+        _storage.deleteFile(context);
+
+    }
+
     private static void add(Manga manga, Context context) {
 
         listManga.add(manga);
@@ -81,7 +87,7 @@ public class Logic {
     }
 
     private static void load(Context context) throws IOException {
-        Storage.loadFile(listManga, context);
+        listManga = Storage.loadFile(listManga, context);
     }
 
     private static void save(Context context) {

@@ -31,12 +31,19 @@ public class MainActivity extends Activity {
     MangaExpandableListAdapter mangaListAdapter;
     ExpandableListView mangaListView;
     //SQLiteDatabase db;
+
+    boolean test = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (test) {
+            logic.deleteFile(getApplicationContext());
+        }
 
         logic.setContext(this);
         loadPreference(getBaseContext());
@@ -61,7 +68,7 @@ public class MainActivity extends Activity {
             if (logic.listManga == null || logic.listManga.isEmpty()) {
                 Toast.makeText(this, "No Manga", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, logic.listManga.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, logic.listManga.size(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -118,9 +125,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        logic.listManga.clear();
-
     }
 
     @Override
