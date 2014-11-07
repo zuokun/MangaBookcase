@@ -5,17 +5,20 @@ package zuokun.mangabookcase.util;
  */
 public class Manga {
 
-    private String _title = Constants.EMPTY_STRING;
-    private int _start_book_number = 0;
-    private int _end_book_number = 0;
-    private boolean _ongoing = false;
+    private int id;
+    private String _title;
+    private int _start_book_number;
+    private int _end_book_number;
+    private boolean _status;
 
-    public Manga (String title, int end_book_number, boolean ongoing) {
+    public Manga (String title, int end_book_number, boolean status) {
         _title = title;
         _start_book_number = 1; //MAGIC NUMBER
         _end_book_number = end_book_number;
-        _ongoing = ongoing;
+        _status = status;
     }
+
+    // Getters
 
     public String getTitle() {
         return _title;
@@ -29,14 +32,36 @@ public class Manga {
         return _end_book_number;
     }
 
-    public boolean isOngoing() { return _ongoing; }
+    public boolean getStatus() { return _status; }
 
-    public String getStatus() {
-        if (_ongoing) {
+    // Setters
+
+    public void setTitle(String title) {
+        this._title = title;
+    }
+
+    public void setEndBookNumber(int end_book_number) {
+        this._end_book_number = end_book_number;
+    }
+
+    public void setStartBookNumber(int start_book_number) {
+        this._start_book_number = start_book_number;
+    }
+
+    public void setStatus(boolean status) {
+        this._status = status;
+    }
+
+    public String getStringStatus() {
+        if (_status) {
             return Constants.ONGOING;
         } else {
             return Constants.COMPLETED;
         }
+    }
+
+    public String toString() {
+        return "Manga: " + _title + ", From " + _start_book_number + " to " + _end_book_number + Constants.STATUS + getStringStatus();
     }
 
 }
