@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -28,7 +30,7 @@ public class MainActivity extends Activity {
     MangaExpandableListAdapter mangaListAdapter;
     ExpandableListView mangaListView;
 
-    boolean firstStart = true;
+    static boolean firstStart = true;
 
     boolean reset = true;
 
@@ -48,6 +50,15 @@ public class MainActivity extends Activity {
             setView();
         }
 
+        mangaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+
     }
 
     private void preloadContent() {
@@ -64,7 +75,6 @@ public class MainActivity extends Activity {
             savePreference();
 
         } else {
-
             logic.prepareListData();
             Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
         }
@@ -96,11 +106,18 @@ public class MainActivity extends Activity {
         switch (id) {
 
             case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
 
             case R.id.mainMenuAddManga:
-                Intent intent = new Intent(this, AddActivity.class);
-                startActivity(intent);
+                Intent addIntent = new Intent(this, AddActivity.class);
+                startActivity(addIntent);
+                return true;
+
+            case R.id.action_dev_settings:
+                Intent devIntent = new Intent(this, DeveloperSettingsActivity.class);
+                startActivity(devIntent);
                 return true;
 
         }
@@ -110,11 +127,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        try {
-            logic.parseCommand(Constants.Commands.SAVE, null, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -125,12 +137,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        try {
-            logic.parseCommand(Constants.Commands.SAVE, null, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
+
+    // Methods
 
     public static boolean parse(Constants.Commands command, Manga manga, Context context) throws IOException {
 

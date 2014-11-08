@@ -20,7 +20,7 @@ public class Logic {
         db = new MangaSQLiteHelper(context);
     }
 
-    static MangaSQLiteHelper db;
+    public static MangaSQLiteHelper db;
     public static List<Manga> listManga = new ArrayList<Manga>();
     public static List<String> listDataHeader;
     public static HashMap<String, List<String>> listDataChild;
@@ -42,15 +42,6 @@ public class Logic {
                 delete(manga, context);
                 break;
 
-            case SAVE:
-                save(context);
-                break;
-
-            case LOAD:
-                load(context);
-                break;
-
-
             default:
                 return "";
         }
@@ -69,16 +60,6 @@ public class Logic {
     public static void delete(Manga manga, Context context) {
         db.deleteManga(manga);
     }
-
-    private static void load(Context context) throws IOException {
-
-    }
-
-    private static void save(Context context) {
-
-    }
-
-
 
     public void prepareSampleData() {
             listManga = new ArrayList<Manga>();
@@ -135,6 +116,6 @@ public class Logic {
     public void prepareListData() {
 
         listManga = db.getAllMangas();
-
+        updateExpendableList();
     }
 }

@@ -5,7 +5,7 @@ package zuokun.mangabookcase.util;
  */
 public class Constants {
 
-    public enum Commands { ADD, UPDATE, SAVE, LOAD, DELETE};
+    public enum Commands { ADD, UPDATE, DELETE};
 
     // Strings
     public static final String EMPTY_STRING = "";

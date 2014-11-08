@@ -30,6 +30,20 @@
             android:parentActivityName=".ui.MainActivity">
 
         </activity>
+
+        <activity
+            android:name=".ui.DeveloperSettingsActivity"
+            android:label="Developer Settings"
+            android:parentActivityName=".ui.MainActivity">
+
+        </activity>
+
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".ui.MainActivity">
+
+        </activity>
     </application>
 
 </manifest>
