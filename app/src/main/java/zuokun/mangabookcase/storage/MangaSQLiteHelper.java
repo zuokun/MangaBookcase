@@ -23,11 +23,11 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
     private static final String TABLE_MANGA = "mangas";
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
-    private static final String KEY_START_BOOK_NUMBER = "firstBook";
-    private static final String KEY_END_BOOK_NUMBER = "lastBook";
+    private static final String KEY_FIRST = "first";
+    private static final String KEY_LAST = "last";
     private static final String KEY_STATUS = "status";
 
-    private static final String[] COLUMNS = { KEY_ID,KEY_TITLE, KEY_START_BOOK_NUMBER, KEY_END_BOOK_NUMBER, KEY };
+    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_FIRST, KEY_LAST, KEY_STATUS };
 
     public MangaSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,12 +36,12 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_MANGA_TABLE = "CREATE TABLE mangas ( " +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT, " +
-                "startBookNumber INTEGER, " +
-                "endBookNumber INTEGER, " +
-                "status INTEGER )";
+        String CREATE_MANGA_TABLE = "CREATE TABLE mangas (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title TEXT," +
+                "first INTEGER," +
+                "last INTEGER," +
+                "status INTEGER)";
 
         db.execSQL(CREATE_MANGA_TABLE);
 
@@ -49,8 +49,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
-        db.execSQL("DROP TABLE IF EXIST mangas");
-
+        db.execSQL("DROP TABLE IF EXISTS mangas");
         this.onCreate(db);
     }
 
@@ -61,14 +60,16 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, manga.getTitle());
-        values.put(KEY_START_BOOK_NUMBER, manga.getStartBookNumber());
-        values.put(KEY_END_BOOK_NUMBER, manga.getEndBookNumber());
-        values.put(KEY_STATUS, manga.getStatus()); //TODO
+        values.put(KEY_FIRST, manga.getFirstBookNumber());
+        values.put(KEY_LAST, manga.getLastBookNumber());
+        values.put(KEY_STATUS, manga.getIntStatus());
 
 
         db.insert(TABLE_MANGA,
                 null,
                 values);
+
+        db.close();
 
     }
 
@@ -78,7 +79,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor =
                 db.query(TABLE_MANGA,
                         COLUMNS,
-                        " id =",
+                        " id = ?",
                         new String[] { String.valueOf(id) },
                         null,
                         null,
@@ -92,7 +93,9 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         Manga manga = new Manga();
         manga.setId(Integer.parseInt(cursor.getString(0)));
         manga.setTitle(cursor.getString(1));
-        manga.setAuthor(cursor.getString(2));
+        manga.setFirstBookNumber(Integer.parseInt(cursor.getString(2)));
+        manga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
+        manga.setIntStatus(Integer.parseInt(cursor.getString(4)));
 
         Log.d("getManga(" + id + ")", manga.toString());
 
@@ -102,7 +105,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
     public List<Manga> getAllMangas() {
 
-        List<Manga> manga = new LinkedList<Manga>();
+        List<Manga> mangas = new LinkedList<Manga>();
 
         String query = "SELECT * FROM " + TABLE_MANGA;
 
@@ -114,9 +117,54 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 manga = new Manga();
-                manga.setID(Integer.parseInt)
-            }
+                manga.setId(Integer.parseInt(cursor.getString(0)));
+                manga.setTitle(cursor.getString(1));
+                manga.setFirstBookNumber(Integer.parseInt(cursor.getString(2)));
+                manga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
+                manga.setIntStatus(Integer.parseInt(cursor.getString(4)));
+
+                mangas.add(manga);
+
+            } while (cursor.moveToNext());
         }
+
+        Log.d("getAllMangas()", mangas.toString());
+
+        return mangas;
+    }
+
+    public int updateManga(Manga manga) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_TITLE, manga.getTitle());
+        values.put(KEY_FIRST, manga.getFirstBookNumber());
+        values.put(KEY_LAST, manga.getLastBookNumber());
+        values.put(KEY_STATUS, manga.getIntStatus());
+
+        int i = db.update(TABLE_MANGA,
+                values,
+                KEY_ID + " = ?",
+                new String[] { String.valueOf(manga.getId()) });
+
+        db.close();
+
+        return i;
+
+    }
+
+    public void deleteManga(Manga manga) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_MANGA,
+                KEY_ID + " = ?",
+                new String[] { String.valueOf(manga.getId()) });
+
+        db.close();
+
+        Log.d("deleteManga", manga.toString());
 
     }
 

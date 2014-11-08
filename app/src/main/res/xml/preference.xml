@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    android:key="applicationPreference" android:title="@string/config"
+    >
+    <ListPreference
+        android:key="@string/config_first_start"
+        android:defaultValue="false"
+        android:title="First Time"
 
+        />
 
 </PreferenceScreen>

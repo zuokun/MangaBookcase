@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Manga Bookcase</string>
-    <string name="hello_world">Hello world!</string>
 
     <!-- Action Bars / Menus -->
 
@@ -19,5 +18,8 @@
 
     <string name="empty_string">""</string>
     <string name="blank_space">" "</string>
+
+    <string name="config_first_start">config_first_start</string>
+
 
 </resources>

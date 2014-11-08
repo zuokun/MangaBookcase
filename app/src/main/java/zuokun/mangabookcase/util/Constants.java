@@ -5,7 +5,7 @@ package zuokun.mangabookcase.util;
  */
 public class Constants {
 
-    public enum Commands { ADD, EDIT, SAVE, LOAD, DELETE};
+    public enum Commands { ADD, UPDATE, SAVE, LOAD, DELETE};
 
     // Strings
     public static final String EMPTY_STRING = "";
@@ -25,11 +25,17 @@ public class Constants {
 
     // Integers
     public static final int MANGA_ATTRIBUTES = 4;
+    public static final int INT_TRUE = 1;
+    public static final int INT_FALSE = 0;
+
 
     // public static final int
     // Floats
 
     // Booleans
+    public static final boolean BOOL_TRUE = true;
+    public static final boolean BOOL_FALSE = false;
+
 
     // Others
 

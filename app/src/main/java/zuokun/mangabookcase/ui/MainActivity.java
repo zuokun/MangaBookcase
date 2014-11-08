@@ -5,15 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
-import android.database.Cursor;
 
 import java.io.IOException;
 
@@ -27,60 +24,58 @@ import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 public class MainActivity extends Activity {
 
     SharedPreferences pref;
-    static Logic logic = new Logic();
+    static Logic logic;
     MangaExpandableListAdapter mangaListAdapter;
     ExpandableListView mangaListView;
-    //SQLiteDatabase db;
 
-    boolean test = false;
+    boolean firstStart = true;
+
+    boolean reset = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (test) {
-            logic.deleteFile(getApplicationContext());
-        }
+        if (reset) {
 
-        logic.setContext(this);
-        loadPreference(getBaseContext());
-
-        //db = openOrCreateDatabase("MangaDB", Context.MODE_PRIVATE, null);
-        //db.execSQL("CREATE TABLE IF NOT EXISTS student(mangano VARCHAR,title VARCHAR,lastbook VARCHAR);");
-
-        if (logic.firstStart) {
-
-            Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
-            logic.prepareFirstTimeUse();
-            logic.prepareListData();
+            this.deleteDatabase("MangaDB");
 
         } else {
-            Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
 
-            try {
-                logic.parseCommand(Constants.Commands.LOAD, null, getApplicationContext());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (logic.listManga == null || logic.listManga.isEmpty()) {
-                Toast.makeText(this, "No Manga", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, logic.listManga.size(), Toast.LENGTH_SHORT).show();
-            }
+            preloadContent();
+            setView();
         }
 
-        logic.prepareListData();
+    }
 
-        // get the listview
-        mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
-        mangaListAdapter = new MangaExpandableListAdapter(this, logic.listDataHeader, logic.listDataChild);
-        mangaListView.setAdapter(mangaListAdapter);
+    private void preloadContent() {
+        logic = new Logic(this);
+        loadPreference();
 
-        logic.firstStart = false;
-        savePreference();
+        if (firstStart) {
+
+            Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
+            // PreferenceManager.setDefaultValues(this, R.xml.preference, false);
+            logic.prepareFirstTimeUse();
+            logic.prepareSampleData();
+            firstStart = false;
+            savePreference();
+
+        } else {
+
+            logic.prepareListData();
+            Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void setView() {
+
+            mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
+            mangaListAdapter = new MangaExpandableListAdapter(this, logic.listDataHeader, logic.listDataChild);
+            mangaListView.setAdapter(mangaListAdapter);
 
     }
 
@@ -137,11 +132,10 @@ public class MainActivity extends Activity {
         }
     }
 
-    public static boolean parse(Constants.Commands cmd, Manga m, Context context) throws IOException {
+    public static boolean parse(Constants.Commands command, Manga manga, Context context) throws IOException {
 
-        String feedback = Logic.parseCommand(cmd, m, context);
+        Logic.parseCommand(command, manga, context);
         logic.updateExpendableList();
-        //showToast(feedback);
         return true;
 
     }
@@ -149,16 +143,18 @@ public class MainActivity extends Activity {
     public void savePreference() {
 
         Editor editor = pref.edit();
-        editor.putBoolean(Constants.FIRST_START, logic.firstStart);
+        editor.putBoolean(Constants.FIRST_START, firstStart);
 
         editor.commit();
 
     }
 
-    public void loadPreference(Context baseContext) {
+    public void loadPreference() {
+
+        pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
 
         if (pref.contains(Constants.FIRST_START)) {
-            logic.firstStart = pref.getBoolean(Constants.FIRST_START, false);
+            firstStart = pref.getBoolean(Constants.FIRST_START, false);
         }
 
     }

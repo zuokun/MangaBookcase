@@ -1,43 +1,31 @@
 package zuokun.mangabookcase.logic;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
-import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import zuokun.mangabookcase.R;
-import zuokun.mangabookcase.storage.Storage;
-import zuokun.mangabookcase.ui.MainActivity;
+import zuokun.mangabookcase.storage.MangaSQLiteHelper;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
-import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 
 /**
  * Created by ZeitiaX on 11/2/2014.
  */
 public class Logic {
 
-    Context _context;
-    Storage _storage;
+    public Logic(Context context) {
+        db = new MangaSQLiteHelper(context);
+    }
 
+    static MangaSQLiteHelper db;
+    public static List<Manga> listManga = new ArrayList<Manga>();
     public static List<String> listDataHeader;
     public static HashMap<String, List<String>> listDataChild;
 
-    //Get manga from storage
-    public static List<Manga> listManga;
-
-    public boolean firstStart = true;
-
-    // SharedPreferences pref = PreferenceManager.setDefaultValues(_context, R.xml.preference, false);
-
-    static boolean debug = true;
+    public static final boolean debug = true;
 
     public static String parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
 
@@ -46,8 +34,12 @@ public class Logic {
                 add(manga, context);
                 break;
 
-            case EDIT:
-                edit(manga, context);
+            case UPDATE:
+                update(manga, context);
+                break;
+
+            case DELETE:
+                delete(manga, context);
                 break;
 
             case SAVE:
@@ -58,45 +50,37 @@ public class Logic {
                 load(context);
                 break;
 
-            case DELETE:
-                break;
+
             default:
                 return "";
         }
 
-        if (debug) {
-            return "Done";
-        } else {
-            return "";
-        }
-    }
-
-    public void deleteFile(Context context) {
-
-        _storage.deleteFile(context);
+        return "";
 
     }
 
     private static void add(Manga manga, Context context) {
-
-        listManga.add(manga);
-        Storage.writeToFile(listManga, context);
+        db.addManga(manga);
     }
-    private static void edit(Manga manga, Context context) {
+    private static void update(Manga manga, Context context) {
+        db.updateManga(manga);
+    }
 
+    public static void delete(Manga manga, Context context) {
+        db.deleteManga(manga);
     }
 
     private static void load(Context context) throws IOException {
-        listManga = Storage.loadFile(listManga, context);
+
     }
 
     private static void save(Context context) {
-        Storage.writeToFile(listManga, context);
+
     }
 
 
 
-    public void prepareListData() {
+    public void prepareSampleData() {
             listManga = new ArrayList<Manga>();
             listDataHeader = new ArrayList<String>();
             listDataChild = new HashMap<String, List<String>>();
@@ -107,10 +91,10 @@ public class Logic {
             Manga Google = new Manga("Google", 33, true);
 
             //Adding Manga
-            listManga.add(One_Piece);
-            listManga.add(Gintama);
-            listManga.add(No_Game_No_Life);
-            listManga.add(Google);
+            db.addManga(One_Piece);
+            db.addManga(Gintama);
+            db.addManga(No_Game_No_Life);
+            db.addManga(Google);
 
         updateExpendableList();
 
@@ -118,13 +102,11 @@ public class Logic {
 
     public static void updateExpendableList() {
 
-        if (!listManga.isEmpty()) {
-
-            listDataHeader.clear();
-            listDataChild.clear();
-            updateParentData();
-            updateChildData();
-        }
+        listManga = db.getAllMangas();
+        listDataHeader.clear();
+        listDataChild.clear();
+        updateParentData();
+        updateChildData();
     }
 
     private static void updateParentData() {
@@ -139,18 +121,20 @@ public class Logic {
 
             Manga m = listManga.get(i);
 
-            childData.add(Constants.LAST_BOOK + m.getEndBookNumber());
+            childData.add(Constants.LAST_BOOK + m.getLastBookNumber());
             childData.add(Constants.STATUS + m.getStatus());
 
             listDataChild.put(listDataHeader.get(i), childData);
         }
     }
 
-    public void setContext(Context context) {
-        this._context = context;
+    public void prepareFirstTimeUse() {
+
     }
 
-    public void prepareFirstTimeUse() {
+    public void prepareListData() {
+
+        listManga = db.getAllMangas();
 
     }
 }
