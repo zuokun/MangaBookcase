@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import zuokun.mangabookcase.storage.MangaSQLiteHelper;
+import zuokun.mangabookcase.app.MangaBookcaseApp;
+import zuokun.mangabookcase.util.MangaSQLiteHelper;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
 
@@ -16,11 +17,6 @@ import zuokun.mangabookcase.util.Manga;
  */
 public class Logic {
 
-    public Logic(Context context) {
-        db = new MangaSQLiteHelper(context);
-    }
-
-    public static MangaSQLiteHelper db;
     public static List<Manga> listManga = new ArrayList<Manga>();
     public static List<String> listDataHeader;
     public static HashMap<String, List<String>> listDataChild;
@@ -32,14 +28,17 @@ public class Logic {
         switch (command) {
             case ADD:
                 add(manga, context);
+                updateExpendableList();
                 break;
 
             case UPDATE:
                 update(manga, context);
+                updateExpendableList();
                 break;
 
             case DELETE:
                 delete(manga, context);
+                updateExpendableList();
                 break;
 
             default:
@@ -51,18 +50,19 @@ public class Logic {
     }
 
     private static void add(Manga manga, Context context) {
-        db.addManga(manga);
+        getSQLiteHelper().addManga(manga);
     }
     private static void update(Manga manga, Context context) {
-        db.updateManga(manga);
+        getSQLiteHelper().updateManga(manga);
     }
 
     public static void delete(Manga manga, Context context) {
-        db.deleteManga(manga);
+       getSQLiteHelper().deleteManga(manga);
     }
 
     public void prepareSampleData() {
             listManga = new ArrayList<Manga>();
+            MangaSQLiteHelper m = getSQLiteHelper();
 
             Manga One_Piece = new Manga("One Piece", 69, true);
             Manga Gintama = new Manga("Gintama", 44, true);
@@ -70,10 +70,10 @@ public class Logic {
             Manga Google = new Manga("Google", 33, true);
 
             //Adding Manga
-            db.addManga(One_Piece);
-            db.addManga(Gintama);
-            db.addManga(No_Game_No_Life);
-            db.addManga(Google);
+        m.addManga(One_Piece);
+        m.addManga(Gintama);
+        m.addManga(No_Game_No_Life);
+        m.addManga(Google);
 
         updateExpendableList();
 
@@ -81,7 +81,7 @@ public class Logic {
 
     public static void updateExpendableList() {
 
-        listManga = db.getAllMangas();
+        listManga = getSQLiteHelper().getAllMangas();
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         updateParentData();
@@ -101,7 +101,7 @@ public class Logic {
             Manga m = listManga.get(i);
 
             childData.add(Constants.LAST_BOOK + m.getLastBookNumber());
-            childData.add(Constants.STATUS + m.getStatus());
+            childData.add(Constants.STATUS + m.getStringStatus());
 
             listDataChild.put(listDataHeader.get(i), childData);
         }
@@ -112,7 +112,13 @@ public class Logic {
     }
 
     public void prepareListData() {
-        listManga = db.getAllMangas();
+        MangaSQLiteHelper m = getSQLiteHelper();
+        listManga = m.getAllMangas();
         updateExpendableList();
     }
+
+    private static MangaSQLiteHelper getSQLiteHelper() {
+        return new MangaSQLiteHelper(MangaBookcaseApp.getContext());
+    }
+
 }

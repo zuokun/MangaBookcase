@@ -1,4 +1,4 @@
-package zuokun.mangabookcase.storage;
+package zuokun.mangabookcase.util;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -79,7 +79,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         Cursor cursor =
                 db.query(TABLE_MANGA,
                         COLUMNS,
-                        " id = ?",
+                        "id=?",
                         new String[] { String.valueOf(id) },
                         null,
                         null,
@@ -99,6 +99,9 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         manga.setIntStatus(Integer.parseInt(cursor.getString(4)));
 
         Log.d("getManga(" + id + ")", manga.toString());
+
+        cursor.close();
+        db.close();
 
         return manga;
 
@@ -130,6 +133,9 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         }
 
         Log.d("getAllMangas()", mangas.toString());
+
+        cursor.close();
+        db.close();
 
         return mangas;
     }

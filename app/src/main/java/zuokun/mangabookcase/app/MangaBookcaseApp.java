@@ -2,9 +2,6 @@ package zuokun.mangabookcase.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-
-import zuokun.mangabookcase.ui.MainActivity;
 
 /**
  * Created by ZeitiaX on 11/9/2014.

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import zuokun.mangabookcase.R;
+import zuokun.mangabookcase.app.MangaBookcaseApp;
 import zuokun.mangabookcase.logic.Logic;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
@@ -35,24 +36,13 @@ public class MainActivity extends Activity {
 
     static boolean firstStart = true;
 
-    boolean reset = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        if (reset) {
-
-            this.deleteDatabase("MangaDB");
-
-        } else {
-
-            preloadContent();
-            setView();
-
-        }
+        preloadContent();
+        setView();
 
         mangaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -66,7 +56,7 @@ public class MainActivity extends Activity {
     }
 
     private void preloadContent() {
-        logic = new Logic(this);
+        logic = new Logic();
         loadOrInitiatePreference();
 
         if (firstStart) {
