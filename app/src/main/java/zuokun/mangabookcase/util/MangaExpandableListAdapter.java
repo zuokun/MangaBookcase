@@ -8,27 +8,65 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import zuokun.mangabookcase.R;
+import zuokun.mangabookcase.logic.Logic;
 
 /**
  * Created by ZeitiaX on 10/27/2014.
  */
 public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
 
+    private LayoutInflater inflater;
+
     private Context _context;
+    private List<Manga> _mangaList;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
-    public MangaExpandableListAdapter(Context context, List<String> listDataHeader,
-                                      HashMap<String, List<String>> listChildData) {
+    public MangaExpandableListAdapter(Context context, List<Manga> mangaList) {
         this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this._mangaList = mangaList;
+
+        _listDataHeader = new ArrayList<String>();
+        _listDataChild = new HashMap<String, List<String>>();
+
+        updateParentData(_mangaList, _listDataHeader);
+        updateChildData(_mangaList, _listDataHeader, _listDataChild);
+
+
     }
+
+    /***************
+     *    Update
+     **************/
+
+    public static void updateParentData(List<Manga> listManga, List<String> listDataHeader) {
+        for (int i = 0; i < listManga.size(); i++) {
+            listDataHeader.add(listManga.get(i).getTitle());
+        }
+    }
+
+    public static void updateChildData(List<Manga> listManga, List<String> listDataHeader, HashMap<String, List<String>> listDataChild) {
+        for (int i = 0; i < listManga.size(); i++) {
+            List<String> childData = new ArrayList<String>();
+
+            Manga m = listManga.get(i);
+
+            childData.add(Constants.LAST_BOOK + m.getLastBookNumber());
+            childData.add(Constants.STATUS + m.getStringStatus());
+
+            listDataChild.put(listDataHeader.get(i), childData);
+        }
+    }
+
+    /***************
+     *    Child
+     **************/
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
@@ -48,9 +86,9 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            inflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.manga_list_items, null);
+            convertView = inflater.inflate(R.layout.manga_list_items, null);
         }
 
         TextView txtListChild = (TextView) convertView
@@ -65,6 +103,10 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
                 .size();
     }
+
+    /*****************
+     *     Group     *
+     ****************/
 
     @Override
     public Object getGroup(int groupPosition) {
@@ -85,16 +127,21 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
+        String headerMangaNumber = Integer.toString(_mangaList.get(groupPosition).getLastBookNumber());
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            inflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.manga_list, null);
+            convertView = inflater.inflate(R.layout.manga_list, null);
         }
 
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);
+        TextView lblListHeaderMangaLastBook = (TextView) convertView
+                .findViewById(R.id.lblListHeaderMangaLastBook);
+
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
+        lblListHeaderMangaLastBook.setText(headerMangaNumber);
 
         return convertView;
     }

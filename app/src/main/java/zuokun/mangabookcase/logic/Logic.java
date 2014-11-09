@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import zuokun.mangabookcase.app.MangaBookcaseApp;
+import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 import zuokun.mangabookcase.util.MangaSQLiteHelper;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
@@ -80,31 +81,7 @@ public class Logic {
         }
 
     public static void updateExpendableList() {
-
         listManga = getSQLiteHelper().getAllMangas();
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-        updateParentData();
-        updateChildData();
-    }
-
-    private static void updateParentData() {
-        for (int i = 0; i < listManga.size(); i++) {
-            listDataHeader.add(listManga.get(i).getTitle());
-        }
-    }
-
-    private static void updateChildData() {
-        for (int i = 0; i < listManga.size(); i++) {
-            List<String> childData = new ArrayList<String>();
-
-            Manga m = listManga.get(i);
-
-            childData.add(Constants.LAST_BOOK + m.getLastBookNumber());
-            childData.add(Constants.STATUS + m.getStringStatus());
-
-            listDataChild.put(listDataHeader.get(i), childData);
-        }
     }
 
     public void prepareFirstTimeUse() {

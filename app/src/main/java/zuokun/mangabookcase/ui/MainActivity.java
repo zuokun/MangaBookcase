@@ -60,26 +60,21 @@ public class MainActivity extends Activity {
         loadOrInitiatePreference();
 
         if (firstStart) {
-
             Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
             logic.prepareFirstTimeUse();
             logic.prepareSampleData();
             firstStart = false;
             savePreference();
-
         } else {
             logic.prepareListData();
             Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void setView() {
-
             mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
-            mangaListAdapter = new MangaExpandableListAdapter(this, logic.listDataHeader, logic.listDataChild);
+            mangaListAdapter = new MangaExpandableListAdapter(this, logic.listManga);
             mangaListView.setAdapter(mangaListAdapter);
-
     }
 
     /********************
