@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
      *      onClicks
      ***********************/
 
-    public void addOneMangaBookBehind() {
+    public void addOneMangaBookBehind(View view) {
         Toast.makeText(getApplicationContext(), "Button Worked", Toast.LENGTH_SHORT).show();
     }
 }
