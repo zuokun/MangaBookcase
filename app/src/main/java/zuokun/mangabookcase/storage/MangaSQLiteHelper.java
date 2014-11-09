@@ -91,6 +91,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         }
 
         Manga manga = new Manga();
+
         manga.setId(Integer.parseInt(cursor.getString(0)));
         manga.setTitle(cursor.getString(1));
         manga.setFirstBookNumber(Integer.parseInt(cursor.getString(2)));

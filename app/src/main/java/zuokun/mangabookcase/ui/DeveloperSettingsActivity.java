@@ -2,6 +2,7 @@ package zuokun.mangabookcase.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import zuokun.mangabookcase.R;
+import zuokun.mangabookcase.app.MangaBookcaseApp;
+import zuokun.mangabookcase.storage.MangaSQLiteHelper;
 
 /**
  * Created by ZeitiaX on 11/8/2014.
@@ -55,11 +58,17 @@ public class DeveloperSettingsActivity extends Activity {
     }
 
     public void removeOneMangaBtn (View view) {
-        MainActivity.logic.db.deleteManga(MainActivity.logic.db.getManga(0));
 
+        try {
+            MangaSQLiteHelper db = new MangaSQLiteHelper(MangaBookcaseApp.getContext());
+            db.deleteManga(db.getManga(0));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Toast.makeText(this, "No Manga", Toast.LENGTH_SHORT).show();
+        }
         TextView mangaNumber = (TextView) findViewById(R.id.devMangaNumber);
         String numberOfManga = Integer.toString(MainActivity.logic.listManga.size());
         mangaNumber.setText(numberOfManga);
+
     }
 
 }
