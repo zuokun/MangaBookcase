@@ -14,6 +14,11 @@
 
     <string name="hint_manga_title">Manga Title</string>
 
+    <!-- Expendable List Samples -->
+    <string name="hint_sample_manga_title">Sample Manga Title</string>
+    <string name="hint_sample_manga_child_attribute">Sample: Child Attribute</string>
+    <string name="hint_sample_child_last_book">33</string>
+
     <!-- Other Strings -->
 
     <string name="empty_string">""</string>
