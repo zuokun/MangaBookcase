@@ -16,6 +16,8 @@ public class EditActivity extends Activity {
 
         setContentView(R.layout.activity_edit);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+
     }
 
 }

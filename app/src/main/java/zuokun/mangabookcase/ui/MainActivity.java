@@ -82,6 +82,10 @@ public class MainActivity extends Activity {
 
     }
 
+    /********************
+     *     Options
+     *******************/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -142,29 +146,25 @@ public class MainActivity extends Activity {
 
     }
 
-    public void savePreference() {
+    /*************************
+     *      Preferences
+     ************************/
 
+    public void savePreference() {
         Editor editor = pref.edit();
         editor.putBoolean(Constants.FIRST_START, firstStart);
-
         editor.commit();
-
     }
 
     public void loadOrInitiatePreference() {
-
         pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
-
         if (pref == null) {
             initiatePreference();
         } else {
-
             if (pref.contains(Constants.FIRST_START)) {
                 firstStart = pref.getBoolean(Constants.FIRST_START, false);
             }
-
         }
-
     }
 
     private void initiatePreference() {
@@ -172,4 +172,11 @@ public class MainActivity extends Activity {
         pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
     }
 
+    /************************
+     *      onClicks
+     ***********************/
+
+    public void addOneMangaBookBehind() {
+        Toast.makeText(getApplicationContext(), "Button Worked", Toast.LENGTH_SHORT).show();
+    }
 }

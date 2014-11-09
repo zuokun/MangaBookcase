@@ -58,7 +58,7 @@ public class DeveloperSettingsActivity extends Activity {
     }
 
     public void removeOneMangaBtn (View view) {
-
+        //Useless method TODO
         MangaSQLiteHelper m = new MangaSQLiteHelper(MangaBookcaseApp.getContext());
         Manga manga = m.getManga(1);
         m.deleteManga(manga);
