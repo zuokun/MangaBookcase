@@ -15,6 +15,8 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.logic.Logic;
@@ -32,7 +34,7 @@ public class MainActivity extends Activity {
 
     static boolean firstStart = true;
 
-    boolean reset = true;
+    boolean reset = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class MainActivity extends Activity {
 
             preloadContent();
             setView();
+
         }
 
         mangaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -63,12 +66,11 @@ public class MainActivity extends Activity {
 
     private void preloadContent() {
         logic = new Logic(this);
-        loadPreference();
+        loadOrInitiatePreference();
 
         if (firstStart) {
 
             Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
-            // PreferenceManager.setDefaultValues(this, R.xml.preference, false);
             logic.prepareFirstTimeUse();
             logic.prepareSampleData();
             firstStart = false;
@@ -158,14 +160,25 @@ public class MainActivity extends Activity {
 
     }
 
-    public void loadPreference() {
+    public void loadOrInitiatePreference() {
 
         pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
 
-        if (pref.contains(Constants.FIRST_START)) {
-            firstStart = pref.getBoolean(Constants.FIRST_START, false);
+        if (pref == null) {
+            initiatePreference();
+        } else {
+
+            if (pref.contains(Constants.FIRST_START)) {
+                firstStart = pref.getBoolean(Constants.FIRST_START, false);
+            }
+
         }
 
+    }
+
+    private void initiatePreference() {
+        PreferenceManager.setDefaultValues(MainActivity.this, R.xml.preference, false);
+        pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
     }
 
 }

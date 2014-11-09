@@ -63,8 +63,6 @@ public class Logic {
 
     public void prepareSampleData() {
             listManga = new ArrayList<Manga>();
-            listDataHeader = new ArrayList<String>();
-            listDataChild = new HashMap<String, List<String>>();
 
             Manga One_Piece = new Manga("One Piece", 69, true);
             Manga Gintama = new Manga("Gintama", 44, true);
@@ -84,8 +82,8 @@ public class Logic {
     public static void updateExpendableList() {
 
         listManga = db.getAllMangas();
-        listDataHeader.clear();
-        listDataChild.clear();
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
         updateParentData();
         updateChildData();
     }
@@ -114,7 +112,6 @@ public class Logic {
     }
 
     public void prepareListData() {
-
         listManga = db.getAllMangas();
         updateExpendableList();
     }
