@@ -3,6 +3,8 @@ MangaBookcase
 
 Android Manga Organiser App
 
+To manage and organise Mangas you own for easy viewing and facilitate buying
+
 To Do List
 ----------
 - Add a favourites boolean to Manga
