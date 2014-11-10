@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -30,8 +32,8 @@ public class MainActivity extends Activity {
 
     SharedPreferences pref;
     static Logic sLogic;
-    MangaExpandableListAdapter mangaListAdapter;
-    ExpandableListView mangaListView;
+    static MangaExpandableListAdapter mangaListAdapter;
+    static ExpandableListView mangaListView;
 
     static ArrayList<MangaBookcaseEventListener> listeners = new ArrayList<MangaBookcaseEventListener>();
 
@@ -161,7 +163,7 @@ public class MainActivity extends Activity {
 
     public boolean parse(Constants.Commands command, Manga manga, Context context) throws IOException {
 
-        Logic.parseCommand(command, manga, context);
+        sLogic.parseCommand(command, manga, context);
         updateView();
         return true;
 
@@ -193,12 +195,12 @@ public class MainActivity extends Activity {
         pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
     }
 
+    public Logic getLogic() {
+        return sLogic;
+    }
+
     /************************
      *      onClicks
      ***********************/
-
-    public void addOneMangaBookBehind(View view) {
-        Toast.makeText(getApplicationContext(), "Button Worked", Toast.LENGTH_SHORT).show();
-    }
 
 }

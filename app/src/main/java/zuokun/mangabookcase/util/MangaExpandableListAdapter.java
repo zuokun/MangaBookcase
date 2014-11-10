@@ -6,14 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import zuokun.mangabookcase.R;
+import zuokun.mangabookcase.app.MangaBookcaseApp;
 import zuokun.mangabookcase.logic.Logic;
+import zuokun.mangabookcase.ui.MainActivity;
 
 /**
  * Created by ZeitiaX on 10/27/2014.
@@ -37,7 +42,6 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
 
         updateParentData(_mangaList, _listDataHeader);
         updateChildData(_mangaList, _listDataHeader, _listDataChild);
-
 
     }
 
@@ -132,20 +136,38 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
+    public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         String headerMangaNumber = Integer.toString(_mangaList.get(groupPosition).getLastBookNumber());
+
         if (convertView == null) {
             inflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.manga_list, null);
-        }
 
+        }
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.lblListHeader);
         TextView lblListHeaderMangaLastBook = (TextView) convertView
                 .findViewById(R.id.lblListHeaderMangaLastBook);
+        ImageView addImage = (ImageView) convertView.findViewById(R.id.lblListHeaderAddBtn);
+
+        final View finalConvertView = convertView;
+        addImage.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Manga mManga = _mangaList.get(groupPosition);
+                mManga.addOneBookBehind();
+                Logic.parseCommand(Constants.Commands.UPDATE, mManga, MangaBookcaseApp.getContext());
+
+                TextView lblUpdatedListHeaderMangaLastBook = (TextView) finalConvertView
+                        .findViewById(R.id.lblListHeaderMangaLastBook);
+                String headerUpdatedMangaNumber = Integer.toString(_mangaList.get(groupPosition).getLastBookNumber());
+                lblUpdatedListHeaderMangaLastBook.setText(headerUpdatedMangaNumber);
+            }
+
+        });
 
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);

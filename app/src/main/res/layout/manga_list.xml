@@ -9,18 +9,19 @@
 
     <TextView
         android:id="@+id/lblListHeader"
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:hint="@string/hint_sample_manga_title"
         android:layout_gravity="center|start"
         android:textSize="20sp"
         android:textColor="#f9f93d"
         android:paddingLeft="10dp"
-        android:paddingTop="15dp"
+        android:paddingTop="19dp"
         android:layout_alignParentTop="true"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="0dp"
+        android:layout_weight=".7" />
 
     <TextView
         android:id="@+id/lblListHeaderMangaLastBook"
@@ -30,20 +31,21 @@
         android:layout_gravity="center|start"
         android:textSize="20sp"
         android:textColor="#f9f93d"
-        android:paddingTop="15dp"
+        android:paddingTop="19dp"
         android:paddingBottom="15dp"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="0dp"
+        android:layout_weight=".2"
+        android:paddingLeft="15dp" />
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="60dp"
         android:src="@android:drawable/ic_input_add"
         android:id="@+id/lblListHeaderAddBtn"
-        android:onClick="addOneMangaBookBehind"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.48"
+        android:layout_weight=".1"
         android:layout_marginTop="0dp" />
 
 

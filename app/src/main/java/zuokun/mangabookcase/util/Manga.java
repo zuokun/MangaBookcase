@@ -91,6 +91,10 @@ public class Manga implements Parcelable {
         return "Manga: " + _title + ", Until " + _last_book + Constants.STATUS + getStringStatus();
     }
 
+    public void addOneBookBehind() {
+        this._last_book++;
+    }
+
     /***********************
      *  Parcelable Methods
      **********************/
