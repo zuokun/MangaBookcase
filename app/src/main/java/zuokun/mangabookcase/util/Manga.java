@@ -1,19 +1,30 @@
 package zuokun.mangabookcase.util;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by ZeitiaX on 10/26/2014.
  */
-public class Manga {
+public class Manga implements Parcelable {
 
     private int _id;
     private String _title;
-    private int _first_book;
     private int _last_book;
     private boolean _status;
 
+    /********************
+     *   Constructors   *
+     *******************/
+    public Manga (int id, String title, int last_book_number, boolean status) {
+        _id = id;
+        _title = title;
+        _last_book = last_book_number;
+        _status = status;
+    }
+
     public Manga (String title, int last_book_number, boolean status) {
         _title = title;
-        _first_book = 1; //MAGIC NUMBER
         _last_book = last_book_number;
         _status = status;
     }
@@ -28,10 +39,6 @@ public class Manga {
 
     public String getTitle() {
         return _title;
-    }
-
-    public int getFirstBookNumber() {
-        return _first_book;
     }
 
     public int getLastBookNumber() {
@@ -68,10 +75,6 @@ public class Manga {
         this._last_book = last_book;
     }
 
-    public void setFirstBookNumber(int first_book) {
-        this._first_book = first_book;
-    }
-
     public void setStatus(boolean status) {
         this._status = status;
     }
@@ -85,9 +88,46 @@ public class Manga {
     }
 
     public String toString() {
-        return "Manga: " + _title + ", From " + _first_book + " to " + _last_book + Constants.STATUS + getStringStatus();
+        return "Manga: " + _title + ", Until " + _last_book + Constants.STATUS + getStringStatus();
     }
 
+    /***********************
+     *  Parcelable Methods
+     **********************/
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public Manga (Parcel in) {
+        readFromParcel(in);
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(_id);
+        parcel.writeString(_title);
+        parcel.writeInt(_last_book);
+        parcel.writeByte((byte) (_status ? 1 : 0));
+    }
+
+    private void readFromParcel (Parcel in) {
+        _id = in.readInt();
+        _title = in.readString();
+        _last_book = in.readInt();
+        _status = in.readByte() != 0;
+    }
+
+    public static final Creator CREATOR = new Creator() {
+        public Manga createFromParcel(Parcel in) {
+            return new Manga(in);
+        }
+
+        public Manga[] newArray(int size) {
+            return new Manga[size];
+        }
+    };
 }
 
 

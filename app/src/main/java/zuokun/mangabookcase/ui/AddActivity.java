@@ -5,14 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.IOException;
-import java.util.EventListener;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.util.Constants;
@@ -87,7 +82,7 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
             Manga m = new Manga(title, book, isOngoing);
 
 
-            MainActivity.logic.parseCommand(Constants.Commands.ADD, m, getApplicationContext());
+            MainActivity.sLogic.parseCommand(Constants.Commands.ADD, m, getApplicationContext());
 
             finish();
         }

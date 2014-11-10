@@ -42,6 +42,14 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     /***************
+     * Manga List
+     **************/
+
+    public List<Manga> getMangaList() {
+        return _mangaList;
+    }
+
+    /***************
      *    Update
      **************/
 

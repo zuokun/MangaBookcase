@@ -6,20 +6,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.logic.Logic;
@@ -32,7 +29,7 @@ import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 public class MainActivity extends Activity {
 
     SharedPreferences pref;
-    static Logic logic;
+    static Logic sLogic;
     MangaExpandableListAdapter mangaListAdapter;
     ExpandableListView mangaListView;
 
@@ -52,35 +49,38 @@ public class MainActivity extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
+                Manga mManga = mangaListAdapter.getMangaList().get(i);
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                intent.putExtra("parcelManga", mManga);
                 startActivity(intent);
-                */
+
                 return false;
             }
         });
 
+
+
     }
 
     private void preloadContent() {
-        logic = new Logic();
+        sLogic = new Logic();
         loadOrInitiatePreference();
 
         if (firstStart) {
             Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
-            logic.prepareFirstTimeUse();
-            logic.prepareSampleData();
+            sLogic.prepareFirstTimeUse();
+            sLogic.prepareSampleData();
             firstStart = false;
             savePreference();
         } else {
-            logic.prepareListData();
+            sLogic.prepareListData();
             Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void updateView() {
             mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
-            mangaListAdapter = new MangaExpandableListAdapter(this, logic.listManga);
+            mangaListAdapter = new MangaExpandableListAdapter(this, sLogic.listManga);
             mangaListView.setAdapter(mangaListAdapter);
     }
 

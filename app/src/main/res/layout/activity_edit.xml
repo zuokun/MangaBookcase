@@ -1,22 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.MainActivity">
 
-
-    <EditText
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:hint="@string/hint_manga_title"
-        android:layout_gravity="center_horizontal" />
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
-    <EditText
-        android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Title :"
+            android:id="@+id/editMangaTitleTextView"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editMangaTitle"
+            android:hint="Manga Title"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_gravity="center_horizontal" />
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Last Book :"
+            android:hint="e.g. 23"
+            android:id="@+id/editLastBookTextView"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editMangaFinalBook"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ongoing?"
+        android:id="@+id/editMangaStatus"
+        android:checked="false" />
 
 </LinearLayout>

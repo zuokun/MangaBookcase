@@ -23,11 +23,10 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
     private static final String TABLE_MANGA = "mangas";
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
-    private static final String KEY_FIRST = "first";
     private static final String KEY_LAST = "last";
     private static final String KEY_STATUS = "status";
 
-    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_FIRST, KEY_LAST, KEY_STATUS };
+    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_LAST, KEY_STATUS };
 
     public MangaSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +38,6 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         String CREATE_MANGA_TABLE = "CREATE TABLE mangas (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
-                "first INTEGER," +
                 "last INTEGER," +
                 "status INTEGER)";
 
@@ -60,7 +58,6 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, manga.getTitle());
-        values.put(KEY_FIRST, manga.getFirstBookNumber());
         values.put(KEY_LAST, manga.getLastBookNumber());
         values.put(KEY_STATUS, manga.getIntStatus());
 
@@ -94,9 +91,8 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         manga.setId(Integer.parseInt(cursor.getString(0)));
         manga.setTitle(cursor.getString(1));
-        manga.setFirstBookNumber(Integer.parseInt(cursor.getString(2)));
-        manga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
-        manga.setIntStatus(Integer.parseInt(cursor.getString(4)));
+        manga.setLastBookNumber(Integer.parseInt(cursor.getString(2)));
+        manga.setIntStatus(Integer.parseInt(cursor.getString(3)));
 
         Log.d("getManga(" + id + ")", manga.toString());
 
@@ -123,9 +119,8 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
                 manga = new Manga();
                 manga.setId(Integer.parseInt(cursor.getString(0)));
                 manga.setTitle(cursor.getString(1));
-                manga.setFirstBookNumber(Integer.parseInt(cursor.getString(2)));
-                manga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
-                manga.setIntStatus(Integer.parseInt(cursor.getString(4)));
+                manga.setLastBookNumber(Integer.parseInt(cursor.getString(2)));
+                manga.setIntStatus(Integer.parseInt(cursor.getString(3)));
 
                 mangas.add(manga);
 
@@ -146,7 +141,6 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, manga.getTitle());
-        values.put(KEY_FIRST, manga.getFirstBookNumber());
         values.put(KEY_LAST, manga.getLastBookNumber());
         values.put(KEY_STATUS, manga.getIntStatus());
 
