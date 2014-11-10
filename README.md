@@ -11,10 +11,11 @@ To Do List
 - Implement tabs to support All, Completed, Ongoing, Favourites
 - Implement a search-filter
 - Implement alphabetical sorting
-- Finding out what other attributes a Manga should have (Favourite, Publisher)
+- Finding out what other attributes a Manga should have (Favourite, Publisher atm)
 - Implementing of associations with pictures to put as background for manga
 - Control what data you want to view
 - Implement to include images captured as each row's background
+- Implement more settings like changing theme, font size, etc etc (think along the way)
 
 
 Features
