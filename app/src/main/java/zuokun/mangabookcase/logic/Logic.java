@@ -24,7 +24,7 @@ public class Logic {
 
     public static final boolean debug = true;
 
-    public static String parseCommand(Constants.Commands command, Manga manga, Context context) throws IOException {
+    public static String parseCommand(Constants.Commands command, Manga manga, Context context) {
 
         switch (command) {
             case ADD:
@@ -45,6 +45,8 @@ public class Logic {
             default:
                 return "";
         }
+
+
 
         return "";
 

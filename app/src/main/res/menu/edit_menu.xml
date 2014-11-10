@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AddActivity" >
+
+    <item
+        android:title="@string/action_done"
+        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_action_accept"
+        android:id="@+id/editActivityDone" />
+
+    <item
+        android:title="@string/action_delete"
+        android:showAsAction="always|withText"
+        android:icon="@drawable/ic_action_cancel"
+        android:id="@+id/editActivityDelete" />
+
+</menu>

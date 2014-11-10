@@ -7,7 +7,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_add_manga">Add Manga</string>
-
+    <string name="action_done">Done</string>
     <!-- Activities -->
 
     <!-- Add -->
@@ -25,6 +25,7 @@
     <string name="blank_space">" "</string>
 
     <string name="config_first_start">config_first_start</string>
+    <string name="action_delete">Delete</string>
 
 
 </resources>

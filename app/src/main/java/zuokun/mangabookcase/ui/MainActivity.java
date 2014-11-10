@@ -7,23 +7,25 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.EventListener;
 
 import zuokun.mangabookcase.R;
-import zuokun.mangabookcase.app.MangaBookcaseApp;
 import zuokun.mangabookcase.logic.Logic;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
+import zuokun.mangabookcase.util.MangaBookcaseEventListener;
 import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 
 
@@ -34,6 +36,8 @@ public class MainActivity extends Activity {
     MangaExpandableListAdapter mangaListAdapter;
     ExpandableListView mangaListView;
 
+    static ArrayList<MangaBookcaseEventListener> listeners = new ArrayList<MangaBookcaseEventListener>();
+
     static boolean firstStart = true;
 
     @Override
@@ -42,13 +46,16 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         preloadContent();
-        setView();
+        updateView();
 
         mangaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(intent);
+                */
                 return false;
             }
         });
@@ -71,7 +78,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void setView() {
+    public void updateView() {
             mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
             mangaListAdapter = new MangaExpandableListAdapter(this, logic.listManga);
             mangaListView.setAdapter(mangaListAdapter);
@@ -116,6 +123,10 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*******************
+     * Event Handlers
+     ******************/
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -124,6 +135,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateView();
     }
 
     @Override
@@ -131,12 +143,26 @@ public class MainActivity extends Activity {
         super.onStop();
     }
 
+    public static void addListener(MangaBookcaseEventListener listener) {
+        listeners.add(listener);
+    }
+
+    public static void removeListener(MangaBookcaseEventListener listener) {
+        listeners.remove(listener);
+    }
+
+    public static void onEvent() {
+        for (MangaBookcaseEventListener m : listeners) {
+            m.handleEvent();
+        }
+    }
+
     // Methods
 
-    public static boolean parse(Constants.Commands command, Manga manga, Context context) throws IOException {
+    public boolean parse(Constants.Commands command, Manga manga, Context context) throws IOException {
 
         Logic.parseCommand(command, manga, context);
-        logic.updateExpendableList();
+        updateView();
         return true;
 
     }
@@ -148,7 +174,7 @@ public class MainActivity extends Activity {
     public void savePreference() {
         Editor editor = pref.edit();
         editor.putBoolean(Constants.FIRST_START, firstStart);
-        editor.commit();
+        editor.apply();
     }
 
     public void loadOrInitiatePreference() {
@@ -174,4 +200,5 @@ public class MainActivity extends Activity {
     public void addOneMangaBookBehind(View view) {
         Toast.makeText(getApplicationContext(), "Button Worked", Toast.LENGTH_SHORT).show();
     }
+
 }

@@ -36,6 +36,10 @@ public class Constants {
     public static final boolean BOOL_TRUE = true;
     public static final boolean BOOL_FALSE = false;
 
+    // Errors
+
+    public static final String ERROR_FIELD_MANGA_NAME_EMPTY = "Manga Title cannot be empty!";
+    public static final String ERROR_FIELD_MANGA_LAST_BOOK = "Enter the last book you have!";
 
     // Others
 
