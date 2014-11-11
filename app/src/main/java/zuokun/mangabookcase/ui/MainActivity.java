@@ -18,7 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.logic.Logic;
@@ -26,6 +28,7 @@ import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
 import zuokun.mangabookcase.util.MangaBookcaseEventListener;
 import zuokun.mangabookcase.util.MangaExpandableListAdapter;
+import zuokun.mangabookcase.util.MangaSQLiteHelper;
 
 
 public class MainActivity extends Activity {
@@ -59,6 +62,11 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
+
+        int[] mIntArray = {1, 2, 3};
+        String mString = Arrays.toString(mIntArray);
+        Toast.makeText(this, mString, Toast.LENGTH_SHORT).show();
+        
 
     }
 

@@ -42,10 +42,10 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         String CREATE_MANGA_TABLE = "CREATE TABLE mangaTable (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
-                "publisher TEXT" +
+                "publisher TEXT," +
                 "last INTEGER," +
-                "missing TEXT" +
-                "status INTEGER" +
+                "missing TEXT," +
+                "status INTEGER," +
                 "favourite INTEGER)";
 
         db.execSQL(CREATE_MANGA_TABLE);
@@ -58,22 +58,18 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public void addManga(Manga manga) {
-        Log.d("addManga", manga.toString());
+    public void addManga(Manga mManga) {
+        Log.d("addManga", mManga.toString());
 
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, manga.getTitle());
-        values.put(KEY_PUBLISHER, manga.getPublisher());
-        values.put(KEY_LAST, manga.getLastBookNumber());
-        values.put(KEY_MISSING, manga.getStringMissingBooks());
-        values.put(KEY_STATUS, manga.getIntStatus());
-        values.put(KEY_FAVOURITE, manga.getIntFavourite());
 
-
-
-
+        values.put(KEY_TITLE, mManga.getTitle());
+        values.put(KEY_PUBLISHER, mManga.getPublisher());
+        values.put(KEY_LAST, mManga.getLastBookNumber());
+        values.put(KEY_MISSING, mManga.getStringMissingBooks());
+        values.put(KEY_STATUS, mManga.getIntStatus());
+        values.put(KEY_FAVOURITE, mManga.getIntFavourite());
 
         db.insert(TABLE_MANGA,
                 null,
@@ -100,19 +96,22 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
 
-        Manga manga = new Manga();
+        Manga mManga = new Manga();
 
-        manga.setId(Integer.parseInt(cursor.getString(0)));
-        manga.setTitle(cursor.getString(1));
-        manga.setLastBookNumber(Integer.parseInt(cursor.getString(2)));
-        manga.setIntStatus(Integer.parseInt(cursor.getString(3)));
+        mManga.setId(Integer.parseInt(cursor.getString(0)));
+        mManga.setTitle(cursor.getString(1));
+        mManga.setPublisher(cursor.getString(2));
+        mManga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
+        mManga.setStringMissingBooks(cursor.getString(4));
+        mManga.setIntStatus(Integer.parseInt(cursor.getString(5)));
+        mManga.setIntFavourite(Integer.parseInt(cursor.getString(6)));
 
-        Log.d("getManga(" + id + ")", manga.toString());
+        Log.d("getManga(" + id + ")", mManga.toString());
 
         cursor.close();
         db.close();
 
-        return manga;
+        return mManga;
 
     }
 
@@ -125,20 +124,20 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        Manga manga = null;
+        Manga mManga = null;
 
         if (cursor.moveToFirst()) {
             do {
-                manga = new Manga();
-                manga.setId(Integer.parseInt(cursor.getString(0)));
-                manga.setTitle(cursor.getString(1));
-                manga.setPublisher(cursor.getString(2));
-                manga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
-                manga.setMissingBooks(cursor.getString(4));
-                manga.setIntStatus(Integer.parseInt(cursor.getString(5)));
-                manga.setIntFavourite(Integer.parseInt(cursor.getString(6)));
+                mManga = new Manga();
+                mManga.setId(Integer.parseInt(cursor.getString(0)));
+                mManga.setTitle(cursor.getString(1));
+                mManga.setPublisher(cursor.getString(2));
+                mManga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
+                mManga.setStringMissingBooks(cursor.getString(4));
+                mManga.setIntStatus(Integer.parseInt(cursor.getString(5)));
+                mManga.setIntFavourite(Integer.parseInt(cursor.getString(6)));
 
-                mangas.add(manga);
+                mangas.add(mManga);
 
             } while (cursor.moveToNext());
         }

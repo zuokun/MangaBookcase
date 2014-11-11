@@ -81,7 +81,7 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
         } else {
 
             int book = Integer.parseInt(bookString);
-            Manga mManga = new Manga(title, publisher, book, new int[] {}, isOngoing, isFavourite);
+            Manga mManga = new Manga(title, publisher, book, null, isOngoing, isFavourite);
 
             MainActivity.sLogic.parseCommand(Constants.Commands.ADD, mManga, getApplicationContext());
 

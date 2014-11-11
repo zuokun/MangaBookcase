@@ -86,10 +86,15 @@ public class Manga implements Parcelable {
 
     public void setMissingBooks(int[] missing_books) { this._missing_books = missing_books; }
 
-    public void setMissingBooks(String missing_books) {
-        int[] missing_books_int = {};
-        this._missing_books = missing_books_int;
+    public void setStringMissingBooks(String stringMissingBooks) {
+        int[] missing_books = transformStringToIntArray(stringMissingBooks);
+        this._missing_books = missing_books;
     }
+
+    private int[] transformStringToIntArray(String missing_books) {
+        return new int[0];
+    }
+
     /************************
      *     Other methods    *
      ***********************/
@@ -107,7 +112,8 @@ public class Manga implements Parcelable {
     }
 
     public String getStringMissingBooks() {
-        return Arrays.toString(_missing_books);
+        return "";
+        //return Arrays.toString(_missing_books);
     }
 
     public int getIntStatus() {
