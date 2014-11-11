@@ -62,27 +62,28 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
 
     public void addNewManga() {
 
-        EditText mangaTitle = (EditText) findViewById(R.id.addNewMangaTitle);
-        EditText lastBook = (EditText) findViewById(R.id.addNewMangaFinalBook);
+        EditText titleEditText = (EditText) findViewById(R.id.addMangaTitle);
+        EditText lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
+        EditText publisherEditText = (EditText) findViewById(R.id.addMangaPublisher);
+        CheckBox ongoingCheckBox = (CheckBox) findViewById(R.id.addMangaStatus);
+        CheckBox favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
 
-        String title = mangaTitle.getText().toString();
-        String books = lastBook.getText().toString();
+        String title = titleEditText.getText().toString();
+        String bookString = lastBookEditText.getText().toString();
+        String publisher = publisherEditText.getText().toString();
+        boolean isOngoing = ongoingCheckBox.isChecked();
+        boolean isFavourite = favouriteCheckBox.isChecked();
 
         if (title.matches(Constants.EMPTY_STRING)) {
             Toast.makeText(getApplicationContext(), Constants.ERROR_FIELD_MANGA_NAME_EMPTY, Toast.LENGTH_SHORT).show();
-        } else if (books.matches(Constants.EMPTY_STRING)) {
+        } else if (bookString.matches(Constants.EMPTY_STRING)) {
             Toast.makeText(getApplicationContext(), Constants.ERROR_FIELD_MANGA_LAST_BOOK, Toast.LENGTH_SHORT).show();
         } else {
 
-            int book = Integer.parseInt(books);
+            int book = Integer.parseInt(bookString);
+            Manga mManga = new Manga(title, publisher, book, new int[] {}, isOngoing, isFavourite);
 
-            CheckBox completedCheckBox = (CheckBox) findViewById(R.id.addNewMangaStatus);
-            boolean isOngoing = completedCheckBox.isChecked();
-
-            Manga m = new Manga(title, book, isOngoing);
-
-
-            MainActivity.sLogic.parseCommand(Constants.Commands.ADD, m, getApplicationContext());
+            MainActivity.sLogic.parseCommand(Constants.Commands.ADD, mManga, getApplicationContext());
 
             finish();
         }

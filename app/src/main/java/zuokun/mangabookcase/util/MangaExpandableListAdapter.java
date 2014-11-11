@@ -67,12 +67,37 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         for (int i = 0; i < listManga.size(); i++) {
             List<String> childData = new ArrayList<String>();
 
-            Manga m = listManga.get(i);
+            Manga mManga = listManga.get(i);
 
-            childData.add(Constants.LAST_BOOK + m.getLastBookNumber());
-            childData.add(Constants.STATUS + m.getStringStatus());
+            addDataToChild(childData, mManga);
 
             listDataChild.put(listDataHeader.get(i), childData);
+        }
+    }
+
+    private static void addDataToChild(List<String> childData, Manga mManga) {
+        addMissingBooksToChild(childData, mManga);
+        addPublisherToChild(childData, mManga);
+        addStatusToChild(childData, mManga);
+    }
+
+    private static void addStatusToChild(List<String> childData, Manga mManga) {
+        childData.add(Constants.STATUS + mManga.getStringStatus());
+    }
+
+    private static void addPublisherToChild(List<String> childData, Manga mManga) {
+        if (mManga.getPublisher() != Constants.EMPTY_STRING) {
+            childData.add(Constants.PUBLISHER + mManga.getPublisher());
+        }
+    }
+
+    private static void addMissingBooksToChild(List<String> childData, Manga mManga) {
+        if (mManga.getMissingBooks().length <= 0) {
+            if (mManga.getMissingBooks().length == 1) {
+                childData.add(Constants.MISSING_BOOK + mManga.getMissingBooks().toString());
+            } else {
+                childData.add(Constants.MISSING_BOOKS + mManga.getMissingBooks().toString());
+            }
         }
     }
 

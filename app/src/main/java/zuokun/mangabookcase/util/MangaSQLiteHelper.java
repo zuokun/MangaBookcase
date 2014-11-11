@@ -20,13 +20,17 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "MangaDB";
 
-    private static final String TABLE_MANGA = "mangas";
+    private static final String TABLE_MANGA = "mangaTable";
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
+    private static final String KEY_PUBLISHER = "publisher";
     private static final String KEY_LAST = "last";
+    private static final String KEY_MISSING = "missing";
     private static final String KEY_STATUS = "status";
+    private static final String KEY_FAVOURITE = "favourite";
 
-    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_LAST, KEY_STATUS };
+
+    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_PUBLISHER, KEY_LAST, KEY_MISSING, KEY_STATUS, KEY_FAVOURITE };
 
     public MangaSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,11 +39,14 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_MANGA_TABLE = "CREATE TABLE mangas (" +
+        String CREATE_MANGA_TABLE = "CREATE TABLE mangaTable (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
+                "publisher TEXT" +
                 "last INTEGER," +
-                "status INTEGER)";
+                "missing TEXT" +
+                "status INTEGER" +
+                "favourite INTEGER)";
 
         db.execSQL(CREATE_MANGA_TABLE);
 
@@ -47,7 +54,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
-        db.execSQL("DROP TABLE IF EXISTS mangas");
+        db.execSQL("DROP TABLE IF EXISTS mangaTable");
         this.onCreate(db);
     }
 
@@ -58,8 +65,14 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, manga.getTitle());
+        values.put(KEY_PUBLISHER, manga.getPublisher());
         values.put(KEY_LAST, manga.getLastBookNumber());
+        values.put(KEY_MISSING, manga.getStringMissingBooks());
         values.put(KEY_STATUS, manga.getIntStatus());
+        values.put(KEY_FAVOURITE, manga.getIntFavourite());
+
+
+
 
 
         db.insert(TABLE_MANGA,
@@ -119,8 +132,11 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
                 manga = new Manga();
                 manga.setId(Integer.parseInt(cursor.getString(0)));
                 manga.setTitle(cursor.getString(1));
-                manga.setLastBookNumber(Integer.parseInt(cursor.getString(2)));
-                manga.setIntStatus(Integer.parseInt(cursor.getString(3)));
+                manga.setPublisher(cursor.getString(2));
+                manga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
+                manga.setMissingBooks(cursor.getString(4));
+                manga.setIntStatus(Integer.parseInt(cursor.getString(5)));
+                manga.setIntFavourite(Integer.parseInt(cursor.getString(6)));
 
                 mangas.add(manga);
 
@@ -141,8 +157,11 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, manga.getTitle());
+        values.put(KEY_PUBLISHER, manga.getPublisher());
         values.put(KEY_LAST, manga.getLastBookNumber());
+        values.put(KEY_MISSING, manga.getStringMissingBooks());
         values.put(KEY_STATUS, manga.getIntStatus());
+        values.put(KEY_FAVOURITE, manga.getIntFavourite());
 
         int i = db.update(TABLE_MANGA,
                 values,

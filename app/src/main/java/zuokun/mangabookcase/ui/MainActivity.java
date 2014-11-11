@@ -60,8 +60,6 @@ public class MainActivity extends Activity {
             }
         });
 
-
-
     }
 
     private void preloadContent() {
@@ -69,20 +67,18 @@ public class MainActivity extends Activity {
         loadOrInitiatePreference();
 
         if (firstStart) {
-            Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
             sLogic.prepareFirstTimeUse();
             sLogic.prepareSampleData();
             firstStart = false;
             savePreference();
         } else {
             sLogic.prepareListData();
-            Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void updateView() {
             mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
-            mangaListAdapter = new MangaExpandableListAdapter(this, sLogic.listManga);
+            mangaListAdapter = new MangaExpandableListAdapter(this, Logic.listManga);
             mangaListView.setAdapter(mangaListAdapter);
     }
 
@@ -161,9 +157,9 @@ public class MainActivity extends Activity {
 
     // Methods
 
-    public boolean parse(Constants.Commands command, Manga manga, Context context) throws IOException {
+    public boolean parse(Constants.Commands command, Manga mManga, Context context) throws IOException {
 
-        sLogic.parseCommand(command, manga, context);
+        sLogic.parseCommand(command, mManga, context);
         updateView();
         return true;
 
@@ -193,10 +189,6 @@ public class MainActivity extends Activity {
     private void initiatePreference() {
         PreferenceManager.setDefaultValues(MainActivity.this, R.xml.preference, false);
         pref = getSharedPreferences(Constants.FILE_CONFIG, Context.MODE_PRIVATE);
-    }
-
-    public Logic getLogic() {
-        return sLogic;
     }
 
     /************************

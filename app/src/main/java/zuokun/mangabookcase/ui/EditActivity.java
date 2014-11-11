@@ -26,9 +26,11 @@ public class EditActivity extends Activity {
 
     private Manga _manga;
 
-    EditText editMangaTitle;
-    EditText editMangaFinalBook;
-    CheckBox editMangaStatus;
+    EditText titleEditText;
+    EditText lastBookEditText;
+    EditText publisherEditText;
+    CheckBox ongoingCheckBox;
+    CheckBox favouriteCheckBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,17 @@ public class EditActivity extends Activity {
         Intent i = getIntent();
         _manga = i.getExtras().getParcelable("parcelManga");
 
-        editMangaTitle = (EditText) findViewById(R.id.editMangaTitle);
-        editMangaFinalBook = (EditText) findViewById(R.id.editMangaFinalBook);
-        editMangaStatus = (CheckBox) findViewById(R.id.editMangaStatus);
+        titleEditText = (EditText) findViewById(R.id.editMangaTitle);
+        lastBookEditText = (EditText) findViewById(R.id.editMangaLastBook);
+        publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
+        ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
+        favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
 
-        editMangaTitle.setText(_manga.getTitle());
-        editMangaFinalBook.setText(Integer.toString(_manga.getLastBookNumber()));
-        editMangaStatus.setChecked(_manga.getStatus());
-
+        titleEditText.setText(_manga.getTitle());
+        lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
+        publisherEditText.setText(_manga.getPublisher());
+        ongoingCheckBox.setChecked(_manga.getStatus());
+        favouriteCheckBox.setChecked(_manga.isFavourite());
     }
 
     @Override
@@ -75,21 +80,27 @@ public class EditActivity extends Activity {
 
     private void editManga() {
 
-        String title = editMangaTitle.getText().toString();
-        String books = editMangaFinalBook.getText().toString();
+        /*
+        titleEditText = (EditText) findViewById(R.id.editMangaTitle);
+        lastBookEditText = (EditText) findViewById(R.id.editMangaLastBook);
+        publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
+        ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
+        favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
+        */
+        String title = titleEditText.getText().toString();
+        String bookString = lastBookEditText.getText().toString();
+        String publisher = publisherEditText.getText().toString();
+        boolean isOngoing = ongoingCheckBox.isChecked();
+        boolean isFavourite = favouriteCheckBox.isChecked();
 
         if (title.matches(Constants.EMPTY_STRING)) {
             Toast.makeText(getApplicationContext(), Constants.ERROR_FIELD_MANGA_NAME_EMPTY, Toast.LENGTH_SHORT).show();
-        } else if (books.matches(Constants.EMPTY_STRING)) {
+        } else if (bookString.matches(Constants.EMPTY_STRING)) {
             Toast.makeText(getApplicationContext(), Constants.ERROR_FIELD_MANGA_LAST_BOOK, Toast.LENGTH_SHORT).show();
         } else {
 
-            int book = Integer.parseInt(books);
-            int id = _manga.getId();
-            boolean isOngoing = editMangaStatus.isChecked();
-
-            Manga mManga = new Manga(id, title, book, isOngoing);
-
+            int book = Integer.parseInt(bookString);
+            Manga mManga = new Manga(title, publisher, book, new int[] {}, isOngoing, isFavourite);
 
             MainActivity.sLogic.parseCommand(Constants.Commands.UPDATE, mManga, getApplicationContext());
 

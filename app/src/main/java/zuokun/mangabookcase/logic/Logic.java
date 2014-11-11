@@ -67,12 +67,13 @@ public class Logic {
             listManga = new ArrayList<Manga>();
             MangaSQLiteHelper m = getSQLiteHelper();
 
-            Manga One_Piece = new Manga("One Piece", 69, true);
-            Manga Gintama = new Manga("Gintama", 44, true);
-            Manga No_Game_No_Life = new Manga("No Game No Life", 12, false);
-            Manga Google = new Manga("Google", 33, true);
+        // (title, last_book, publisher, status, favourite)
+            Manga One_Piece = new Manga("One Piece", "Tong Li", 69, new int[] {}, true, true);
+            Manga Gintama = new Manga("Gintama", "Tong Li", 44, new int[] {}, true, false);
+            Manga No_Game_No_Life = new Manga("No Game No Life", "Kadokawa", 12, new int[] {}, false, false);
+            Manga Google = new Manga("Google", "Nexus", 33, new int[] {}, true, false);
 
-            //Adding Manga
+        // Adding Manga
         m.addManga(One_Piece);
         m.addManga(Gintama);
         m.addManga(No_Game_No_Life);

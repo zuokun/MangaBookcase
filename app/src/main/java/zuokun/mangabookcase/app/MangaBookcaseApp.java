@@ -10,9 +10,9 @@ public class MangaBookcaseApp extends Application {
 
     private static MangaBookcaseApp instance;
 
-        public MangaBookcaseApp() {
-            instance = this;
-        }
+    public MangaBookcaseApp() {
+        instance = this;
+    }
 
     public static Context getContext() {
         return instance;
