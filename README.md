@@ -37,7 +37,7 @@ Organises Mangas you own in a Expandable List View for easy viewing
   - Publisher
   - Ongoing or Completed
 
-Add Manga
+Add
 - Press the + button on the top right to access a new Activity to add a new Manga
   - Adds a new Manga with Title, Last Book, and Status
   - Optionally, add in Publisher and Missing Books (Missing Books not implemented)
@@ -53,10 +53,10 @@ Delete
   - Delete an existing manga with confirmation
   - Delete is permanent, no undo implemented
 
-Quick Add one Book
-- Just press the + button at the right of the title
+Quick Add (Increase the last book by 1)
+- Just press the + button at the right of the title to 
   - Add the new book you just bought behind
   - Easy to update new books!
 
-Filter the List
+Filtering the List
 - Using the search bar on top, filter the Mangas you want to look for
