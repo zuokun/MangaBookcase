@@ -80,13 +80,7 @@ public class EditActivity extends Activity {
 
     private void editManga() {
 
-        /*
-        titleEditText = (EditText) findViewById(R.id.editMangaTitle);
-        lastBookEditText = (EditText) findViewById(R.id.editMangaLastBook);
-        publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
-        ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
-        favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
-        */
+        int id = _manga.getId();
         String title = titleEditText.getText().toString();
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
@@ -100,7 +94,7 @@ public class EditActivity extends Activity {
         } else {
 
             int book = Integer.parseInt(bookString);
-            Manga mManga = new Manga(title, publisher, book, new int[] {}, isOngoing, isFavourite);
+            Manga mManga = new Manga(id, title, publisher, book, _manga.getMissingBooks(), isOngoing, isFavourite);
 
             MainActivity.sLogic.parseCommand(Constants.Commands.UPDATE, mManga, getApplicationContext());
 

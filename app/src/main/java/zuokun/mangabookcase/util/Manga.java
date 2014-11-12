@@ -22,18 +22,12 @@ public class Manga implements Parcelable {
      *   Constructors   *
      *******************/
 
-    // (<id>, title, last_book, missing, publisher, status, favourite)
-    public Manga (int id, String title, String publisher, int last_book_number, int[] missing_books, boolean status, boolean favourite) {
-        _id = id;
-        _title = title;
-        _publisher = publisher;
-        _last_book = last_book_number;
-        _missing_books = missing_books;
-        _status = status;
-        _favourite = favourite;
-    }
+    // (title, last_book, missing, publisher, status, favourite)
 
     public Manga (String title, String publisher, int last_book_number, int[] missing_books, boolean status, boolean favourite) {
+
+        Arrays.sort(missing_books);
+
         _title = title;
         _publisher = publisher;
         _last_book = last_book_number;
@@ -43,6 +37,18 @@ public class Manga implements Parcelable {
     }
 
     public Manga() {
+
+    }
+
+    public Manga(int id, String title, String publisher, int last_book_number, int[] missing_books, boolean status, boolean favourite) {
+
+        _id = id;
+        _title = title;
+        _publisher = publisher;
+        _last_book = last_book_number;
+        _missing_books = missing_books;
+        _status = status;
+        _favourite = favourite;
 
     }
 
@@ -87,12 +93,12 @@ public class Manga implements Parcelable {
     public void setMissingBooks(int[] missing_books) { this._missing_books = missing_books; }
 
     public void setStringMissingBooks(String stringMissingBooks) {
-        int[] missing_books = transformStringToIntArray(stringMissingBooks);
-        this._missing_books = missing_books;
-    }
-
-    private int[] transformStringToIntArray(String missing_books) {
-        return new int[0];
+        if (stringMissingBooks.equals(Constants.EMPTY_ARRAY_STRING)) {
+            this._missing_books = new int[] {};
+        } else {
+            int[] missing_books = transformStringToIntArray(stringMissingBooks);
+            this._missing_books = missing_books;
+        }
     }
 
     /************************
@@ -109,11 +115,6 @@ public class Manga implements Parcelable {
         } else {
             return Constants.COMPLETED;
         }
-    }
-
-    public String getStringMissingBooks() {
-        return "";
-        //return Arrays.toString(_missing_books);
     }
 
     public int getIntStatus() {
@@ -148,8 +149,30 @@ public class Manga implements Parcelable {
         }
     }
 
+    // From database String to int[]
+    private int[] transformStringToIntArray(String missing_books) {
+            String[] mStrings = missing_books.replaceAll("\\[", "").replaceAll("\\]", "").split(", ");
+            int[] mIntArray = new int[mStrings.length];
+            for (int iIntegerPosition = 0; iIntegerPosition < mStrings.length; iIntegerPosition++) {
+                mIntArray[iIntegerPosition] = Integer.parseInt(mStrings[iIntegerPosition]);
+            }
+            return mIntArray;
+    }
+
+    // To use in storing in database, has brackets []
+    public String getStringMissingBooks() {
+        String mString = Arrays.toString(_missing_books);
+        return mString;
+    }
+
+    // To use in display in child, no brackets
+    public String getStringDisplayMissingBooks() {
+        String mString = Arrays.toString(_missing_books).replaceAll("\\[", "").replaceAll("\\]", "");
+        return mString;
+    }
+
     public void addOneBookBehind() {
-        this._last_book++;
+        this._last_book++ ;
     }
 
     /***********************
@@ -171,7 +194,7 @@ public class Manga implements Parcelable {
         parcel.writeString(_title);
         parcel.writeString(_publisher);
         parcel.writeInt(_last_book);
-        //parcel.writeIntArray(_missing_books);
+        parcel.writeIntArray(_missing_books);
         parcel.writeByte((byte) (_status ? 1 : 0));
         parcel.writeByte((byte) (_favourite ? 1 : 0));
     }
@@ -181,7 +204,7 @@ public class Manga implements Parcelable {
         _title = in.readString();
         _publisher = in.readString();
         _last_book = in.readInt();
-        //_missing_books = in.readIntArray();
+        _missing_books = in.createIntArray();
         _status = in.readByte() != 0;
         _favourite = in.readByte() != 0;
     }
@@ -190,7 +213,6 @@ public class Manga implements Parcelable {
         public Manga createFromParcel(Parcel in) {
             return new Manga(in);
         }
-
         public Manga[] newArray(int size) {
             return new Manga[size];
         }

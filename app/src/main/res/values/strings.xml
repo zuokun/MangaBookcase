@@ -26,6 +26,7 @@
 
     <string name="config_first_start">config_first_start</string>
     <string name="action_delete">Delete</string>
+    <string name="action_search">Search</string>
 
 
 </resources>

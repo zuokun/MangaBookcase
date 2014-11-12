@@ -6,8 +6,15 @@
 
 
     <item
+        android:title="@string/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_search"
+        android:id="@+id/mainMenuSearch" />
+
+    <item
         android:title="@string/action_add_manga"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always"
         android:icon="@android:drawable/ic_menu_add"
         android:id="@+id/mainMenuAddManga" />
 

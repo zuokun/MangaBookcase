@@ -1,26 +1,26 @@
 package zuokun.mangabookcase.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.logic.Logic;
@@ -28,10 +28,9 @@ import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
 import zuokun.mangabookcase.util.MangaBookcaseEventListener;
 import zuokun.mangabookcase.util.MangaExpandableListAdapter;
-import zuokun.mangabookcase.util.MangaSQLiteHelper;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, ActionBar.TabListener {
 
     SharedPreferences pref;
     static Logic sLogic;
@@ -41,6 +40,7 @@ public class MainActivity extends Activity {
     static ArrayList<MangaBookcaseEventListener> listeners = new ArrayList<MangaBookcaseEventListener>();
 
     static boolean firstStart = true;
+    static boolean test = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +63,12 @@ public class MainActivity extends Activity {
             }
         });
 
-        int[] mIntArray = {1, 2, 3};
-        String mString = Arrays.toString(mIntArray);
-        Toast.makeText(this, mString, Toast.LENGTH_SHORT).show();
-        
+        if (test) {
+            Manga mManga;
+            mManga = sLogic.getSQLiteHelper().getManga(1);
+            String mString = mManga.getMissingBooks().length + "";
+            Toast.makeText(this, mString, Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -75,13 +77,19 @@ public class MainActivity extends Activity {
         loadOrInitiatePreference();
 
         if (firstStart) {
-            sLogic.prepareFirstTimeUse();
-            sLogic.prepareSampleData();
-            firstStart = false;
-            savePreference();
+            prepareFirstTimeUse();
         } else {
-            sLogic.prepareListData();
+            prepareListData();
         }
+    }
+
+    private void loadSearchService(Menu menu) {
+        SearchManager mangaSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView mainSearchView = (SearchView) menu.findItem(R.id.mainMenuSearch).getActionView();
+        mainSearchView.setSearchableInfo(mangaSearchManager.getSearchableInfo(getComponentName()));
+        mainSearchView.setIconified(false);
+        mainSearchView.setOnQueryTextListener(this);
+        mainSearchView.setOnCloseListener(this);
     }
 
     public void updateView() {
@@ -97,7 +105,10 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        loadSearchService(menu);
+
         return true;
     }
 
@@ -141,6 +152,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        mangaListAdapter.filterData("");
         updateView();
     }
 
@@ -203,4 +215,58 @@ public class MainActivity extends Activity {
      *      onClicks
      ***********************/
 
+    /************************
+     *     Other Methods    *
+     ***********************/
+
+    public void prepareFirstTimeUse() {
+        prepareSampleData();
+        disableFirstStart();
+        savePreference();
+    }
+
+    private void disableFirstStart() {
+        firstStart = false;
+    }
+
+    private void prepareSampleData() {
+        sLogic.prepareSampleData();
+    }
+
+    private void prepareListData() {
+        sLogic.prepareListData();
+    }
+
+    @Override
+    public boolean onClose() {
+        mangaListAdapter.filterData("");
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        mangaListAdapter.filterData(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        mangaListAdapter.filterData(query);
+        return false;
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
 }

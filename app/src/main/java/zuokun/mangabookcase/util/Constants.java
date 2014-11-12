@@ -10,6 +10,7 @@ public class Constants {
     // Strings
     public static final String EMPTY_STRING = "";
     public static final String BLANK_SPACE = " ";
+    public static final String EMPTY_ARRAY_STRING = "[]";
 
     // Settings
 

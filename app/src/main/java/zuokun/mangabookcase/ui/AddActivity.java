@@ -2,6 +2,8 @@ package zuokun.mangabookcase.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +33,24 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
 
         setContentView(R.layout.activity_add);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        EditText lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
+        lastBookEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
@@ -81,7 +101,7 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
         } else {
 
             int book = Integer.parseInt(bookString);
-            Manga mManga = new Manga(title, publisher, book, null, isOngoing, isFavourite);
+            Manga mManga = new Manga(title, publisher, book, new int[]{}, isOngoing, isFavourite);
 
             MainActivity.sLogic.parseCommand(Constants.Commands.ADD, mManga, getApplicationContext());
 

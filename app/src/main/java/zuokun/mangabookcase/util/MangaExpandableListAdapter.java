@@ -2,6 +2,7 @@ package zuokun.mangabookcase.util;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,38 +29,43 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     private LayoutInflater inflater;
 
     private Context _context;
-    private List<Manga> _mangaList;
+    private List<Manga> _mangaList = new ArrayList<Manga>();
+    private List<Manga> _displayList = new ArrayList<Manga>();
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
     public MangaExpandableListAdapter(Context context, List<Manga> mangaList) {
         this._context = context;
-        this._mangaList = mangaList;
+        this._mangaList.addAll(mangaList);
+        this._displayList.addAll(mangaList);
 
         _listDataHeader = new ArrayList<String>();
         _listDataChild = new HashMap<String, List<String>>();
 
-        updateParentData(_mangaList, _listDataHeader);
-        updateChildData(_mangaList, _listDataHeader, _listDataChild);
+        updateData();
 
     }
 
-    /***************
+    /**
+     * ************
      * Manga List
-     **************/
+     * ************
+     */
 
     public List<Manga> getMangaList() {
         return _mangaList;
     }
 
-    /***************
-     *    Update
-     **************/
+    /**
+     * ************
+     * Update
+     * ************
+     */
 
     public static void updateParentData(List<Manga> listManga, List<String> listDataHeader) {
-        for (int i = 0; i < listManga.size(); i++) {
-            listDataHeader.add(listManga.get(i).getTitle());
+        for (Manga mManga : listManga) {
+            listDataHeader.add(mManga.getTitle());
         }
     }
 
@@ -70,7 +76,6 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
             Manga mManga = listManga.get(i);
 
             addDataToChild(childData, mManga);
-
             listDataChild.put(listDataHeader.get(i), childData);
         }
     }
@@ -86,29 +91,30 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private static void addPublisherToChild(List<String> childData, Manga mManga) {
-        if (mManga.getPublisher() != Constants.EMPTY_STRING) {
+        if (!mManga.getPublisher().equals(Constants.EMPTY_STRING)) {
             childData.add(Constants.PUBLISHER + mManga.getPublisher());
         }
     }
 
     private static void addMissingBooksToChild(List<String> childData, Manga mManga) {
-        if (mManga.getMissingBooks().length <= 0) {
-            if (mManga.getMissingBooks().length == 1) {
-                childData.add(Constants.MISSING_BOOK + mManga.getMissingBooks().toString());
-            } else {
-                childData.add(Constants.MISSING_BOOKS + mManga.getMissingBooks().toString());
-            }
+        if (mManga.getMissingBooks().length == 1) {
+            childData.add(Constants.MISSING_BOOK + mManga.getStringDisplayMissingBooks());
+        } else if (mManga.getMissingBooks().length > 1) {
+            childData.add(Constants.MISSING_BOOKS + mManga.getStringDisplayMissingBooks());
+        } else {
+            // Do Nothing;
         }
+
     }
 
-    /***************
-     *    Child
-     **************/
+    /****************
+     *    Child     *
+     ***************/
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+                .get(childPosition);
     }
 
     @Override
@@ -141,9 +147,11 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
                 .size();
     }
 
-    /*****************
-     *     Group     *
-     ****************/
+    /**
+     * **************
+     * Group     *
+     * **************
+     */
 
     @Override
     public Object getGroup(int groupPosition) {
@@ -164,7 +172,7 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
-        String headerMangaNumber = Integer.toString(_mangaList.get(groupPosition).getLastBookNumber());
+        String headerMangaNumber = Integer.toString(_displayList.get(groupPosition).getLastBookNumber());
 
         if (convertView == null) {
             inflater = (LayoutInflater) this._context
@@ -182,13 +190,13 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         addImage.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Manga mManga = _mangaList.get(groupPosition);
+                Manga mManga = _displayList.get(groupPosition);
                 mManga.addOneBookBehind();
                 Logic.parseCommand(Constants.Commands.UPDATE, mManga, MangaBookcaseApp.getContext());
 
                 TextView lblUpdatedListHeaderMangaLastBook = (TextView) finalConvertView
                         .findViewById(R.id.lblListHeaderMangaLastBook);
-                String headerUpdatedMangaNumber = Integer.toString(_mangaList.get(groupPosition).getLastBookNumber());
+                String headerUpdatedMangaNumber = Integer.toString(_displayList.get(groupPosition).getLastBookNumber());
                 lblUpdatedListHeaderMangaLastBook.setText(headerUpdatedMangaNumber);
             }
 
@@ -209,6 +217,36 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void filterData(String query){
+
+        query = query.toLowerCase();
+        Log.v("MyListAdapter", String.valueOf(_mangaList.size()));
+        _displayList.clear();
+
+        if (query.isEmpty()){
+            _displayList.addAll(_mangaList);
+        } else {
+            for (Manga mManga : _mangaList) {
+                if (mManga.getTitle().toLowerCase().contains(query)) {
+                    _displayList.add(mManga);
+                }
+            }
+        }
+
+        updateData();
+
+        Log.v("MyListAdapter", String.valueOf(_mangaList.size()));
+        notifyDataSetChanged();
+    }
+
+    private void updateData() {
+        _listDataHeader.clear();
+        _listDataChild.clear();
+
+        updateParentData(_displayList, _listDataHeader);
+        updateChildData(_displayList, _listDataHeader, _listDataChild);
     }
 
 }

@@ -7,10 +7,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
+    <SearchView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mainSearchView" />
+
     <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mangaExpListView">
+        android:id="@+id/mangaExpListView"
+        android:layout_below="@+id/mainSearchView">
 
     </ExpandableListView>
 
