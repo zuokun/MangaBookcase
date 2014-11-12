@@ -7,32 +7,47 @@ To manage and organise Mangas you own for easy viewing and facilitate buying
 
 To Do List
 ----------
-- Add a favourites boolean to Manga
-- Implement tabs to support All, Completed, Ongoing, Favourites
-- Implement a search-filter
-- Implement alphabetical sorting
-- Finding out what other attributes a Manga should have (Favourite, Publisher atm)
-- Implementing of associations with pictures to put as background for manga
+- Implement special books (e.g. One Piece Red, Blue, Yellow etc. )
+- Remove auto-focus to search bar at the beginning
 - Control what data you want to view
+- Finding out what other attributes a Manga should have
+- Implement UI to add or remove missing books using touch interface
+- Implement associations with pictures to put as background for manga
 - Implement to include images captured as each row's background
 - Implement more settings like changing theme, font size, etc etc (think along the way)
 
+Recent updates
+--------------
+- Add a favourites boolean to Manga (Done!)
+- Implement tabs to support All, Completed, Ongoing, Favourites (Done!)
+- Implement a search-filter (Done!)
+- Implement alphabetical sorting (Done!)
 
 Features
 --------
 Organises Mangas you own in a Expandable List View for easy viewing
 
-- Parent List shows Title
-- Child List shows last book and ongoing or completed
+- Parent List shows Title and Last Book
+- Child List shows
+  - Missing books (unable to edit yet)
+  - Publisher
+  - Ongoing or Completed
 
 Add Manga
-- able to add a new manga with Title, Last Book, and Status
+- Add a new Manga with Title, Last Book, and Status
+  - Optionally, add in Publisher and Missing Books (Missing Books not implemented)
 
 Edit
-- able to edit an existing manga with Title, Last Book, and Status
+- Edit an existing Manga with Title, Last Book, and Status
+  - Optionally, add or remove Publisher and Missing Books
 
 Delete
-- able to delete an existing manga with confirmation
+- Delete an existing manga with confirmation
+  - Delete is permanent, no undo implemented
 
 Quick Add one Book
-- able to add the new book you just bought behind
+- Add the new book you just bought behind
+  - Easy to update new books!
+
+Filter the List
+- Using the search bar on top, filter the Mangas you want to look for
