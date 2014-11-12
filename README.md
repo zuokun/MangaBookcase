@@ -5,6 +5,9 @@ Android Manga Organiser App
 
 To manage and organise Mangas you own for easy viewing and facilitate buying
 
+Made for Smartphones
+Tested on Nexus 5
+
 To Do List
 ----------
 - Thinking of implementing Light Novels... new Tab maybe?
@@ -35,19 +38,24 @@ Organises Mangas you own in a Expandable List View for easy viewing
   - Ongoing or Completed
 
 Add Manga
-- Add a new Manga with Title, Last Book, and Status
+- Press the + button on the top right to access a new Activity to add a new Manga
+  - Adds a new Manga with Title, Last Book, and Status
   - Optionally, add in Publisher and Missing Books (Missing Books not implemented)
 
 Edit
-- Edit an existing Manga with Title, Last Book, and Status
+- To edit a Manga, hold your finger on the title you want to edit
+  - Edit an existing Manga with Title, Last Book, and Status
   - Optionally, add or remove Publisher and Missing Books
 
 Delete
-- Delete an existing manga with confirmation
+- To delete a Manga, access the edit screen by long holding a title, then press the X 
+  at the top right of the screen
+  - Delete an existing manga with confirmation
   - Delete is permanent, no undo implemented
 
 Quick Add one Book
-- Add the new book you just bought behind
+- Just press the + button at the right of the title
+  - Add the new book you just bought behind
   - Easy to update new books!
 
 Filter the List
