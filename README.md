@@ -7,6 +7,7 @@ To manage and organise Mangas you own for easy viewing and facilitate buying
 
 To Do List
 ----------
+- Thinking of implementing Light Novels... new Tab maybe?
 - Implement special books (e.g. One Piece Red, Blue, Yellow etc. )
 - Remove auto-focus to search bar at the beginning
 - Control what data you want to view
