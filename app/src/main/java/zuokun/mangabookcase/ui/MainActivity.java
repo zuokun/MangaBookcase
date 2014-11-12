@@ -272,17 +272,15 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        sQuery = query;
-        //mangaListAdapter.filterManga(sQuery);
-        //tabsViewPager.getAdapter().notifyDataSetChanged();
+        mangaListAdapter.setQuery(query);
+        tabsViewPager.getAdapter().notifyDataSetChanged();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String query) {
-        sQuery = query;
-        //mangaListAdapter.filterManga(sQuery);
-        //tabsViewPager.getAdapter().notifyDataSetChanged();
+        mangaListAdapter.setQuery(query);
+        tabsViewPager.getAdapter().notifyDataSetChanged();
         return false;
     }
 
@@ -303,10 +301,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     public MangaExpandableListAdapter getMangaAdapterForFragment() {
         return mangaListAdapter;
-    }
-
-    public String getQuery() {
-        return sQuery;
     }
 
     public ExpandableListView getMangaListViewForFragment() {

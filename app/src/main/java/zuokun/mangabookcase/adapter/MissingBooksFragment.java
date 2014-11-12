@@ -33,7 +33,7 @@ public class MissingBooksFragment extends Fragment {
 
         _mangaListAdapter = ((MainActivity) getActivity()).getMangaAdapterForFragment();
         _mangaListView = ((MainActivity) getActivity()).getMangaListViewForFragment();
-        sQuery =((MainActivity) getActivity()).getQuery();
+        sQuery = _mangaListAdapter.getQuery();
         _listManga = _mangaListAdapter.getDisplayList();
 
         _mangaListAdapter.filterHasMissingBookManga(sQuery);

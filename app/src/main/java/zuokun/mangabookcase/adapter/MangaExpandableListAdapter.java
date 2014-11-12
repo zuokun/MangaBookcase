@@ -30,13 +30,13 @@ import zuokun.mangabookcase.util.Manga;
 public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
 
     private LayoutInflater inflater;
-
     private Context _context;
+    private String _query = "";
     private List<Manga> _mangaList = new ArrayList<Manga>();
     private List<Manga> _displayList = new ArrayList<Manga>();
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<String> _listDataHeader;
     private HashMap<String, List<String>> _listDataChild;
+
 
     public MangaExpandableListAdapter(Context context, List<Manga> mangaList) {
         this._context = context;
@@ -336,4 +336,11 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         updateChildData(_displayList, _listDataHeader, _listDataChild);
     }
 
+    public void setQuery(String _query) {
+        this._query = _query;
+    }
+
+    public String getQuery() {
+        return _query;
+    }
 }
