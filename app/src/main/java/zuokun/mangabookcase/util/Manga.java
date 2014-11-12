@@ -15,7 +15,7 @@ public class Manga implements Parcelable {
     private String _publisher;
     private int _last_book;
     private int[] _missing_books;
-    private boolean _status;
+    private boolean _ongoing;
     private boolean _favourite;
 
     /********************
@@ -23,8 +23,8 @@ public class Manga implements Parcelable {
      *******************/
 
     // (title, last_book, missing, publisher, status, favourite)
-
-    public Manga (String title, String publisher, int last_book_number, int[] missing_books, boolean status, boolean favourite) {
+    // Status: true = ongoing
+    public Manga (String title, String publisher, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
 
         Arrays.sort(missing_books);
 
@@ -32,7 +32,7 @@ public class Manga implements Parcelable {
         _publisher = publisher;
         _last_book = last_book_number;
         _missing_books = missing_books;
-        _status = status;
+        _ongoing = ongoing;
         _favourite = favourite;
     }
 
@@ -40,14 +40,14 @@ public class Manga implements Parcelable {
 
     }
 
-    public Manga(int id, String title, String publisher, int last_book_number, int[] missing_books, boolean status, boolean favourite) {
+    public Manga(int id, String title, String publisher, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
 
         _id = id;
         _title = title;
         _publisher = publisher;
         _last_book = last_book_number;
         _missing_books = missing_books;
-        _status = status;
+        _ongoing = ongoing;
         _favourite = favourite;
 
     }
@@ -66,7 +66,7 @@ public class Manga implements Parcelable {
         return _last_book;
     }
 
-    public boolean getStatus() { return _status; }
+    public boolean isOngoing() { return _ongoing; }
 
     public boolean isFavourite() { return _favourite; }
 
@@ -84,7 +84,7 @@ public class Manga implements Parcelable {
 
     public void setLastBookNumber(int last_book) { this._last_book = last_book; }
 
-    public void setStatus(boolean status) { this._status = status; }
+    public void setStatus(boolean status) { this._ongoing = status; }
 
     public void setFavourite(boolean favourite) { this._favourite = favourite; }
 
@@ -110,7 +110,7 @@ public class Manga implements Parcelable {
     }
 
     public String getStringStatus() {
-        if (_status) {
+        if (_ongoing) {
             return Constants.ONGOING;
         } else {
             return Constants.COMPLETED;
@@ -118,7 +118,7 @@ public class Manga implements Parcelable {
     }
 
     public int getIntStatus() {
-        if (_status) {
+        if (_ongoing) {
             return Constants.INT_TRUE;
         } else {
             return Constants.INT_FALSE;
@@ -135,9 +135,9 @@ public class Manga implements Parcelable {
 
     public void setIntStatus(int bool) {
         if (bool == Constants.INT_TRUE) {
-            this._status = Constants.BOOL_TRUE;
+            this._ongoing = Constants.BOOL_TRUE;
         } else {
-            this._status = Constants.BOOL_FALSE;
+            this._ongoing = Constants.BOOL_FALSE;
         }
     }
 
@@ -171,6 +171,10 @@ public class Manga implements Parcelable {
         return mString;
     }
 
+    public boolean hasMissingBooks() {
+        return _missing_books.length > 0;
+    }
+
     public void addOneBookBehind() {
         this._last_book++ ;
     }
@@ -195,7 +199,7 @@ public class Manga implements Parcelable {
         parcel.writeString(_publisher);
         parcel.writeInt(_last_book);
         parcel.writeIntArray(_missing_books);
-        parcel.writeByte((byte) (_status ? 1 : 0));
+        parcel.writeByte((byte) (_ongoing ? 1 : 0));
         parcel.writeByte((byte) (_favourite ? 1 : 0));
     }
 
@@ -205,7 +209,7 @@ public class Manga implements Parcelable {
         _publisher = in.readString();
         _last_book = in.readInt();
         _missing_books = in.createIntArray();
-        _status = in.readByte() != 0;
+        _ongoing = in.readByte() != 0;
         _favourite = in.readByte() != 0;
     }
 

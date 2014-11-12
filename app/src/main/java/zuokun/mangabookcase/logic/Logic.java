@@ -2,7 +2,6 @@ package zuokun.mangabookcase.logic;
 
 import android.content.Context;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import zuokun.mangabookcase.app.MangaBookcaseApp;
-import zuokun.mangabookcase.util.MangaExpandableListAdapter;
 import zuokun.mangabookcase.util.MangaSQLiteHelper;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
@@ -31,23 +29,22 @@ public class Logic {
         switch (command) {
             case ADD:
                 add(manga, context);
-                updateExpendableList();
+                updateLogicList();
                 break;
 
             case UPDATE:
                 update(manga, context);
-                updateExpendableList();
+                updateLogicList();
                 break;
 
             case DELETE:
                 delete(manga, context);
-                updateExpendableList();
+                updateLogicList();
                 break;
 
             default:
                 return "";
         }
-
         return "";
 
     }
@@ -80,11 +77,11 @@ public class Logic {
         m.addManga(No_Game_No_Life);
         m.addManga(Google);
 
-        updateExpendableList();
+        updateLogicList();
 
     }
 
-    public static void updateExpendableList() {
+    public static void updateLogicList() {
         listManga = getSQLiteHelper().getAllMangas();
         sortAlphabetically(listManga);
     }
@@ -102,7 +99,7 @@ public class Logic {
     public void prepareListData() {
         MangaSQLiteHelper m = getSQLiteHelper();
         listManga = m.getAllMangas();
-        updateExpendableList();
+        updateLogicList();
     }
 
     public static MangaSQLiteHelper getSQLiteHelper() {

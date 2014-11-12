@@ -11,6 +11,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
@@ -67,7 +69,11 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
 
         switch (id) {
             case R.id.addActivityDone:
-                addNewManga();
+                try {
+                    addNewManga();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
 
         return super.onOptionsItemSelected(item);
@@ -80,7 +86,7 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
         MainActivity.removeListener(this);
     }
 
-    public void addNewManga() {
+    public void addNewManga() throws IOException {
 
         EditText titleEditText = (EditText) findViewById(R.id.addMangaTitle);
         EditText lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
@@ -103,7 +109,7 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title, publisher, book, new int[]{}, isOngoing, isFavourite);
 
-            MainActivity.sLogic.parseCommand(Constants.Commands.ADD, mManga, getApplicationContext());
+            MainActivity.parse(Constants.Commands.ADD, mManga, getApplicationContext());
 
             finish();
         }

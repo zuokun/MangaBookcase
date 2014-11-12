@@ -1,7 +1,6 @@
 package zuokun.mangabookcase.ui;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,10 +10,9 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -23,11 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import zuokun.mangabookcase.R;
+import zuokun.mangabookcase.adapter.MangaTabsPagerAdapter;
+import zuokun.mangabookcase.app.MangaBookcaseApp;
 import zuokun.mangabookcase.logic.Logic;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
 import zuokun.mangabookcase.util.MangaBookcaseEventListener;
-import zuokun.mangabookcase.util.MangaExpandableListAdapter;
+import zuokun.mangabookcase.adapter.MangaExpandableListAdapter;
 
 
 public class MainActivity extends FragmentActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, ActionBar.TabListener {
@@ -41,6 +41,13 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     static boolean firstStart = true;
     static boolean test = false;
+    static String sQuery = "";
+    // Tabs
+
+    private static ViewPager tabsViewPager;
+    private MangaTabsPagerAdapter mangaTabsPagerAdapter;
+    private ActionBar tabsActionBar;
+    private static final String[] TABS = { "All Manga", "Ongoing", "Completed", "Favourites", "Missing"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,27 +55,9 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         setContentView(R.layout.activity_main);
 
         preloadContent();
-        updateView();
-
-        mangaListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Manga mManga = mangaListAdapter.getMangaList().get(i);
-                Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                intent.putExtra("parcelManga", mManga);
-                startActivity(intent);
-
-                return false;
-            }
-        });
-
-        if (test) {
-            Manga mManga;
-            mManga = sLogic.getSQLiteHelper().getManga(1);
-            String mString = mManga.getMissingBooks().length + "";
-            Toast.makeText(this, mString, Toast.LENGTH_SHORT).show();
-        }
+        createOriginalExpandableList();
+        loadTabs();
+        updateListInTabs();
 
     }
 
@@ -83,6 +72,41 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         }
     }
 
+    private void loadTabs() {
+
+        tabsViewPager = (ViewPager) findViewById(R.id.mainViewPager);
+        tabsActionBar = getActionBar();
+        tabsActionBar.setHomeButtonEnabled(false);
+        tabsActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        for (String tabs : TABS) {
+            tabsActionBar.addTab(tabsActionBar.newTab().setText(tabs).setTabListener(this));
+        }
+
+        tabsViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tabsActionBar.setSelectedNavigationItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
+    }
+
+    private void updateListInTabs() {
+        mangaTabsPagerAdapter = new MangaTabsPagerAdapter(getSupportFragmentManager());
+        tabsViewPager.setAdapter(mangaTabsPagerAdapter);
+    }
+
     private void loadSearchService(Menu menu) {
         SearchManager mangaSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView mainSearchView = (SearchView) menu.findItem(R.id.mainMenuSearch).getActionView();
@@ -92,7 +116,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         mainSearchView.setOnCloseListener(this);
     }
 
-    public void updateView() {
+    public void createOriginalExpandableList() {
             mangaListView = (ExpandableListView) findViewById(R.id.mangaExpListView);
             mangaListAdapter = new MangaExpandableListAdapter(this, Logic.listManga);
             mangaListView.setAdapter(mangaListAdapter);
@@ -152,8 +176,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     @Override
     protected void onResume() {
         super.onResume();
-        mangaListAdapter.filterData("");
-        updateView();
+        mangaListAdapter.filterManga("");
     }
 
     @Override
@@ -177,12 +200,15 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     // Methods
 
-    public boolean parse(Constants.Commands command, Manga mManga, Context context) throws IOException {
-
+    public static boolean parse(Constants.Commands command, Manga mManga, Context context) throws IOException {
         sLogic.parseCommand(command, mManga, context);
-        updateView();
+        updateExpandableList();
         return true;
+    }
 
+    private static void updateExpandableList() {
+        mangaListAdapter = new MangaExpandableListAdapter(MangaBookcaseApp.getContext(), Logic.listManga);
+        tabsViewPager.getAdapter().notifyDataSetChanged();
     }
 
     /*************************
@@ -239,25 +265,30 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     @Override
     public boolean onClose() {
-        mangaListAdapter.filterData("");
+        mangaListAdapter.filterManga("");
+        tabsViewPager.getAdapter().notifyDataSetChanged();
         return false;
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mangaListAdapter.filterData(query);
+        sQuery = query;
+        //mangaListAdapter.filterManga(sQuery);
+        //tabsViewPager.getAdapter().notifyDataSetChanged();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String query) {
-        mangaListAdapter.filterData(query);
+        sQuery = query;
+        //mangaListAdapter.filterManga(sQuery);
+        //tabsViewPager.getAdapter().notifyDataSetChanged();
         return false;
     }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
+        tabsViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -269,4 +300,17 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
     }
+
+    public MangaExpandableListAdapter getMangaAdapterForFragment() {
+        return mangaListAdapter;
+    }
+
+    public String getQuery() {
+        return sQuery;
+    }
+
+    public ExpandableListView getMangaListViewForFragment() {
+        return mangaListView;
+    }
+
 }

@@ -14,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.app.MangaBookcaseApp;
 import zuokun.mangabookcase.util.Constants;
@@ -51,7 +53,7 @@ public class EditActivity extends Activity {
         titleEditText.setText(_manga.getTitle());
         lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
         publisherEditText.setText(_manga.getPublisher());
-        ongoingCheckBox.setChecked(_manga.getStatus());
+        ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
     }
 
@@ -68,7 +70,11 @@ public class EditActivity extends Activity {
 
         switch (id) {
             case R.id.editActivityDone:
-                editManga();
+                try {
+                    editManga();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.editActivityDelete:
                 deleteManga();
@@ -78,7 +84,7 @@ public class EditActivity extends Activity {
         return super.onMenuItemSelected(featureId, item);
     }
 
-    private void editManga() {
+    private void editManga() throws IOException {
 
         int id = _manga.getId();
         String title = titleEditText.getText().toString();
@@ -96,7 +102,7 @@ public class EditActivity extends Activity {
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(id, title, publisher, book, _manga.getMissingBooks(), isOngoing, isFavourite);
 
-            MainActivity.sLogic.parseCommand(Constants.Commands.UPDATE, mManga, getApplicationContext());
+            MainActivity.parse(Constants.Commands.UPDATE, mManga, getApplicationContext());
 
             finish();
         }
@@ -119,7 +125,7 @@ public class EditActivity extends Activity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    MainActivity.sLogic.parseCommand(Constants.Commands.DELETE, _manga, MangaBookcaseApp.getContext());
+                    confirmDeleteManga();
                     finish();
                 }
             });
@@ -131,6 +137,14 @@ public class EditActivity extends Activity {
             });
 
             return builder.create();
+        }
+    }
+
+    private void confirmDeleteManga() {
+        try {
+            MainActivity.parse(Constants.Commands.DELETE, _manga, MangaBookcaseApp.getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

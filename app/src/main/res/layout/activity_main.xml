@@ -1,24 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainViewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <SearchView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mainSearchView" />
-
     <ExpandableListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/mangaExpListView"
-        android:layout_below="@+id/mainSearchView">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </ExpandableListView>
 
-
-</RelativeLayout>
+</android.support.v4.view.ViewPager>

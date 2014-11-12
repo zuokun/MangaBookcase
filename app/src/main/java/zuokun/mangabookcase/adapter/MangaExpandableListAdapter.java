@@ -1,4 +1,4 @@
-package zuokun.mangabookcase.util;
+package zuokun.mangabookcase.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.app.MangaBookcaseApp;
 import zuokun.mangabookcase.logic.Logic;
 import zuokun.mangabookcase.ui.MainActivity;
+import zuokun.mangabookcase.util.Constants;
+import zuokun.mangabookcase.util.Manga;
 
 /**
  * Created by ZeitiaX on 10/27/2014.
@@ -53,8 +56,8 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
      * ************
      */
 
-    public List<Manga> getMangaList() {
-        return _mangaList;
+    public List<Manga> getDisplayList() {
+        return _displayList;
     }
 
     /**
@@ -190,9 +193,7 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         addImage.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Manga mManga = _displayList.get(groupPosition);
-                mManga.addOneBookBehind();
-                Logic.parseCommand(Constants.Commands.UPDATE, mManga, MangaBookcaseApp.getContext());
+                addOneBookToManga(groupPosition);
 
                 TextView lblUpdatedListHeaderMangaLastBook = (TextView) finalConvertView
                         .findViewById(R.id.lblListHeaderMangaLastBook);
@@ -209,6 +210,16 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    private void addOneBookToManga(int groupPosition) {
+        Manga mManga = _displayList.get(groupPosition);
+        mManga.addOneBookBehind();
+        try {
+            MainActivity.parse(Constants.Commands.UPDATE, mManga, MangaBookcaseApp.getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean hasStableIds() {
         return false;
@@ -219,10 +230,10 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    public void filterData(String query){
+    public void filterManga(String query) {
 
         query = query.toLowerCase();
-        Log.v("MyListAdapter", String.valueOf(_mangaList.size()));
+        Log.v("MyListAdapter", String.valueOf(_displayList.size()));
         _displayList.clear();
 
         if (query.isEmpty()){
@@ -237,11 +248,87 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
 
         updateData();
 
-        Log.v("MyListAdapter", String.valueOf(_mangaList.size()));
+        Log.v("MyListAdapter", String.valueOf(_displayList.size()));
         notifyDataSetChanged();
     }
 
-    private void updateData() {
+    public void filterCompletedManga(String query) {
+
+        _displayList.clear();
+
+        if (query.isEmpty()){
+            for (Manga mManga : _mangaList) {
+                if (!mManga.isOngoing()) {
+                    _displayList.add(mManga);
+                }
+            }
+        } else {
+            for (Manga mManga : _mangaList) {
+                if (!mManga.isOngoing() && mManga.getTitle().toLowerCase().contains(query)) {
+                    _displayList.add(mManga);
+                }
+            }
+        }
+    }
+
+    public void filterOngoingManga(String query) {
+
+        _displayList.clear();
+
+        if (query.isEmpty()){
+            for (Manga mManga : _mangaList) {
+                if (mManga.isOngoing()) {
+                    _displayList.add(mManga);
+                }
+            }
+        } else {
+            for (Manga mManga : _mangaList) {
+                if (mManga.isOngoing() && mManga.getTitle().toLowerCase().contains(query)) {
+                    _displayList.add(mManga);
+                }
+            }
+        }
+    }
+
+    public void filterFavouriteManga(String query) {
+
+        _displayList.clear();
+
+        if (query.isEmpty()){
+            for (Manga mManga : _mangaList) {
+                if (mManga.isFavourite()) {
+                    _displayList.add(mManga);
+                }
+            }
+        } else {
+            for (Manga mManga : _mangaList) {
+                if (mManga.isFavourite() && mManga.getTitle().toLowerCase().contains(query)) {
+                    _displayList.add(mManga);
+                }
+            }
+        }
+    }
+
+    public void filterHasMissingBookManga(String query) {
+
+        _displayList.clear();
+
+        if (query.isEmpty()){
+            for (Manga mManga : _mangaList) {
+                if (mManga.hasMissingBooks()) {
+                    _displayList.add(mManga);
+                }
+            }
+        } else {
+            for (Manga mManga : _mangaList) {
+                if (mManga.hasMissingBooks() && mManga.getTitle().toLowerCase().contains(query)) {
+                    _displayList.add(mManga);
+                }
+            }
+        }
+    }
+
+    public void updateData() {
         _listDataHeader.clear();
         _listDataChild.clear();
 
