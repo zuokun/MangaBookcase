@@ -9,6 +9,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+    </LinearLayout>
+
     <ExpandableListView
         android:id="@+id/mangaExpListView"
         android:layout_width="match_parent"
