@@ -111,6 +111,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         SearchManager mangaSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView mainSearchView = (SearchView) menu.findItem(R.id.mainMenuSearch).getActionView();
         mainSearchView.setSearchableInfo(mangaSearchManager.getSearchableInfo(getComponentName()));
+        mainSearchView.setFocusable(false);
         mainSearchView.setIconified(false);
         mainSearchView.setOnQueryTextListener(this);
         mainSearchView.setOnCloseListener(this);
