@@ -68,6 +68,16 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
      * ************
      */
 
+    public void updateList(List<Manga> mangaList) {
+        this._mangaList.addAll(mangaList);
+        this._displayList.addAll(mangaList);
+
+        _listDataHeader = new ArrayList<String>();
+        _listDataChild = new HashMap<String, List<String>>();
+
+        updateData();
+    }
+
     public static void updateParentData(List<Manga> listManga, List<String> listDataHeader) {
         for (Manga mManga : listManga) {
             listDataHeader.add(mManga.getTitle());

@@ -16,12 +16,11 @@ import java.io.IOException;
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.util.Constants;
 import zuokun.mangabookcase.util.Manga;
-import zuokun.mangabookcase.util.MangaBookcaseEventListener;
 
 /**
  * Created by ZeitiaX on 11/2/2014.
  */
-public class AddActivity extends Activity implements MangaBookcaseEventListener {
+public class AddActivity extends Activity {
 
     public void handleEvent() {
 
@@ -30,8 +29,6 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MainActivity.addListener(this);
 
         setContentView(R.layout.activity_add);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,7 +80,6 @@ public class AddActivity extends Activity implements MangaBookcaseEventListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MainActivity.removeListener(this);
     }
 
     public void addNewManga() throws IOException {

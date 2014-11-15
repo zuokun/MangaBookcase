@@ -18,9 +18,8 @@ import zuokun.mangabookcase.util.Manga;
  */
 public class Logic {
 
-    public static List<Manga> listManga = new ArrayList<Manga>();
-    public static List<String> listDataHeader;
-    public static HashMap<String, List<String>> listDataChild;
+    public List<String> listDataHeader;
+    public HashMap<String, List<String>> listDataChild;
 
     public static final boolean debug = true;
 
@@ -29,17 +28,14 @@ public class Logic {
         switch (command) {
             case ADD:
                 add(manga, context);
-                updateLogicList();
                 break;
 
             case UPDATE:
                 update(manga, context);
-                updateLogicList();
                 break;
 
             case DELETE:
                 delete(manga, context);
-                updateLogicList();
                 break;
 
             default:
@@ -61,8 +57,7 @@ public class Logic {
         getSQLiteHelper().deleteManga(manga);
     }
 
-    public void prepareSampleData() {
-        listManga = new ArrayList<Manga>();
+    public static void prepareSampleData() {
         MangaSQLiteHelper m = getSQLiteHelper();
 
         // (title, last_book, publisher, status, favourite)
@@ -77,13 +72,6 @@ public class Logic {
         m.addManga(No_Game_No_Life);
         m.addManga(Google);
 
-        updateLogicList();
-
-    }
-
-    public static void updateLogicList() {
-        listManga = getSQLiteHelper().getAllMangas();
-        sortAlphabetically(listManga);
     }
 
     private static void sortAlphabetically(List<Manga> listManga) {
@@ -96,14 +84,14 @@ public class Logic {
 
     }
 
-    public void prepareListData() {
-        MangaSQLiteHelper m = getSQLiteHelper();
-        listManga = m.getAllMangas();
-        updateLogicList();
-    }
-
     public static MangaSQLiteHelper getSQLiteHelper() {
         return new MangaSQLiteHelper(MangaBookcaseApp.getContext());
+    }
+
+    public static List<Manga> getListManga() {
+        List<Manga> mMangaList = getSQLiteHelper().getAllMangas();
+        sortAlphabetically(mMangaList);
+        return mMangaList;
     }
 
 }

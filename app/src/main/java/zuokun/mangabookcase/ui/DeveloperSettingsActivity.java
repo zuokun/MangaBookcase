@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.app.MangaBookcaseApp;
+import zuokun.mangabookcase.logic.Logic;
 import zuokun.mangabookcase.util.MangaSQLiteHelper;
 import zuokun.mangabookcase.util.Manga;
 
@@ -32,7 +33,7 @@ public class DeveloperSettingsActivity extends Activity {
         TextView mangaNumber = (TextView) findViewById(R.id.devMangaNumber);
         Switch sfo = (Switch) findViewById(R.id.devSwitchFirstOpen);
 
-        String numberOfManga = Integer.toString(MainActivity.sLogic.listManga.size());
+        String numberOfManga = Integer.toString(Logic.getListManga().size());
         mangaNumber.setText(numberOfManga);
 
         sfo.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -64,7 +65,7 @@ public class DeveloperSettingsActivity extends Activity {
         m.deleteManga(manga);
 
         TextView mangaNumber = (TextView) findViewById(R.id.devMangaNumber);
-        String numberOfManga = Integer.toString(MainActivity.sLogic.listManga.size());
+        String numberOfManga = Integer.toString(Logic.getListManga().size());
         mangaNumber.setText(numberOfManga);
 
     }
