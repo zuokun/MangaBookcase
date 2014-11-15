@@ -172,6 +172,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
     public static boolean parse(Constants.Commands command, Manga mManga, Context context) throws IOException {
         Logic.parseCommand(command, mManga, context);
+        updateExpandableList();
         updateFragments();
         return true;
     }

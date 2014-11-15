@@ -69,6 +69,9 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
      */
 
     public void updateList(List<Manga> mangaList) {
+        this._mangaList.clear();
+        this._displayList.clear();
+
         this._mangaList.addAll(mangaList);
         this._displayList.addAll(mangaList);
 
