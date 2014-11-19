@@ -25,7 +25,7 @@ public class AllMangaFragment extends Fragment {
     List<Manga> _listManga;
     MangaExpandableListAdapter _mangaListAdapter;
     ExpandableListView _mangaListView;
-    String sQuery;
+    String query;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,10 +33,10 @@ public class AllMangaFragment extends Fragment {
 
         _mangaListAdapter = ((MainActivity) getActivity()).getMangaAdapterForFragment();
         _mangaListView = ((MainActivity) getActivity()).getMangaListViewForFragment();
-        sQuery = _mangaListAdapter.getQuery();
+        query = _mangaListAdapter.getQuery();
         _listManga = _mangaListAdapter.getDisplayList();
 
-        _mangaListAdapter.filterManga(sQuery);
+        _mangaListAdapter.filterManga(query);
 
         _mangaListView = (ExpandableListView) rootView.findViewById(R.id.mangaExpListViewAll);
         _mangaListAdapter = new MangaExpandableListAdapter(MangaBookcaseApp.getContext(), _listManga);
