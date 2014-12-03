@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -127,6 +129,8 @@ public class AddActivity extends Activity {
             @Override
             public void onClick(View v) {
                 openImageIntent();
+                Bitmap mangaBitmap = BitmapFactory.decodeFile(outputFileUri.getPath());
+                mangaImage.setImageBitmap(mangaBitmap);
             }
         });
 
