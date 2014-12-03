@@ -50,7 +50,7 @@ public class AddActivity extends Activity {
     private void openImageIntent() {
 
 // Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MyDir" + File.separator);
+        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + File.separator);
         root.mkdirs();
         final String fileName = Constants.getUniqueImageFilename();
         final File sdImageMainDirectory = new File(root, fileName);
@@ -102,7 +102,7 @@ public class AddActivity extends Activity {
                 }
 
                 Uri selectedImageUri;
-                if(isCamera) {
+                if (isCamera) {
                     selectedImageUri = outputFileUri;
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
@@ -130,7 +130,7 @@ public class AddActivity extends Activity {
             public void onClick(View v) {
                 openImageIntent();
                 Bitmap mangaBitmap = BitmapFactory.decodeFile(outputFileUri.getPath());
-                mangaImage.setImageBitmap(mangaBitmap);
+                mangaImage.setImageURI(outputFileUri);
                 Toast.makeText(AddActivity.this, outputFileUri.getPath(), Toast.LENGTH_SHORT).show();
             }
         });
