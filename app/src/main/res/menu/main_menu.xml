@@ -22,9 +22,4 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
-    <item android:id="@+id/action_dev_settings"
-        android:title="Dev Settings" />
-
-
-
 </menu>
