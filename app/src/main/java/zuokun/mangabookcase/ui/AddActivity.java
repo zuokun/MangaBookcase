@@ -72,14 +72,8 @@ public class AddActivity extends Activity {
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //outputFileUri = setImageUri();
-                //openImageIntent();
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(
-                        Intent.createChooser(intent, ""),
-                        PICK_IMAGE);
+                outputFileUri = setImageUri();
+                openImageIntent();
                 Toast.makeText(AddActivity.this, imgPath, Toast.LENGTH_SHORT).show();
             }
         });
@@ -193,6 +187,33 @@ public class AddActivity extends Activity {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE) {
+                final boolean isCamera;
+                if (data == null) {
+                    isCamera = true;
+                } else {
+                    final String action = data.getAction();
+                    if (action == null) {
+                        isCamera = false;
+                    } else {
+                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    }
+                }
+
+                Uri selectedImageUri;
+                if (isCamera) {
+                    selectedImageUri = outputFileUri;
+                    mangaImage.setImageURI(selectedImageUri);
+                } else {
+                    selectedImageUri = data == null ? null : data.getData();
+                    mangaImage.setImageURI(selectedImageUri);
+                }
+            }
+        }
+    }
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -217,7 +238,7 @@ public class AddActivity extends Activity {
             }
         }
     }
-
+*/
     public Bitmap decodeFile(String path) {
         try {
             // Decode image size
