@@ -49,17 +49,20 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupFragments(savedInstanceState);
+        preloadContent();
+        createOriginalExpandableList();
+        //updateAutoComplete();
+
+    }
+
+    private void setupFragments(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             fragment = new SlidingTabsFragment();
             transaction.replace(R.id.tabs_fragment, fragment);
             transaction.commit();
         }
-
-        preloadContent();
-        createOriginalExpandableList();
-        //updateAutoComplete();
-
     }
 
     /*

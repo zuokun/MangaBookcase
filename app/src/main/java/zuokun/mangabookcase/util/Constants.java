@@ -43,7 +43,12 @@ public class Constants {
     public static final String ERROR_FIELD_MANGA_NAME_EMPTY = "Manga Title cannot be empty!";
     public static final String ERROR_FIELD_MANGA_LAST_BOOK = "Enter the last book you have!";
 
-    // Others
+    //Request Codes
+    public static final int REQUEST_SELECT_PICTURE = 1;
 
+    // Others
+    public static String getUniqueImageFilename() {
+        return System.currentTimeMillis() + ".jpg";
+    }
 
 }

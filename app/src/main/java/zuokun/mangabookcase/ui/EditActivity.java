@@ -61,6 +61,7 @@ public class EditActivity extends Activity {
         publisherEditText.setText(_manga.getPublisher());
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
+
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
             File imageFile = new File(_manga.getImagePath());
             if (imageFile.exists()) {
@@ -68,6 +69,9 @@ public class EditActivity extends Activity {
                 mangaImage.setImageBitmap(mangaBitmap);
             }
         }
+
+        // TODO Method to get image path and missing books
+
     }
 
     @Override
@@ -114,7 +118,7 @@ public class EditActivity extends Activity {
         } else {
 
             if (mangaImagePath == null) {
-                mangaImagePath = ""; // TODO Need a else to get image path
+                mangaImagePath = ""; // TODO Need an else to get image path
             }
 
             int book = Integer.parseInt(bookString);
@@ -145,7 +149,7 @@ public class EditActivity extends Activity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Confirm delete");
-            builder.setMessage("Are you sure you want to delete the Manga " + _manga.getTitle() + "?");
+            builder.setMessage("Are you sure you want to delete " + _manga.getTitle() + "?");
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
