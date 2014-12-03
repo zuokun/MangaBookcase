@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -38,6 +39,12 @@ import zuokun.mangabookcase.util.Manga;
  */
 public class AddActivity extends Activity {
 
+    final private int PICK_IMAGE = 1;
+    final private int CAPTURE_IMAGE = 2;
+    private String selectedImagePath = "";
+    private String imgPath;
+
+
     EditText titleEditText;
     EditText lastBookEditText;
     EditText publisherEditText;
@@ -46,70 +53,6 @@ public class AddActivity extends Activity {
     ImageView mangaImage;
 
     private Uri outputFileUri;
-
-    private void openImageIntent() {
-
-// Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + File.separator);
-        root.mkdirs();
-        final String fileName = Constants.getUniqueImageFilename();
-        final File sdImageMainDirectory = new File(root, fileName);
-        outputFileUri = Uri.fromFile(sdImageMainDirectory);
-
-        // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
-        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        final PackageManager packageManager = getPackageManager();
-        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for(ResolveInfo res : listCam) {
-            final String packageName = res.activityInfo.packageName;
-            final Intent intent = new Intent(captureIntent);
-            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            cameraIntents.add(intent);
-        }
-
-        // Filesystem.
-        final Intent galleryIntent = new Intent();
-        galleryIntent.setType("image/*");
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
-        // Chooser of filesystem options.
-        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
-
-        // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
-
-        startActivityForResult(chooserIntent, Constants.REQUEST_SELECT_PICTURE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == Constants.REQUEST_SELECT_PICTURE) {
-                final boolean isCamera;
-                if (data == null) {
-                    isCamera = true;
-                } else {
-                    final String action = data.getAction();
-                    if (action == null) {
-                        isCamera = false;
-                    } else {
-                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    }
-                }
-
-                Uri selectedImageUri;
-                if (isCamera) {
-                    selectedImageUri = outputFileUri;
-                } else {
-                    selectedImageUri = data == null ? null : data.getData();
-                }
-            }
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,9 +72,6 @@ public class AddActivity extends Activity {
             @Override
             public void onClick(View v) {
                 openImageIntent();
-                Bitmap mangaBitmap = BitmapFactory.decodeFile(outputFileUri.getPath());
-                mangaImage.setImageURI(outputFileUri);
-                Toast.makeText(AddActivity.this, outputFileUri.getPath(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -201,6 +141,109 @@ public class AddActivity extends Activity {
             finish();
         }
 
+    }
+
+    /*****************
+     * Setting Image *
+     ****************/
+
+    private void openImageIntent() {
+
+    // Determine Uri of camera image to save.
+        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + File.separator);
+        root.mkdirs();
+        final String fileName = Constants.getUniqueImageFilename();
+        final File sdImageMainDirectory = new File(root, fileName);
+        imgPath = root.getAbsolutePath();
+        outputFileUri = Uri.fromFile(sdImageMainDirectory);
+
+        // Camera.
+        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        final PackageManager packageManager = getPackageManager();
+        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for(ResolveInfo res : listCam) {
+            final String packageName = res.activityInfo.packageName;
+            final Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(packageName);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            cameraIntents.add(intent);
+        }
+
+        // Filesystem.
+        final Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+        // Chooser of filesystem options.
+        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+
+        // Add the camera options.
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
+
+        startActivityForResult(chooserIntent, Constants.REQUEST_SELECT_PICTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE) {
+                selectedImagePath = getAbsolutePath(data.getData());
+                mangaImage.setImageBitmap(decodeFile(selectedImagePath));
+            } else if (requestCode == CAPTURE_IMAGE) {
+                selectedImagePath = getImagePath();
+                mangaImage.setImageBitmap(decodeFile(selectedImagePath));
+            } else {
+                super.onActivityResult(requestCode, resultCode,
+                        data);
+            }
+        }
+    }
+
+    public Bitmap decodeFile(String path) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, o);
+            // The new size we want to scale to
+            final int REQUIRED_SIZE = 70;
+
+            // Find the correct scale value. It should be the power of
+            // 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE
+                    && o.outHeight / scale / 2 >= REQUIRED_SIZE)
+                scale *= 2;
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeFile(path, o2);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public String getAbsolutePath(Uri uri) {
+        String[] projection = { MediaStore.MediaColumns.DATA };
+        @SuppressWarnings("deprecation")
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
+
+    public String getImagePath() {
+        return imgPath;
     }
 
 }
