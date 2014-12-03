@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import zuokun.mangabookcase.R;
@@ -151,12 +152,9 @@ public class AddActivity extends Activity {
     private void openImageIntent() {
 
     // Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + File.separator);
-        root.mkdirs();
-        final String fileName = Constants.getUniqueImageFilename();
-        final File sdImageMainDirectory = new File(root, fileName);
-        imgPath = root.getAbsolutePath();
-        outputFileUri = Uri.fromFile(sdImageMainDirectory);
+        final File file = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + new Date().getTime() + File.separator);
+        imgPath = file.getAbsolutePath();
+        outputFileUri = Uri.fromFile(file);
 
         // Camera.
         final List<Intent> cameraIntents = new ArrayList<Intent>();
