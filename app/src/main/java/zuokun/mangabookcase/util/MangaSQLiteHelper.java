@@ -17,7 +17,7 @@ import zuokun.mangabookcase.util.Manga;
  */
 public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "MangaDB";
 
     private static final String TABLE_MANGA = "mangaTable";
