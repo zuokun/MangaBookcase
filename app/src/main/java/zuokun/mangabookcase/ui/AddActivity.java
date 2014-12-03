@@ -72,7 +72,7 @@ public class AddActivity extends Activity {
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                outputFileUri = setImageUri();
+                //outputFileUri = setImageUri();
                 //openImageIntent();
                 Intent intent = new Intent();
                 intent.setType("image/*");
