@@ -8,16 +8,18 @@ To manage and organise Mangas you own for easy viewing and facilitate buying
 Made for Smartphones
 Tested on Nexus 5
 
+Working on
+----------
+- Implement to include images captured as each row's background
+
 To Do List
 ----------
 - Thinking of implementing Light Novels... new Tab maybe?
 - Implement special books (e.g. One Piece Red, Blue, Yellow etc. )
-- Remove auto-focus to search bar at the beginning
 - Control what data you want to view
 - Finding out what other attributes a Manga should have
 - Implement UI to add or remove missing books using touch interface
 - Implement associations with pictures to put as background for manga
-- Implement to include images captured as each row's background
 - Implement more settings like changing theme, font size, etc etc (think along the way)
 
 Recent updates
@@ -26,6 +28,7 @@ Recent updates
 - Implement tabs to support All, Completed, Ongoing, Favourites (Done!)
 - Implement a search-filter (Done!)
 - Implement alphabetical sorting (Done!)
+- Remove auto-focus to search bar at the beginning (Done!)
 
 Features
 --------
