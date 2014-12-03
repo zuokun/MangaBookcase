@@ -72,7 +72,14 @@ public class AddActivity extends Activity {
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openImageIntent();
+                outputFileUri = setImageUri();
+                //openImageIntent();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(
+                        Intent.createChooser(intent, ""),
+                        PICK_IMAGE);
                 Toast.makeText(AddActivity.this, imgPath, Toast.LENGTH_SHORT).show();
             }
         });
@@ -149,12 +156,14 @@ public class AddActivity extends Activity {
      * Setting Image *
      ****************/
 
-    private void openImageIntent() {
-
-    // Determine Uri of camera image to save.
+    private Uri setImageUri() {
         final File file = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + new Date().getTime() + File.separator);
+        Uri imgUri = Uri.fromFile(file);
         imgPath = file.getAbsolutePath();
-        outputFileUri = Uri.fromFile(file);
+        return imgUri;
+    }
+
+    private void openImageIntent() {
 
         // Camera.
         final List<Intent> cameraIntents = new ArrayList<Intent>();
@@ -189,7 +198,15 @@ public class AddActivity extends Activity {
     {
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGE) {
-                selectedImagePath = getAbsolutePath(data.getData());
+                Uri _uri = data.getData();
+
+                Cursor cursor = getContentResolver().query(_uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null);
+                cursor.moveToFirst();
+
+                imgPath = cursor.getString(0);
+                cursor.close();
+
+                selectedImagePath = getImagePath();
                 mangaImage.setImageBitmap(decodeFile(selectedImagePath));
             } else if (requestCode == CAPTURE_IMAGE) {
                 selectedImagePath = getImagePath();
