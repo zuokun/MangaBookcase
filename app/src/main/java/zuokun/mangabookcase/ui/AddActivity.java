@@ -44,7 +44,7 @@ public class AddActivity extends Activity {
     final private int CAPTURE_IMAGE = 2;
     private String selectedImagePath = "";
     private String imgPath;
-
+    private Bitmap mangaImageBitmap;
 
     EditText titleEditText;
     EditText lastBookEditText;
@@ -206,8 +206,8 @@ public class AddActivity extends Activity {
                 imgPath = cursor.getString(0);
                 cursor.close();
 
-                selectedImagePath = getImagePath();
-                mangaImage.setImageBitmap(decodeFile(selectedImagePath));
+                mangaImageBitmap = BitmapFactory.decodeFile(getImagePath());
+                mangaImage.setImageBitmap(mangaImageBitmap);
             } else if (requestCode == CAPTURE_IMAGE) {
                 selectedImagePath = getImagePath();
                 mangaImage.setImageBitmap(decodeFile(selectedImagePath));
