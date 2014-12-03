@@ -6,14 +6,18 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 
 import zuokun.mangabookcase.R;
@@ -33,6 +37,7 @@ public class EditActivity extends Activity {
     EditText publisherEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
+    ImageButton mangaImage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,12 +54,20 @@ public class EditActivity extends Activity {
         publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
         ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
+        mangaImage = (ImageButton) findViewById(R.id.editMangaImageButton);
 
         titleEditText.setText(_manga.getTitle());
         lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
         publisherEditText.setText(_manga.getPublisher());
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
+        if (!_manga.getImagePath().equalsIgnoreCase("")) {
+            File imageFile = new File(_manga.getImagePath());
+            if (imageFile.exists()) {
+                Bitmap mangaBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                mangaImage.setImageBitmap(mangaBitmap);
+            }
+        }
     }
 
     @Override
@@ -90,6 +103,7 @@ public class EditActivity extends Activity {
         String title = titleEditText.getText().toString();
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
+        String mangaImagePath = null;
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
 
@@ -99,8 +113,18 @@ public class EditActivity extends Activity {
             Toast.makeText(getApplicationContext(), Constants.ERROR_FIELD_MANGA_LAST_BOOK, Toast.LENGTH_SHORT).show();
         } else {
 
+            if (mangaImagePath == null) {
+                mangaImagePath = ""; // TODO Need a else to get image path
+            }
+
             int book = Integer.parseInt(bookString);
-            Manga mManga = new Manga(id, title, publisher, book, _manga.getMissingBooks(), isOngoing, isFavourite);
+            Manga mManga = new Manga(title,
+                    publisher,
+                    mangaImagePath,
+                    book,
+                    new int[]{},
+                    isOngoing,
+                    isFavourite);
 
             MainActivity.parse(Constants.Commands.UPDATE, mManga, getApplicationContext());
 

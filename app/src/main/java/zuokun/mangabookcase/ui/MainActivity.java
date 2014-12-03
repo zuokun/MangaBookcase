@@ -1,6 +1,5 @@
 package zuokun.mangabookcase.ui;
 
-import android.app.ActionBar;
 import android.support.v4.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
@@ -64,7 +63,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
     }
 
     /*
-
+    TODO add autocomplete for manga names
     private void updateAutoComplete() {
         final AutoCompleteTextView mangaAutoComplete = (AutoCompleteTextView) findViewById(R.id.mainAutoCompleteManga);
         autoCompleteMangas = new String[mangaListAdapter.getMangaList().size()];

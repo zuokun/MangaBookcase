@@ -24,13 +24,14 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_PUBLISHER = "publisher";
+    private static final String KEY_IMAGE_PATH = "image";
     private static final String KEY_LAST = "last";
     private static final String KEY_MISSING = "missing";
     private static final String KEY_STATUS = "status";
     private static final String KEY_FAVOURITE = "favourite";
 
 
-    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_PUBLISHER, KEY_LAST, KEY_MISSING, KEY_STATUS, KEY_FAVOURITE };
+    private static final String[] COLUMNS = { KEY_ID, KEY_TITLE, KEY_PUBLISHER, KEY_IMAGE_PATH, KEY_LAST, KEY_MISSING, KEY_STATUS, KEY_FAVOURITE };
 
     public MangaSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,6 +44,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
                 "publisher TEXT," +
+                "image TEXT," +
                 "last INTEGER," +
                 "missing TEXT," +
                 "status INTEGER," +
@@ -66,6 +68,7 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
         values.put(KEY_TITLE, mManga.getTitle());
         values.put(KEY_PUBLISHER, mManga.getPublisher());
+        values.put(KEY_IMAGE_PATH, mManga.getImagePath());
         values.put(KEY_LAST, mManga.getLastBookNumber());
         values.put(KEY_MISSING, mManga.getStringMissingBooks());
         values.put(KEY_STATUS, mManga.getIntStatus());
@@ -101,10 +104,11 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         mManga.setId(Integer.parseInt(cursor.getString(0)));
         mManga.setTitle(cursor.getString(1));
         mManga.setPublisher(cursor.getString(2));
-        mManga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
-        mManga.setStringMissingBooks(cursor.getString(4));
-        mManga.setIntStatus(Integer.parseInt(cursor.getString(5)));
-        mManga.setIntFavourite(Integer.parseInt(cursor.getString(6)));
+        mManga.setImagePath(cursor.getString(3));
+        mManga.setLastBookNumber(Integer.parseInt(cursor.getString(4)));
+        mManga.setStringMissingBooks(cursor.getString(5));
+        mManga.setIntStatus(Integer.parseInt(cursor.getString(6)));
+        mManga.setIntFavourite(Integer.parseInt(cursor.getString(7)));
 
         Log.d("getManga(" + id + ")", mManga.toString());
 
@@ -132,10 +136,11 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
                 mManga.setId(Integer.parseInt(cursor.getString(0)));
                 mManga.setTitle(cursor.getString(1));
                 mManga.setPublisher(cursor.getString(2));
-                mManga.setLastBookNumber(Integer.parseInt(cursor.getString(3)));
-                mManga.setStringMissingBooks(cursor.getString(4));
-                mManga.setIntStatus(Integer.parseInt(cursor.getString(5)));
-                mManga.setIntFavourite(Integer.parseInt(cursor.getString(6)));
+                mManga.setImagePath(cursor.getString(3));
+                mManga.setLastBookNumber(Integer.parseInt(cursor.getString(4)));
+                mManga.setStringMissingBooks(cursor.getString(5));
+                mManga.setIntStatus(Integer.parseInt(cursor.getString(6)));
+                mManga.setIntFavourite(Integer.parseInt(cursor.getString(7)));
 
                 mangas.add(mManga);
 
@@ -150,22 +155,23 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
         return mangas;
     }
 
-    public int updateManga(Manga manga) {
+    public int updateManga(Manga mManga) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, manga.getTitle());
-        values.put(KEY_PUBLISHER, manga.getPublisher());
-        values.put(KEY_LAST, manga.getLastBookNumber());
-        values.put(KEY_MISSING, manga.getStringMissingBooks());
-        values.put(KEY_STATUS, manga.getIntStatus());
-        values.put(KEY_FAVOURITE, manga.getIntFavourite());
+        values.put(KEY_TITLE, mManga.getTitle());
+        values.put(KEY_PUBLISHER, mManga.getPublisher());
+        values.put(KEY_IMAGE_PATH, mManga.getImagePath());
+        values.put(KEY_LAST, mManga.getLastBookNumber());
+        values.put(KEY_MISSING, mManga.getStringMissingBooks());
+        values.put(KEY_STATUS, mManga.getIntStatus());
+        values.put(KEY_FAVOURITE, mManga.getIntFavourite());
 
         int i = db.update(TABLE_MANGA,
                 values,
                 KEY_ID + " = ?",
-                new String[] { String.valueOf(manga.getId()) });
+                new String[] { String.valueOf(mManga.getId()) });
 
         db.close();
 
@@ -173,17 +179,17 @@ public class MangaSQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public void deleteManga(Manga manga) {
+    public void deleteManga(Manga mManga) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_MANGA,
                 KEY_ID + " = ?",
-                new String[] { String.valueOf(manga.getId()) });
+                new String[] { String.valueOf(mManga.getId()) });
 
         db.close();
 
-        Log.d("deleteManga", manga.toString());
+        Log.d("deleteManga", mManga.toString());
 
     }
 

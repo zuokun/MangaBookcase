@@ -5,6 +5,12 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/addMangaImageButton"
+        android:layout_gravity="center_horizontal"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"

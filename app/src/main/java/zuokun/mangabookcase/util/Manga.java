@@ -13,6 +13,7 @@ public class Manga implements Parcelable {
     private int _id;
     private String _title;
     private String _publisher;
+    private String _image_path;
     private int _last_book;
     private int[] _missing_books;
     private boolean _ongoing;
@@ -24,12 +25,13 @@ public class Manga implements Parcelable {
 
     // (title, last_book, missing, publisher, status, favourite)
     // Status: true = ongoing
-    public Manga (String title, String publisher, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
+    public Manga (String title, String publisher, String image_path, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
 
         Arrays.sort(missing_books);
 
         _title = title;
         _publisher = publisher;
+        _image_path = image_path;
         _last_book = last_book_number;
         _missing_books = missing_books;
         _ongoing = ongoing;
@@ -40,11 +42,12 @@ public class Manga implements Parcelable {
 
     }
 
-    public Manga(int id, String title, String publisher, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
+    public Manga(int id, String title, String publisher, String image_path, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
 
         _id = id;
         _title = title;
         _publisher = publisher;
+        _image_path = image_path;
         _last_book = last_book_number;
         _missing_books = missing_books;
         _ongoing = ongoing;
@@ -74,6 +77,8 @@ public class Manga implements Parcelable {
 
     public int[] getMissingBooks() { return _missing_books; }
 
+    public String getImagePath() { return _image_path; }
+
     /*************************
      *        Setters        *
      ************************/
@@ -100,6 +105,8 @@ public class Manga implements Parcelable {
             this._missing_books = missing_books;
         }
     }
+
+    public void setImagePath(String image_path) { this._image_path = image_path; }
 
     /************************
      *     Other methods    *
@@ -197,6 +204,7 @@ public class Manga implements Parcelable {
         parcel.writeInt(_id);
         parcel.writeString(_title);
         parcel.writeString(_publisher);
+        parcel.writeString(_image_path);
         parcel.writeInt(_last_book);
         parcel.writeIntArray(_missing_books);
         parcel.writeByte((byte) (_ongoing ? 1 : 0));
@@ -207,6 +215,7 @@ public class Manga implements Parcelable {
         _id = in.readInt();
         _title = in.readString();
         _publisher = in.readString();
+        _image_path = in.readString();
         _last_book = in.readInt();
         _missing_books = in.createIntArray();
         _ongoing = in.readByte() != 0;

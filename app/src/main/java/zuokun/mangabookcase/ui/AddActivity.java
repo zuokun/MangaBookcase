@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -32,24 +33,6 @@ public class AddActivity extends Activity {
 
         setContentView(R.layout.activity_add);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        EditText lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
-        lastBookEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
     }
 
@@ -89,10 +72,12 @@ public class AddActivity extends Activity {
         EditText publisherEditText = (EditText) findViewById(R.id.addMangaPublisher);
         CheckBox ongoingCheckBox = (CheckBox) findViewById(R.id.addMangaStatus);
         CheckBox favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
+        ImageButton mangaImage = (ImageButton) findViewById(R.id.addMangaImageButton);
 
         String title = titleEditText.getText().toString();
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
+        String mangaImagePath = null;
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
 
@@ -102,8 +87,18 @@ public class AddActivity extends Activity {
             Toast.makeText(getApplicationContext(), Constants.ERROR_FIELD_MANGA_LAST_BOOK, Toast.LENGTH_SHORT).show();
         } else {
 
+            if (mangaImagePath == null) {
+                mangaImagePath = ""; // TODO Need a else to get ImagePath
+            }
+
             int book = Integer.parseInt(bookString);
-            Manga mManga = new Manga(title, publisher, book, new int[]{}, isOngoing, isFavourite);
+            Manga mManga = new Manga(title,
+                                     publisher,
+                                     mangaImagePath,
+                                     book,
+                                     new int[]{},
+                                     isOngoing,
+                                     isFavourite);
 
             MainActivity.parse(Constants.Commands.ADD, mManga, getApplicationContext());
 
