@@ -59,9 +59,11 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
 
         preloadContent();
         createOriginalExpandableList();
-        updateAutoComplete();
+        //updateAutoComplete();
 
     }
+
+    /*
 
     private void updateAutoComplete() {
         final AutoCompleteTextView mangaAutoComplete = (AutoCompleteTextView) findViewById(R.id.mainAutoCompleteManga);
@@ -73,7 +75,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         ArrayAdapter<String> autocompleteAdapter = new ArrayAdapter<String>(this, R.layout.autocomplete_manga_list_item, autoCompleteMangas);
         mangaAutoComplete.setAdapter(autocompleteAdapter);
     }
-
+*/
     private void preloadContent() {
         loadOrInitiatePreference();
 
@@ -87,7 +89,7 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
         SearchView mainSearchView = (SearchView) menu.findItem(R.id.mainMenuSearch).getActionView();
         mainSearchView.setSearchableInfo(mangaSearchManager.getSearchableInfo(getComponentName()));
         mainSearchView.setFocusable(false);
-        mainSearchView.setIconified(false);
+        mainSearchView.setIconified(true);
         mainSearchView.setOnQueryTextListener(this);
         mainSearchView.setOnCloseListener(this);
     }
