@@ -8,8 +8,8 @@
 
     <ImageButton
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/editMangaImageButton"
+        android:layout_height="200dp"
+        android:id="@+id/editMangaImageView"
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout

@@ -5,10 +5,10 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <ImageButton
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/addMangaImageButton"
+        android:layout_height="200dp"
+        android:id="@+id/addMangaImageView"
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout

@@ -15,9 +15,11 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -39,7 +41,7 @@ public class AddActivity extends Activity {
     EditText publisherEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
-    ImageButton mangaImage;
+    ImageView mangaImage;
 
     private Uri outputFileUri;
 
@@ -90,7 +92,7 @@ public class AddActivity extends Activity {
                     isCamera = true;
                 } else {
                     final String action = data.getAction();
-                    if(action == null) {
+                    if (action == null) {
                         isCamera = false;
                     } else {
                         isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -119,7 +121,14 @@ public class AddActivity extends Activity {
         publisherEditText = (EditText) findViewById(R.id.addMangaPublisher);
         ongoingCheckBox = (CheckBox) findViewById(R.id.addMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
-        mangaImage = (ImageButton) findViewById(R.id.addMangaImageButton);
+        mangaImage = (ImageView) findViewById(R.id.addMangaImageView);
+
+        mangaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImageIntent();
+            }
+        });
 
         // TODO Method to get image path and missing books
     }

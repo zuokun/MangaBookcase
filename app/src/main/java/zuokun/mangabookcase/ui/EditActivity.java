@@ -54,7 +54,7 @@ public class EditActivity extends Activity {
         publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
         ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
-        mangaImage = (ImageButton) findViewById(R.id.editMangaImageButton);
+        mangaImage = (ImageButton) findViewById(R.id.editMangaImageView);
 
         titleEditText.setText(_manga.getTitle());
         lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
