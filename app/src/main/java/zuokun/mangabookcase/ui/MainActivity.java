@@ -139,11 +139,6 @@ public class MainActivity extends FragmentActivity implements SearchView.OnQuery
                 startActivity(addIntent);
                 return true;
 
-            case R.id.action_dev_settings:
-                Intent devIntent = new Intent(this, DeveloperSettingsActivity.class);
-                startActivity(devIntent);
-                return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
