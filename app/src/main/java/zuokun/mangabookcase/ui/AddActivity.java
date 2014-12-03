@@ -72,6 +72,7 @@ public class AddActivity extends Activity {
             @Override
             public void onClick(View v) {
                 openImageIntent();
+                Toast.makeText(AddActivity.this, imgPath, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -182,7 +183,7 @@ public class AddActivity extends Activity {
         // Add the camera options.
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
 
-        startActivityForResult(chooserIntent, Constants.REQUEST_SELECT_PICTURE);
+        startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
     @Override
