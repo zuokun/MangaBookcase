@@ -131,6 +131,7 @@ public class AddActivity extends Activity {
                 openImageIntent();
                 Bitmap mangaBitmap = BitmapFactory.decodeFile(outputFileUri.getPath());
                 mangaImage.setImageBitmap(mangaBitmap);
+                Toast.makeText(AddActivity.this, outputFileUri.getPath(), Toast.LENGTH_SHORT).show();
             }
         });
 
