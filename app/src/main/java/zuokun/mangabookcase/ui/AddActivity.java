@@ -66,6 +66,15 @@ public class AddActivity extends Activity {
         favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
         mangaImage = (ImageView) findViewById(R.id.addMangaImageView);
 
+        mangaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outputFileUri = setImageUri();
+                openImageIntent();
+                Toast.makeText(AddActivity.this, imgPath, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         // TODO Method to get missing books
     }
 
