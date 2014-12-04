@@ -130,7 +130,7 @@ public class AddActivity extends Activity {
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title,
                                      publisher,
-                                     outputFileUri.toString(),
+                                     imgPath,
                                      book,
                                      new int[]{},
                                      isOngoing,
