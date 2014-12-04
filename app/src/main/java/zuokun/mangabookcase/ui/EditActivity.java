@@ -77,17 +77,21 @@ public class EditActivity extends Activity {
         titleEditText.setText(_manga.getTitle());
         lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
         publisherEditText.setText(_manga.getPublisher());
+        outputFileUri = Uri.parse(_manga.getImagePath());
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
         Toast.makeText(EditActivity.this, _manga.getImagePath(), Toast.LENGTH_SHORT).show();
 
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
+            mangaImage.setImageURI(outputFileUri);
+            /*
             File imageFile = new File(_manga.getImagePath());
             if (imageFile.exists()) {
                 Bitmap mangaBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
                 mangaImage.setImageBitmap(mangaBitmap);
             }
+            */
         }
 
         mangaImage.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +157,7 @@ public class EditActivity extends Activity {
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title,
                     publisher,
-                    mangaImagePath,
+                    outputFileUri.toString(),
                     book,
                     new int[]{},
                     isOngoing,
