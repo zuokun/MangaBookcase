@@ -41,10 +41,7 @@ import zuokun.mangabookcase.util.Manga;
 public class AddActivity extends Activity {
 
     final private int PICK_IMAGE = 1;
-    final private int CAPTURE_IMAGE = 2;
-    private String selectedImagePath = "";
     private String imgPath;
-    private Bitmap mangaImageBitmap;
 
     EditText titleEditText;
     EditText lastBookEditText;
@@ -69,16 +66,7 @@ public class AddActivity extends Activity {
         favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
         mangaImage = (ImageView) findViewById(R.id.addMangaImageView);
 
-        mangaImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                outputFileUri = setImageUri();
-                openImageIntent();
-                Toast.makeText(AddActivity.this, imgPath, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // TODO Method to get image path and missing books
+        // TODO Method to get missing books
     }
 
     @Override
@@ -115,7 +103,7 @@ public class AddActivity extends Activity {
         String title = titleEditText.getText().toString();
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
-        String mangaImagePath = outputFileUri.getPath();
+        String mangaImagePath = imgPath;
         int[] missingBooks = null;
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
@@ -127,7 +115,7 @@ public class AddActivity extends Activity {
         } else {
 
             if (mangaImagePath == null) {
-                mangaImagePath = ""; // TODO Need a else to get ImagePath
+                mangaImagePath = "";
             }
 
             int book = Integer.parseInt(bookString);
@@ -206,81 +194,13 @@ public class AddActivity extends Activity {
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                     mangaImage.setImageURI(selectedImageUri);
+                    imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     mangaImage.setImageURI(selectedImageUri);
+                    imgPath = selectedImageUri.getPath();
                 }
             }
         }
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE) {
-                Uri _uri = data.getData();
-
-                Cursor cursor = getContentResolver().query(_uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null);
-                cursor.moveToFirst();
-
-                imgPath = cursor.getString(0);
-                cursor.close();
-
-                mangaImageBitmap = BitmapFactory.decodeFile(getImagePath());
-                mangaImage.setImageBitmap(mangaImageBitmap);
-            } else if (requestCode == CAPTURE_IMAGE) {
-                selectedImagePath = getImagePath();
-                mangaImage.setImageBitmap(decodeFile(selectedImagePath));
-            } else {
-                super.onActivityResult(requestCode, resultCode,
-                        data);
-            }
-        }
-    }
-*/
-    public Bitmap decodeFile(String path) {
-        try {
-            // Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, o);
-            // The new size we want to scale to
-            final int REQUIRED_SIZE = 70;
-
-            // Find the correct scale value. It should be the power of
-            // 2.
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_SIZE
-                    && o.outHeight / scale / 2 >= REQUIRED_SIZE)
-                scale *= 2;
-
-            // Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeFile(path, o2);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public String getAbsolutePath(Uri uri) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
-        @SuppressWarnings("deprecation")
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if (cursor != null) {
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else
-            return null;
-    }
-
-    public String getImagePath() {
-        return imgPath;
-    }
-
 }

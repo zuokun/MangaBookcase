@@ -4,21 +4,33 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.app.MangaBookcaseApp;
@@ -30,6 +42,9 @@ import zuokun.mangabookcase.util.Manga;
  */
 public class EditActivity extends Activity {
 
+    final private int PICK_IMAGE = 1;
+    private String imgPath;
+
     private Manga _manga;
 
     EditText titleEditText;
@@ -37,7 +52,9 @@ public class EditActivity extends Activity {
     EditText publisherEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
-    ImageButton mangaImage;
+    ImageView mangaImage;
+
+    private Uri outputFileUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +69,7 @@ public class EditActivity extends Activity {
         titleEditText = (EditText) findViewById(R.id.editMangaTitle);
         lastBookEditText = (EditText) findViewById(R.id.editMangaLastBook);
         publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
+        mangaImage = (ImageView) findViewById(R.id.editMangaImageView);
         ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
         mangaImage = (ImageButton) findViewById(R.id.editMangaImageView);
@@ -69,6 +87,15 @@ public class EditActivity extends Activity {
                 mangaImage.setImageBitmap(mangaBitmap);
             }
         }
+
+        mangaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outputFileUri = setImageUri();
+                openImageIntent();
+                Toast.makeText(EditActivity.this, imgPath, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // TODO Method to get image path and missing books
 
@@ -173,6 +200,76 @@ public class EditActivity extends Activity {
             MainActivity.parse(Constants.Commands.DELETE, _manga, MangaBookcaseApp.getContext());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /*****************
+     * Setting Image *
+     ****************/
+
+    private Uri setImageUri() {
+        final File file = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + new Date().getTime() + File.separator);
+        Uri imgUri = Uri.fromFile(file);
+        imgPath = file.getAbsolutePath();
+        return imgUri;
+    }
+
+    private void openImageIntent() {
+
+        // Camera.
+        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        final PackageManager packageManager = getPackageManager();
+        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for(ResolveInfo res : listCam) {
+            final String packageName = res.activityInfo.packageName;
+            final Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(packageName);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            cameraIntents.add(intent);
+        }
+
+        // Filesystem.
+        final Intent galleryIntent = new Intent();
+        galleryIntent.setType("image/*");
+        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+        // Chooser of filesystem options.
+        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+
+        // Add the camera options.
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE) {
+                final boolean isCamera;
+                if (data == null) {
+                    isCamera = true;
+                } else {
+                    final String action = data.getAction();
+                    if (action == null) {
+                        isCamera = false;
+                    } else {
+                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    }
+                }
+
+                Uri selectedImageUri;
+                if (isCamera) {
+                    selectedImageUri = outputFileUri;
+                    mangaImage.setImageURI(selectedImageUri);
+                    imgPath = selectedImageUri.getPath();
+                } else {
+                    selectedImageUri = data == null ? null : data.getData();
+                    mangaImage.setImageURI(selectedImageUri);
+                    imgPath = selectedImageUri.getPath();
+                }
+            }
         }
     }
 
