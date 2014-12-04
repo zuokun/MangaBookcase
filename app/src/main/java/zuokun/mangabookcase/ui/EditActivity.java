@@ -80,6 +80,8 @@ public class EditActivity extends Activity {
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
+        Toast.makeText(EditActivity.this, _manga.getImagePath(), Toast.LENGTH_SHORT).show();
+
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
             File imageFile = new File(_manga.getImagePath());
             if (imageFile.exists()) {
