@@ -152,7 +152,8 @@ public class EditActivity extends Activity {
             }
 
             int book = Integer.parseInt(bookString);
-            Manga mManga = new Manga(title,
+            Manga mManga = new Manga(id,
+                    title,
                     publisher,
                     mangaImagePath,
                     book,
