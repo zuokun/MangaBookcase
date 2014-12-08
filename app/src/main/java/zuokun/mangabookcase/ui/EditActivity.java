@@ -141,7 +141,7 @@ public class EditActivity extends Activity {
         String title = titleEditText.getText().toString();
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
-        String mangaImagePath = getPath(outputFileUri);
+        String mangaImagePath = imgPath;
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
 
@@ -274,12 +274,9 @@ public class EditActivity extends Activity {
                     imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
-                    String mUri = selectedImageUri.toString();
-                    Toast.makeText(EditActivity.this, mUri, Toast.LENGTH_SHORT).show();
-                    Uri uri = Uri.parse(mUri);
-                    mangaImage.setImageURI(uri);
+                    mangaImage.setImageURI(selectedImageUri);
                     File file = new File(selectedImageUri.getPath());
-                    imgPath = file.getAbsolutePath();
+                    imgPath = selectedImageUri.toString();
                 }
             }
         }
