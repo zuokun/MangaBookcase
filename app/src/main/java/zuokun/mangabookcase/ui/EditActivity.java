@@ -267,11 +267,11 @@ public class EditActivity extends Activity {
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.toString();
+                    imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.toString();
+                    imgPath = selectedImageUri.getPath();
                 }
             }
         }
