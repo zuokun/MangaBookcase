@@ -274,8 +274,10 @@ public class EditActivity extends Activity {
                     imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
-                    mangaImage.setImageURI(selectedImageUri);
-                    Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
+                    String mUri = selectedImageUri.toString();
+                    Toast.makeText(EditActivity.this, mUri, Toast.LENGTH_SHORT).show();
+                    Uri uri = Uri.parse(mUri);
+                    mangaImage.setImageURI(uri);
                     File file = new File(selectedImageUri.getPath());
                     imgPath = file.getAbsolutePath();
                 }
