@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,7 @@ public class AddActivity extends Activity {
 
     final private int PICK_IMAGE = 1;
     private String imgPath;
+    private String mCurrentPhotoPath;
 
     EditText titleEditText;
     EditText lastBookEditText;
@@ -202,14 +204,41 @@ public class AddActivity extends Activity {
                 Uri selectedImageUri;
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
-                    mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.getPath();
+
+                    File imageFile;
+                    try {
+                        imageFile = createImageFile();
+                    } catch (IOException ex) {
+                        imageFile = null;
+                    }
+
+                    if (imageFile != null) {
+                        mangaImage.setImageURI(selectedImageUri);
+                        imgPath = selectedImageUri.toString();
+                    }
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.getPath();
+                    imgPath = selectedImageUri.toString();
                 }
             }
         }
     }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
 }
