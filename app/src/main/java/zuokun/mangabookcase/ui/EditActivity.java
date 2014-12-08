@@ -274,7 +274,8 @@ public class EditActivity extends Activity {
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.getPath();
+                    File file = new File(selectedImageUri.getPath());
+                    imgPath = file.getAbsolutePath();
                 }
             }
         }
