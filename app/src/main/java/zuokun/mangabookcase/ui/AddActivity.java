@@ -219,7 +219,7 @@ public class AddActivity extends Activity {
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.toString();
+                    imgPath = selectedImageUri.getPath();
                 }
             }
         }
