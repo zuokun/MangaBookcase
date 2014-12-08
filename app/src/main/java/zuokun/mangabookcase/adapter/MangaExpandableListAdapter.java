@@ -114,6 +114,12 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         }
     }
 
+    private static void addImageURIToChild(List<String> childData, Manga mManga) {
+        if (!mManga.getImagePath().equals(Constants.EMPTY_STRING)) {
+            childData.add(Constants.URI + mManga.getImagePath());
+        }
+    }
+
     private static void addMissingBooksToChild(List<String> childData, Manga mManga) {
         if (mManga.getMissingBooks().length == 1) {
             childData.add(Constants.MISSING_BOOK + mManga.getStringDisplayMissingBooks());

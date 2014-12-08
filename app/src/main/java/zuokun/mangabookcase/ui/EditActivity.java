@@ -53,7 +53,7 @@ public class EditActivity extends Activity {
     EditText publisherEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
-    ImageView mangaImage;
+    ImageButton mangaImage;
 
     private Uri outputFileUri;
 
@@ -67,13 +67,29 @@ public class EditActivity extends Activity {
         Intent i = getIntent();
         _manga = i.getExtras().getParcelable("parcelManga");
 
+        setupInterface();
+
+        Toast.makeText(EditActivity.this, _manga.getImagePath(), Toast.LENGTH_SHORT).show();
+
+        mangaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                outputFileUri = setImageUri();
+                openImageIntent();
+            }
+        });
+
+        // TODO Method to get missing books
+
+    }
+
+    private void setupInterface() {
         titleEditText = (EditText) findViewById(R.id.editMangaTitle);
         lastBookEditText = (EditText) findViewById(R.id.editMangaLastBook);
         publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
-        mangaImage = (ImageView) findViewById(R.id.editMangaImageView);
+        mangaImage = (ImageButton) findViewById(R.id.editMangaImageView);
         ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
-        mangaImage = (ImageButton) findViewById(R.id.editMangaImageView);
 
         titleEditText.setText(_manga.getTitle());
         lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
@@ -82,29 +98,9 @@ public class EditActivity extends Activity {
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
-        Toast.makeText(EditActivity.this, _manga.getImagePath(), Toast.LENGTH_SHORT).show();
-
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
             mangaImage.setImageURI(outputFileUri);
-            /*
-            File imageFile = new File(_manga.getImagePath());
-            if (imageFile.exists()) {
-                Bitmap mangaBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                mangaImage.setImageBitmap(mangaBitmap);
-            }
-            */
         }
-
-        mangaImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             //   outputFileUri = setImageUri();
-                openImageIntent();
-             //   Toast.makeText(EditActivity.this, imgPath, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // TODO Method to get image path and missing books
 
     }
 
@@ -158,7 +154,7 @@ public class EditActivity extends Activity {
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title,
                     publisher,
-                    imgPath,
+                    mangaImagePath,
                     book,
                     new int[]{},
                     isOngoing,
@@ -280,15 +276,6 @@ public class EditActivity extends Activity {
                 }
             }
         }
-    }
-
-    public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
 }

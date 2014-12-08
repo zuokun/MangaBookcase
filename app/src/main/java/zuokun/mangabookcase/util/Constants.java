@@ -21,6 +21,7 @@ public class Constants {
     public static final String MISSING_BOOK = "Missing book: ";
     public static final String PUBLISHER = "Publisher: ";
     public static final String STATUS = "Status: ";
+    public static final String URI = "Uri: ";
 
     public static final String ONGOING = "Ongoing";
     public static final String COMPLETED = "Completed";
