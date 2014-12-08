@@ -71,9 +71,7 @@ public class AddActivity extends Activity {
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                outputFileUri = setImageUri();
                 openImageIntent();
-                Toast.makeText(AddActivity.this, imgPath, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -129,6 +127,8 @@ public class AddActivity extends Activity {
                 mangaImagePath = "";
             }
 
+            outputFileUri = setImageUri(title);
+
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title,
                                      publisher,
@@ -149,8 +149,8 @@ public class AddActivity extends Activity {
      * Setting Image *
      ****************/
 
-    private Uri setImageUri() {
-        final File file = new File(Environment.getExternalStorageDirectory() + File.separator + "MangaBookcase" + new Date().getTime() + File.separator);
+    private Uri setImageUri(String title) {
+        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + "Manga" + title + ".jpg");
         Uri imgUri = Uri.fromFile(file);
         imgPath = file.getAbsolutePath();
         return imgUri;
