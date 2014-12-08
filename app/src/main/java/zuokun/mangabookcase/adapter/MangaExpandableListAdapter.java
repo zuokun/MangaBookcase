@@ -102,6 +102,7 @@ public class MangaExpandableListAdapter extends BaseExpandableListAdapter {
         addMissingBooksToChild(childData, mManga);
         addPublisherToChild(childData, mManga);
         addStatusToChild(childData, mManga);
+        addImageURIToChild(childData, mManga);
     }
 
     private static void addStatusToChild(List<String> childData, Manga mManga) {
