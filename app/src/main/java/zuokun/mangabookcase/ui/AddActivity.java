@@ -71,6 +71,7 @@ public class AddActivity extends Activity {
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                outputFileUri = setImageUri();
                 openImageIntent();
             }
         });
@@ -127,7 +128,7 @@ public class AddActivity extends Activity {
                 mangaImagePath = "";
             }
 
-            outputFileUri = setImageUri(title);
+            renameImage(outputFileUri, title);
 
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title,
@@ -145,12 +146,20 @@ public class AddActivity extends Activity {
 
     }
 
+    private void renameImage(Uri outputFileUri, String title) {
+
+        File oldFile = new File(outputFileUri.getPath());
+        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + title + ".jpg");
+        oldFile.delete();
+        imgPath = file.getAbsolutePath();
+    }
+
     /*****************
      * Setting Image *
      ****************/
 
-    private Uri setImageUri(String title) {
-        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + "Manga" + title + ".jpg");
+    private Uri setImageUri() {
+        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + "Title" + ".jpg");
         Uri imgUri = Uri.fromFile(file);
         imgPath = file.getAbsolutePath();
         return imgUri;
