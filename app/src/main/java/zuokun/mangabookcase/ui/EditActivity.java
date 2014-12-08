@@ -212,7 +212,7 @@ public class EditActivity extends Activity {
      ****************/
 
     private Uri setImageUri() {
-        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + "Manga" + _manga.getTitle() + ".jpg");
+        final File file = new File(Environment.getExternalStorageDirectory() + "/MangaBookcase/" + _manga.getTitle() + ".jpg");
         Uri imgUri = Uri.fromFile(file);
         imgPath = file.getAbsolutePath();
         return imgUri;

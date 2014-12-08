@@ -149,7 +149,7 @@ public class AddActivity extends Activity {
     private void renameImage(Uri outputFileUri, String title) {
 
         File oldFile = new File(outputFileUri.getPath());
-        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + title + ".jpg");
+        final File file = new File(Environment.getExternalStorageDirectory() + "/MangaBookcase/" + title + ".jpg");
         oldFile.delete();
         imgPath = file.getAbsolutePath();
     }
