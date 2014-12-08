@@ -150,8 +150,7 @@ public class AddActivity extends Activity {
 
         File oldFile = new File(outputFileUri.getPath());
         final File file = new File(Environment.getExternalStorageDirectory() + "/MangaBookcase/" + title + ".jpg");
-        oldFile.delete();
-        imgPath = file.getAbsolutePath();
+        oldFile.renameTo(file);
     }
 
     /*****************
@@ -159,7 +158,7 @@ public class AddActivity extends Activity {
      ****************/
 
     private Uri setImageUri() {
-        final File file = new File(Environment.getExternalStorageDirectory() + File.pathSeparator + "MangaBookcase" + File.pathSeparator + "Title" + ".jpg");
+        final File file = new File(Environment.getExternalStorageDirectory() + "/MangaBookcase/temp.jpg");
         Uri imgUri = Uri.fromFile(file);
         imgPath = file.getAbsolutePath();
         return imgUri;
@@ -213,18 +212,8 @@ public class AddActivity extends Activity {
                 Uri selectedImageUri;
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
-
-                    File imageFile;
-                    try {
-                        imageFile = createImageFile();
-                    } catch (IOException ex) {
-                        imageFile = null;
-                    }
-
-                    if (imageFile != null) {
-                        mangaImage.setImageURI(selectedImageUri);
-                        imgPath = selectedImageUri.toString();
-                    }
+                    mangaImage.setImageURI(selectedImageUri);
+                    imgPath = selectedImageUri.toString();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     mangaImage.setImageURI(selectedImageUri);
@@ -233,21 +222,4 @@ public class AddActivity extends Activity {
             }
         }
     }
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
-    }
-
 }
