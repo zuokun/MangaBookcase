@@ -98,9 +98,9 @@ public class EditActivity extends Activity {
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                outputFileUri = setImageUri();
+             //   outputFileUri = setImageUri();
                 openImageIntent();
-                Toast.makeText(EditActivity.this, imgPath, Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(EditActivity.this, imgPath, Toast.LENGTH_SHORT).show();
             }
         });
 
