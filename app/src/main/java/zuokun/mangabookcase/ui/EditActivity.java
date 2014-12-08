@@ -270,6 +270,7 @@ public class EditActivity extends Activity {
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                     mangaImage.setImageURI(selectedImageUri);
+                    Toast.makeText(EditActivity.this, "Camera!", Toast.LENGTH_SHORT).show();
                     imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
