@@ -64,7 +64,7 @@ public class AddActivity extends Activity {
         publisherEditText = (EditText) findViewById(R.id.addMangaPublisher);
         ongoingCheckBox = (CheckBox) findViewById(R.id.addMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
-        mangaImage = (ImageView) findViewById(R.id.addMangaImageView);
+        mangaImage = (ImageButton) findViewById(R.id.addMangaImageView);
 
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
