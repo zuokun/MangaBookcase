@@ -278,13 +278,12 @@ public class EditActivity extends Activity {
                     selectedImageUri = data == null ? null : data.getData();
                     File sourceFile = new File(selectedImageUri.getPath());
                     File destinationFile = new File(outputFileUri.getPath());
-                    Toast.makeText(EditActivity.this, selectedImageUri.getPath(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(EditActivity.this, outputFileUri.getPath(), Toast.LENGTH_SHORT).show();
                     try {
                         copyFile(sourceFile, destinationFile);
                     } catch (IOException ex) {
                         Log.d("Copying", "Copy failed");
                     }
+                    Toast.makeText(EditActivity.this, destinationFile.getPath(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
                     imgPath = selectedImageUri.toString();
                 }
