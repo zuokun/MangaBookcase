@@ -98,23 +98,10 @@ public class EditActivity extends Activity {
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
-        File imgFile = new  File(Environment.getExternalStorageDirectory() + "/MangaBookcase/Google.jpg");
-        Toast.makeText(EditActivity.this, imgFile.getPath(), Toast.LENGTH_SHORT).show();
-
-        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        mangaImage.setImageBitmap(myBitmap);
-
-        if(imgFile.exists()){
-            //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            mangaImage.setImageBitmap(myBitmap);
-            Toast.makeText(EditActivity.this, "Image exists", Toast.LENGTH_SHORT).show();
-            Toast.makeText(EditActivity.this, imgFile.getPath(), Toast.LENGTH_SHORT).show();
-        }
-        /*
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
             mangaImage.setImageURI(outputFileUri);
         }
-        */
+
 
     }
 
