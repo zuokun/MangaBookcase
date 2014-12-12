@@ -98,6 +98,9 @@ public class EditActivity extends Activity {
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
         File imgFile = new  File("/storage/emulated/0/MangaBookcase/Google.jpg");
+        File imgFile2 = new  File(Environment.getExternalStorageDirectory() + "/MangaBookcase/Google.jpg");
+        Toast.makeText(EditActivity.this, imgFile.getPath(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(EditActivity.this, imgFile2.getPath(), Toast.LENGTH_SHORT).show();
 
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
