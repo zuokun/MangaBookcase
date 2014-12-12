@@ -282,33 +282,14 @@ public class EditActivity extends Activity {
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                     refreshGallery(selectedImageUri);
-                    Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
                     //mangaImage.setImageURI(selectedImageUri);
                     mangaImage.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-                    imgPath = selectedImageUri.getPath();
+                    //imgPath = selectedImageUri.toString();
                 } else {
-                    /*
                     selectedImageUri = data == null ? null : data.getData();
                     File destinationFile = copyImageToFolder(selectedImageUri);
-                    Toast.makeText(EditActivity.this, destinationFile.getPath(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.getPath();
-                    */
-                    selectedImageUri = data.getData();
-                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-                    Cursor cursor = getContentResolver().query(selectedImageUri,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    imgPath = cursor.getString(columnIndex);
-                    cursor.close();
-
-                    Toast.makeText(EditActivity.this, imgPath, Toast.LENGTH_SHORT).show();
-
-                    mangaImage.setImageURI(selectedImageUri);
-
+                    imgPath = selectedImageUri.toString();
                 }
             }
         }
