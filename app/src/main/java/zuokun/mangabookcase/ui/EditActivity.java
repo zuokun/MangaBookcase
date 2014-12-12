@@ -307,7 +307,7 @@ public class EditActivity extends Activity {
 
                     Toast.makeText(EditActivity.this, imgPath, Toast.LENGTH_SHORT).show();
 
-                    mangaImage.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+                    mangaImage.setImageURI(selectedImageUri);
 
                 }
             }
