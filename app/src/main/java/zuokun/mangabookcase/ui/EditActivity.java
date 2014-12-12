@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -286,11 +287,26 @@ public class EditActivity extends Activity {
                     mangaImage.setImageBitmap(BitmapFactory.decodeFile(imgPath));
                     imgPath = selectedImageUri.getPath();
                 } else {
+                    /*
                     selectedImageUri = data == null ? null : data.getData();
                     File destinationFile = copyImageToFolder(selectedImageUri);
                     Toast.makeText(EditActivity.this, destinationFile.getPath(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
                     imgPath = selectedImageUri.getPath();
+                    */
+                    selectedImageUri = data.getData();
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                    Cursor cursor = getContentResolver().query(selectedImageUri,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imgPath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                    mangaImage.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+
                 }
             }
         }
