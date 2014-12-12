@@ -97,7 +97,7 @@ public class EditActivity extends Activity {
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
-        File imgFile = new  File("/storage/emulated/0/MangaBookcase/" + _manga.getTitle() + ".jpg");
+        File imgFile = new  File("/storage/emulated/0/MangaBookcase/Google.jpg");
 
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
