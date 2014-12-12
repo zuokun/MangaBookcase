@@ -272,14 +272,15 @@ public class EditActivity extends Activity {
                 Uri selectedImageUri;
 
                 if (isCamera) {
-                    //selectedImageUri = outputFileUri;
-                    selectedImageUri = data.getData();
+                    selectedImageUri = outputFileUri;
+                    Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
                     imgPath = selectedImageUri.toString();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     File sourceFile = new File(selectedImageUri.getPath());
                     File destinationFile = new File(outputFileUri.getPath());
+                    Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
                     try {
                         copyFile(sourceFile, destinationFile);
                     } catch (IOException ex) {
