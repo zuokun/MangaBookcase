@@ -102,7 +102,8 @@ public class EditActivity extends Activity {
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             mangaImage.setImageBitmap(myBitmap);
-
+            Toast.makeText(EditActivity.this, "Image exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditActivity.this, imgFile.getPath(), Toast.LENGTH_SHORT).show();
         }
         /*
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
