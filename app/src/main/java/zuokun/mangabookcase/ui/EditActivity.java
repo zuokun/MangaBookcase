@@ -270,6 +270,7 @@ public class EditActivity extends Activity {
                 }
 
                 Uri selectedImageUri;
+
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                     mangaImage.setImageURI(selectedImageUri);
@@ -284,7 +285,7 @@ public class EditActivity extends Activity {
                         Log.d("Copying", "Copy failed");
                     }
                     Toast.makeText(EditActivity.this, destinationFile.getPath(), Toast.LENGTH_SHORT).show();
-                    mangaImage.setImageURI(selectedImageUri);
+                    //mangaImage.setImageURI(selectedImageUri);
                     imgPath = selectedImageUri.toString();
                 }
             }
