@@ -282,9 +282,8 @@ public class EditActivity extends Activity {
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
                     refreshGallery(selectedImageUri);
-                    //mangaImage.setImageURI(selectedImageUri);
-                    mangaImage.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-                    //imgPath = selectedImageUri.toString();
+                    mangaImage.setImageURI(selectedImageUri);
+                    imgPath = selectedImageUri.toString();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                     File destinationFile = copyImageToFolder(selectedImageUri);
