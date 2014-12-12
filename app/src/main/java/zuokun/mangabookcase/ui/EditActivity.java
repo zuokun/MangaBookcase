@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -95,9 +97,18 @@ public class EditActivity extends Activity {
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
 
+        File imgFile = new  File("/storage/emulated/0/MangaBookcase/" + _manga.getTitle() + ".jpg");
+
+        if(imgFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            mangaImage.setImageBitmap(myBitmap);
+
+        }
+        /*
         if (!_manga.getImagePath().equalsIgnoreCase("")) {
             mangaImage.setImageURI(outputFileUri);
         }
+        */
 
     }
 
