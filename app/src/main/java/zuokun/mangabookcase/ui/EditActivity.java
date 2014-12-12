@@ -9,9 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +22,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -34,10 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import zuokun.mangabookcase.R;
 import zuokun.mangabookcase.app.MangaBookcaseApp;
@@ -74,8 +67,6 @@ public class EditActivity extends Activity {
         _manga = i.getExtras().getParcelable("parcelManga");
 
         setupInterface();
-
-        Toast.makeText(EditActivity.this, _manga.getImagePath(), Toast.LENGTH_SHORT).show();
 
         mangaImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,39 +264,48 @@ public class EditActivity extends Activity {
 
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
-                    Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaScanIntent.setData(selectedImageUri);
-                    sendBroadcast(mediaScanIntent);
+                    refreshGallery(selectedImageUri);
                     Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.toString();
+                    imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
-                    File sourceFile = new File(selectedImageUri.getPath());
-                    File destinationFile = new File(outputFileUri.getPath());
-                    Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
-                    try {
-                        copyFile(sourceFile, destinationFile);
-                    } catch (IOException ex) {
-                        Log.d("Copying", "Copy failed");
-                    }
+                    File destinationFile = copyImageToFolder(selectedImageUri);
                     Toast.makeText(EditActivity.this, destinationFile.getPath(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
-                    imgPath = selectedImageUri.toString();
+                    imgPath = selectedImageUri.getPath();
                 }
             }
         }
     }
 
-    private void copyFile(File sourceFile, File destFile) throws IOException {
-        if (!sourceFile.exists()) {
+    private File copyImageToFolder(Uri selectedImageUri) {
+        File sourceImage = new File(selectedImageUri.getPath());
+        File destImage = new File(outputFileUri.getPath());
+        Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
+        try {
+            copyImage(sourceImage, destImage);
+        } catch (IOException ex) {
+            Log.d("Copying", "Copy failed");
+        }
+        return destImage;
+    }
+
+    private void refreshGallery(Uri selectedImageUri) {
+        Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(selectedImageUri);
+        sendBroadcast(mediaScanIntent);
+    }
+
+    private void copyImage(File sourceImage, File destImage) throws IOException {
+        if (!sourceImage.exists()) {
             return;
         }
 
         FileChannel source;
         FileChannel destination;
-        source = new FileInputStream(sourceFile).getChannel();
-        destination = new FileOutputStream(destFile).getChannel();
+        source = new FileInputStream(sourceImage).getChannel();
+        destination = new FileOutputStream(destImage).getChannel();
         if (destination != null && source != null) {
             destination.transferFrom(source, 0, source.size());
         }
