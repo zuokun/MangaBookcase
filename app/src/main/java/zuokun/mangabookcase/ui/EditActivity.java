@@ -282,7 +282,8 @@ public class EditActivity extends Activity {
                     selectedImageUri = outputFileUri;
                     refreshGallery(selectedImageUri);
                     Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
-                    mangaImage.setImageURI(selectedImageUri);
+                    //mangaImage.setImageURI(selectedImageUri);
+                    mangaImage.setImageBitmap(BitmapFactory.decodeFile(imgPath));
                     imgPath = selectedImageUri.getPath();
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
@@ -295,6 +296,12 @@ public class EditActivity extends Activity {
         }
     }
 
+    private void refreshGallery(Uri selectedImageUri) {
+        Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(selectedImageUri);
+        sendBroadcast(mediaScanIntent);
+    }
+
     private File copyImageToFolder(Uri selectedImageUri) {
         File sourceImage = new File(selectedImageUri.getPath());
         File destImage = new File(outputFileUri.getPath());
@@ -305,12 +312,6 @@ public class EditActivity extends Activity {
             Log.d("Copying", "Copy failed");
         }
         return destImage;
-    }
-
-    private void refreshGallery(Uri selectedImageUri) {
-        Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        mediaScanIntent.setData(selectedImageUri);
-        sendBroadcast(mediaScanIntent);
     }
 
     private void copyImage(File sourceImage, File destImage) throws IOException {
