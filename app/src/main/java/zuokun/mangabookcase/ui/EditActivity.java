@@ -273,6 +273,9 @@ public class EditActivity extends Activity {
 
                 if (isCamera) {
                     selectedImageUri = outputFileUri;
+                    Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(selectedImageUri);
+                    sendBroadcast(mediaScanIntent);
                     Toast.makeText(EditActivity.this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
                     mangaImage.setImageURI(selectedImageUri);
                     imgPath = selectedImageUri.toString();
