@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="zuokun.mangabookcase" >
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:name=".app.MangaBookcaseApp"
         android:allowBackup="true"
@@ -28,13 +36,6 @@
         <activity
             android:name=".ui.EditActivity"
             android:label="Edit Manga"
-            android:parentActivityName=".ui.MainActivity">
-
-        </activity>
-
-        <activity
-            android:name=".ui.DeveloperSettingsActivity"
-            android:label="Developer Settings"
             android:parentActivityName=".ui.MainActivity">
 
         </activity>

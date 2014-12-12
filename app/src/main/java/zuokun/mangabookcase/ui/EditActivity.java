@@ -299,7 +299,7 @@ public class EditActivity extends Activity {
     private void refreshGallery(Uri selectedImageUri) {
         Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         mediaScanIntent.setData(selectedImageUri);
-        sendBroadcast(mediaScanIntent);
+        this.sendBroadcast(mediaScanIntent);
     }
 
     private File copyImageToFolder(Uri selectedImageUri) {
