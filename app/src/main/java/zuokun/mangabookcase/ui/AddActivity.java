@@ -126,14 +126,14 @@ public class AddActivity extends Activity {
 
             if (mangaImagePath == null) {
                 mangaImagePath = "";
+            } else {
+                renameImage(outputFileUri, title);
             }
-
-            renameImage(outputFileUri, title);
 
             int book = Integer.parseInt(bookString);
             Manga mManga = new Manga(title,
                                      publisher,
-                                     imgPath,
+                                     mangaImagePath,
                                      book,
                                      new int[]{},
                                      isOngoing,
