@@ -63,6 +63,32 @@
             android:hint="e.g. 48" />
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Missing Book(s) :"
+            android:hint="e.g. 23"
+            android:id="@+id/addMangaMissingBookTextView"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/addMangaMissingBookEditView"
+            android:layout_gravity="center_horizontal"
+            android:hint="e.g. 4, 8, 10" />
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -81,13 +107,12 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/addMangaPublisher"
-            android:layout_gravity="center_horizontal"
-            android:inputType="text" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/addMangaPublisherSpinner"
+            android:spinnerMode="dropdown" />
+
     </LinearLayout>
 
     <LinearLayout
