@@ -29,7 +29,7 @@ public class Manga implements Parcelable {
     public Manga (String title, String publisher, String image_path, int last_book_number, String missing_books_string, boolean ongoing, boolean favourite) {
 
         String[] missing_books_string_array = missing_books_string.split(" ");
-        int[] missing_books = Integer.parseInt()
+        int[] missing_books = Integer.parseInt();
         //Arrays.sort(missing_books);
 
         _title = title;
