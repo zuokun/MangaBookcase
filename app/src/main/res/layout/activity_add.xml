@@ -107,6 +107,13 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addMangaPublisherEditView"
+            android:layout_gravity="center_horizontal"
+            android:hint="e.g. Tong Li" />
+
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -114,6 +121,7 @@
             android:spinnerMode="dropdown" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:orientation="horizontal"

@@ -49,6 +49,8 @@ public class AddActivity extends Activity {
 
     EditText titleEditText;
     EditText lastBookEditText;
+    EditText missingBooksEditText;
+    EditText publisherEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
     ImageView mangaImage;
@@ -65,7 +67,9 @@ public class AddActivity extends Activity {
 
         titleEditText = (EditText) findViewById(R.id.addMangaTitle);
         lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
-        publisherSpinner = (Spinner) findViewById(R.id.addMangaPublisherSpinner);
+        publisherEditText = (EditText) findViewById(R.id.addMangaPublisherEditView);
+        //publisherSpinner = (Spinner) findViewById(R.id.addMangaPublisherSpinner);
+        missingBooksEditText = (EditText) findViewById(R.id.addMangaMissingBookEditView);
         ongoingCheckBox = (CheckBox) findViewById(R.id.addMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
         mangaImage = (ImageButton) findViewById(R.id.addMangaImageView);
@@ -126,8 +130,9 @@ public class AddActivity extends Activity {
 
         String title = titleEditText.getText().toString();
         String bookString = lastBookEditText.getText().toString();
-        String publisher = publisherEditText.getText().toString(); //TODO
+        String publisher = publisherEditText.getText().toString();
         String mangaImagePath = imgPath;
+        String missingBooksString = missingBooksEditText.getText().toString();
         int[] missingBooks = null;
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
@@ -149,7 +154,7 @@ public class AddActivity extends Activity {
                                      publisher,
                                      mangaImagePath,
                                      book,
-                                     new int[]{},
+                                     missingBooksString,
                                      isOngoing,
                                      isFavourite);
 
