@@ -53,6 +53,7 @@ public class EditActivity extends Activity {
     EditText titleEditText;
     EditText lastBookEditText;
     EditText publisherEditText;
+    EditText missingBooksEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
     ImageButton mangaImage;
@@ -87,6 +88,7 @@ public class EditActivity extends Activity {
         titleEditText = (EditText) findViewById(R.id.editMangaTitle);
         lastBookEditText = (EditText) findViewById(R.id.editMangaLastBook);
         publisherEditText = (EditText) findViewById(R.id.editMangaPublisher);
+        missingBooksEditText = (EditText) findViewById(R.id.editMangaMissingBookEditView);
         mangaImage = (ImageButton) findViewById(R.id.editMangaImageView);
         ongoingCheckBox = (CheckBox) findViewById(R.id.editMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.editMangaFavourite);
@@ -94,6 +96,7 @@ public class EditActivity extends Activity {
         titleEditText.setText(_manga.getTitle());
         lastBookEditText.setText(Integer.toString(_manga.getLastBookNumber()));
         publisherEditText.setText(_manga.getPublisher());
+        missingBooksEditText.setText(_manga.getStringMissingBooksSimple());
         outputFileUri = Uri.parse(_manga.getImagePath());
         ongoingCheckBox.setChecked(_manga.isOngoing());
         favouriteCheckBox.setChecked(_manga.isFavourite());
@@ -139,6 +142,7 @@ public class EditActivity extends Activity {
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
         String mangaImagePath = imgPath;
+        String missingBooksString = missingBooksEditText.getText().toString();
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
 
@@ -158,7 +162,7 @@ public class EditActivity extends Activity {
                     publisher,
                     mangaImagePath,
                     book,
-                    new int[]{},
+                    missingBooksString,
                     isOngoing,
                     isFavourite);
 

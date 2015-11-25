@@ -15,6 +15,7 @@ public class Manga implements Parcelable {
     private String _publisher;
     private String _image_path;
     private int _last_book;
+    private String _missing_books_string;
     private int[] _missing_books;
     private boolean _ongoing;
     private boolean _favourite;
@@ -25,15 +26,18 @@ public class Manga implements Parcelable {
 
     // (title, last_book, missing, publisher, status, favourite)
     // Status: true = ongoing
-    public Manga (String title, String publisher, String image_path, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
+    public Manga (String title, String publisher, String image_path, int last_book_number, String missing_books_string, boolean ongoing, boolean favourite) {
 
-        Arrays.sort(missing_books);
+        //String[] missing_books_string_array = missing_books_string.split(" ");
+        //int[] missing_books = Integer.parseInt();
+        //Arrays.sort(missing_books);
 
         _title = title;
         _publisher = publisher;
         _image_path = image_path;
         _last_book = last_book_number;
-        _missing_books = missing_books;
+        _missing_books_string = missing_books_string;
+        // _missing_books = missing_books_string;
         _ongoing = ongoing;
         _favourite = favourite;
     }
@@ -42,14 +46,15 @@ public class Manga implements Parcelable {
 
     }
 
-    public Manga(int id, String title, String publisher, String image_path, int last_book_number, int[] missing_books, boolean ongoing, boolean favourite) {
+    public Manga(int id, String title, String publisher, String image_path, int last_book_number, String missing_books_string, boolean ongoing, boolean favourite) {
 
         _id = id;
         _title = title;
         _publisher = publisher;
         _image_path = image_path;
         _last_book = last_book_number;
-        _missing_books = missing_books;
+        _missing_books_string = missing_books_string;
+        // _missing_books = missing_books;
         _ongoing = ongoing;
         _favourite = favourite;
 
@@ -164,6 +169,10 @@ public class Manga implements Parcelable {
                 mIntArray[iIntegerPosition] = Integer.parseInt(mStrings[iIntegerPosition]);
             }
             return mIntArray;
+    }
+
+    public String getStringMissingBooksSimple() {
+        return _missing_books_string;
     }
 
     // To use in storing in database, has brackets []

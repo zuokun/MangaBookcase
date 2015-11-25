@@ -19,10 +19,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -47,10 +49,12 @@ public class AddActivity extends Activity {
 
     EditText titleEditText;
     EditText lastBookEditText;
+    EditText missingBooksEditText;
     EditText publisherEditText;
     CheckBox ongoingCheckBox;
     CheckBox favouriteCheckBox;
     ImageView mangaImage;
+    Spinner publisherSpinner;
 
     private Uri outputFileUri;
 
@@ -63,7 +67,9 @@ public class AddActivity extends Activity {
 
         titleEditText = (EditText) findViewById(R.id.addMangaTitle);
         lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
-        publisherEditText = (EditText) findViewById(R.id.addMangaPublisher);
+        publisherEditText = (EditText) findViewById(R.id.addMangaPublisherEditView);
+        //publisherSpinner = (Spinner) findViewById(R.id.addMangaPublisherSpinner);
+        missingBooksEditText = (EditText) findViewById(R.id.addMangaMissingBookEditView);
         ongoingCheckBox = (CheckBox) findViewById(R.id.addMangaStatus);
         favouriteCheckBox = (CheckBox) findViewById(R.id.addMangaFavourite);
         mangaImage = (ImageButton) findViewById(R.id.addMangaImageView);
@@ -73,6 +79,18 @@ public class AddActivity extends Activity {
             public void onClick(View v) {
                 outputFileUri = setImageUri();
                 openImageIntent();
+            }
+        });
+
+        publisherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -114,6 +132,7 @@ public class AddActivity extends Activity {
         String bookString = lastBookEditText.getText().toString();
         String publisher = publisherEditText.getText().toString();
         String mangaImagePath = imgPath;
+        String missingBooksString = missingBooksEditText.getText().toString();
         int[] missingBooks = null;
         boolean isOngoing = ongoingCheckBox.isChecked();
         boolean isFavourite = favouriteCheckBox.isChecked();
@@ -135,7 +154,7 @@ public class AddActivity extends Activity {
                                      publisher,
                                      mangaImagePath,
                                      book,
-                                     new int[]{},
+                                     missingBooksString,
                                      isOngoing,
                                      isFavourite);
 
@@ -167,7 +186,7 @@ public class AddActivity extends Activity {
     private void openImageIntent() {
 
         // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final List<Intent> cameraIntents = new ArrayList<>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         final PackageManager packageManager = getPackageManager();
         final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
