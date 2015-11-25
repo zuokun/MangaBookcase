@@ -63,7 +63,7 @@ public class AddActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_add);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         titleEditText = (EditText) findViewById(R.id.addMangaTitle);
         lastBookEditText = (EditText) findViewById(R.id.addMangaLastBook);
