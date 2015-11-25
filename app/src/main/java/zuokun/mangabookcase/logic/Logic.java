@@ -61,10 +61,10 @@ public class Logic {
         MangaSQLiteHelper m = getSQLiteHelper();
 
         // (title, last_book, publisher, status, favourite)
-        Manga One_Piece = new Manga("One Piece", "Tong Li", "", 69, new int[]{1, 3, 9}, true, true);
-        Manga Gintama = new Manga("Gintama", "Tong Li", "", 44, new int[]{}, true, false);
-        Manga No_Game_No_Life = new Manga("No Game No Life", "Kadokawa", "", 12, new int[]{2, 9}, false, false);
-        Manga Google = new Manga("Google", "Nexus", "",  33, new int[]{7, 9}, true, false);
+        Manga One_Piece = new Manga("One Piece", "Tong Li", "", 69, "1, 3, 9", true, true);
+        Manga Gintama = new Manga("Gintama", "Tong Li", "", 44, "", true, false);
+        Manga No_Game_No_Life = new Manga("No Game No Life", "Kadokawa", "", 12, "2, 9", false, false);
+        Manga Google = new Manga("Google", "Nexus", "",  33, "7, 9", true, false);
 
         // Adding Manga
         m.addManga(One_Piece);

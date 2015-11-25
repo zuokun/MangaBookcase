@@ -37,7 +37,7 @@ public class Manga implements Parcelable {
         _image_path = image_path;
         _last_book = last_book_number;
         _missing_books_string = missing_books_string;
-        // _missing_books = missing_books_string;
+        //_missing_books = missing_books_string;
         _ongoing = ongoing;
         _favourite = favourite;
     }
